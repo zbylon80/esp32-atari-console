@@ -15,7 +15,8 @@ struct FakeModelName {
         }
     }
 };
-struct FakeProperties { uint16_t vendor_id = 0x045e, product_id = 0x0b13; };
+constexpr int BP32_MAX_CONTROLLERS=4;
+struct FakeProperties { uint16_t vendor_id = 0x045e, product_id = 0x0b13; uint8_t btaddr[6]={}; };
 class Controller {
 public:
     enum { CONTROLLER_TYPE_XBoxOneController = 32 };
@@ -33,6 +34,8 @@ public:
     FakeModelName getModelName() const { return {}; }
     FakeProperties getProperties() const { return properties; }
     int getModel() const { return model; }
+    void disconnect() { connected=false; ++disconnects; }
+    unsigned disconnects=0;
     uint8_t dpad() const { return dpadValue; }
     bool a() const { return aDown; } bool b() const { return bDown; }
     bool x() const { return xDown; } bool y() const { return yDown; }
@@ -49,6 +52,8 @@ public:
     Controller* active = nullptr;
     Controller* pendingConnect = nullptr;
     bool pendingDisconnect = false, pendingReport = false;
+    bool discovery=true;
+    void enableNewBluetoothConnections(bool enabled){discovery=enabled;}
     void setup(std::function<void(Controller*)> connect, std::function<void(Controller*)> disconnect) {
         connectCallback = connect; disconnectCallback = disconnect;
     }

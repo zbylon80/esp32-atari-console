@@ -22,12 +22,37 @@ RB i LB nie otwierają menu emulatora.
 
 ## Gra w dwie osoby
 
-Pierwszy zarejestrowany pad pozostaje przypisany do gracza 1, a drugi do
-gracza 2. Kolejność ich włączania przy następnym uruchomieniu nie ma znaczenia.
+Konsola pamięta przypisanie padów do graczy 1 i 2. Kolejność ich włączania
+przy następnym uruchomieniu nie ma znaczenia.
 
 Tryb jednoosobowy lub dwuosobowy, strony i poziom trudności wybierasz na
 oryginalnych ekranach danej gry. Dotyczy to również Archona — konsola nie
 zastępuje jego ekranu wyboru własnym menu.
+
+## Zarządzanie padami
+
+![Lista kontrolerów w ustawieniach konsoli](images/controllers.png)
+
+Otwórz **View → Ustawienia → Kontrolery**. Przy każdym graczu zobaczysz,
+czy jego pad jest połączony, zapisany, ale rozłączony, czy jeszcze nieprzypisany.
+
+- **Dodawanie:** wybierz wolnego gracza, a następnie **Dodaj pad**. Masz
+  60 sekund na uruchomienie parowania przyciskiem obok USB pada. Po połączeniu
+  naciśnij i puść A. B lub View anuluje dodawanie.
+- **Zamiana:** wybierz **Zamień graczy 1 i 2**. Nowe przypisanie zostanie
+  zapamiętane także po wyłączeniu konsoli. Puść przyciski, spusty i lewy drążek,
+  aby wznowić sterowanie.
+- **Usuwanie:** wybierz gracza, **Usuń przypisanie** i potwierdź. Pad zostanie
+  rozłączony, a ustawienia drugiego pozostaną zapisane. Aby zastąpić pad innym,
+  usuń jego przypisanie i dodaj nowy do zwolnionego miejsca.
+
+Usuwanie dotyczy przypisania w konsoli. Nie kasuje wszystkich kluczy Bluetooth
+przechowywanych przez bibliotekę. Usunięty pad może wrócić do sterowania dopiero
+po ponownym dodaniu. Po usunięciu ostatniego przypisania konsola automatycznie
+czeka na pad dla gracza 1, aby umożliwić ponowną obsługę menu.
+
+Przy pierwszym uruchomieniu bez zapisanych padów dodawanie gracza 1 jest
+aktywne automatycznie i bez limitu czasu. Kolejne pady dodajesz z menu.
 
 ## Biblioteka gier
 

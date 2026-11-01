@@ -20,3 +20,8 @@ add_executable(pad_mapping_tests pad_mapping_tests.cpp)
 target_include_directories(pad_mapping_tests PRIVATE ../src)
 target_compile_features(pad_mapping_tests PRIVATE cxx_std_11)
 add_test(NAME console_pad_mapping COMMAND pad_mapping_tests)
+
+add_executable(pad_management_tests pad_management_tests.cpp)
+target_include_directories(pad_management_tests PRIVATE ../src fakes)
+target_compile_features(pad_management_tests PRIVATE cxx_std_11)
+add_test(NAME console_pad_management COMMAND pad_management_tests)

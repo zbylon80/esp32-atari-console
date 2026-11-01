@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "drop-font.h"
 #include "game-catalog.h"
+#include "pad-management.h"
 extern bool library_game_available(int);
 static uint8_t** rows;
 static constexpr uint8_t bg=0x02,ink=0x0e,muted=0x0a,accent=0x28;
@@ -72,9 +73,8 @@ void console_ui(uint8_t** screen,int kind,int selected,int game,bool diskSide,in
         footer("A WYBIERZ   X INSTRUKCJA","B / VIEW WROC DO GRY");
     }else if(kind==3){
         brand("USTAWIENIA");
-        const char* entries[]={"AKTUALIZACJA WI-FI","WROC"};
-        for(int i=0;i<2;i++)choice(entries[i],i,selected,64+i*24);
-        snprintf(text,sizeof(text),"BIBLIOTEKA: %d GIER",console_game_count);label(text,32,128,false,accent);
+        const char* entries[]={"KONTROLERY","AKTUALIZACJA WI-FI","WROC"};
+        for(int i=0;i<3;i++)choice(entries[i],i,selected,56+i*24);
         label("VIEW (DWA KWADRATY): MENU KONSOLI",32,152);
         label("MENU (3 KRESKI): ATARI OPTION",32,168);
         label("A = LT = RT   KRZYZAK = LEWY DRAZEK",32,184,false,muted);
@@ -99,5 +99,47 @@ void console_ui(uint8_t** screen,int kind,int selected,int game,bool diskSide,in
         label(game_info(game).title,32,92,false,accent);
         snprintf(text,sizeof(text),"BLAD EMULACJI: %d",error);label(text,32,116);
         footer("B / VIEW WYBOR GRY","MOZESZ WYBRAC INNY TYTUL");
+    }
+}
+static const char* padState(const PadStatus& s,int p){return s.connected[p]?"POLACZONY":s.known[p]?"ZAPISANY, ROZLACZONY":"BRAK PRZYPISANIA";}
+static const char* padNotice(PadNotice n){
+    switch(n){
+    case PadNotice::Paired:return "PAD DODANY. PUSC PRZYCISKI.";
+    case PadNotice::Swapped:return "ZAMIANA GRACZY ZAPISANA";
+    case PadNotice::Forgotten:return "PRZYPISANIE USUNIETE";
+    case PadNotice::TimedOut:return "CZAS PAROWANIA MINAL";
+    case PadNotice::SaveError:return "BLAD ZAPISU. SPROBUJ PONOWNIE.";
+    case PadNotice::Occupied:return "NAJPIERW USUN OBECNE PRZYPISANIE";
+    default:return "";
+    }
+}
+void console_pads_ui(uint8_t** screen,int kind,int selected,int player,const PadStatus& s){
+    rows=screen;rect(0,0,384,240,bg);char text[64];
+    brand("KONTROLERY");
+    if(kind==9){
+        choice("GRACZ 1",0,selected,56);label(padState(s,0),40,78,false,s.connected[0]?accent:muted);
+        choice("GRACZ 2",1,selected,96);label(padState(s,1),40,118,false,s.connected[1]?accent:muted);
+        choice("ZAMIEN GRACZY 1 I 2",2,selected,142,s.known[0]||s.known[1]);
+        choice("WROC",3,selected,164);
+        label(padNotice(s.notice),32,188,false,accent);footer("A WYBIERZ","B / VIEW USTAWIENIA");
+    }else if(kind==10){
+        snprintf(text,sizeof(text),"GRACZ %d: %s",player+1,padState(s,player));label(text,32,64);
+        choice("DODAJ PAD",0,selected,96,!s.known[player]);
+        choice("USUN PRZYPISANIE",1,selected,120,s.known[player]);
+        choice("WROC",2,selected,144);
+        label(s.known[player]?"ABY ZASTAPIC PAD, USUN PRZYPISANIE":"DODAJ PAD DO TEGO GRACZA",32,180,false,muted);
+        footer("A WYBIERZ","B / VIEW LISTA KONTROLEROW");
+    }else if(kind==11){
+        snprintf(text,sizeof(text),"DODAWANIE PADA: GRACZ %d",player+1);label(text,32,64,false,accent);
+        label("WLACZ PAD I PRZYTRZYMAJ",32,88);label("PRZYCISK PAROWANIA OBOK USB.",32,104);
+        label("GDY SIE POLACZY, NACISNIJ A.",32,128);
+        if(s.seconds)snprintf(text,sizeof(text),"POZOSTALO: %u S",unsigned(s.seconds));else snprintf(text,sizeof(text),"OCZEKIWANIE NA PAD");
+        label(text,32,156,false,muted);choice("ANULUJ",0,0,178);footer("A / B / VIEW ANULUJ","ZAPISANE PADY NADAL DZIALAJA");
+    }else{
+        snprintf(text,sizeof(text),"USUNAC PRZYPISANIE GRACZA %d?",player+1);label(text,32,68);
+        label("TEN PAD ZOSTANIE ROZLACZONY.",32,92,false,muted);
+        label("DRUGI PAD ZACHOWA USTAWIENIA.",32,108,false,muted);
+        choice("TAK, USUN PRZYPISANIE",0,selected,140);
+        choice("ANULUJ",1,selected,164);footer("A POTWIERDZ","B / VIEW ANULUJ");
     }
 }

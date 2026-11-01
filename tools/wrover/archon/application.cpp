@@ -11,6 +11,7 @@
 #include "library-smoke.h"
 #include "perf-report.h"
 #include "video_out.h"
+#include "pad-management.h"
 extern "C" {
 #include "atari800/atari.h"
 #include "atari800/memory.h"
@@ -33,7 +34,7 @@ static Emu* emulator;
 static std::atomic<bool> ready{false};
 static std::atomic<unsigned> commands{0};
 static EventGroupHandle_t control;
-enum class Screen {Library=0,Pause=2,Settings=3,Playing=4,Error=5,Help=6,BasicMenu=7};
+enum class Screen {Library=0,Pause=2,Settings=3,Playing=4,Error=5,Help=6,BasicMenu=7,Controllers=9,PadDetails=10,Pairing=11,ForgetPad=12};
 static Screen ui=Screen::Library;
 static Screen settingsReturn=Screen::Library;
 static Screen helpReturn=Screen::Library;
@@ -45,6 +46,10 @@ static int lastGameError,keyPulseFrames;
 static bool menuOpen=true,uiArmed[2],startBlocked[2];
 static int owner,selected,lastDirection,syntheticStart,inject[2],game,genericStart,genericOption;
 static bool basicMode;
+static int managedPlayer;
+static uint32_t padAwaitCommand,padDrawRevision;
+static uint8_t padDrawSeconds;
+static bool padScreen(){return int(ui)>=9&&int(ui)<=12;}
 static const char* activeTitle(){return basicMode?"BASIC":game_info(game).title;}
 static bool isArchon(){return !basicMode&&game_info(game).profile==GameProfile::Archon;}
 static int nativePulse[3];
@@ -67,7 +72,12 @@ void console_boot_progress(int done,int total,const char* file){
     console_boot_ui(_lines,done,total,title);
     Serial.printf("[BOOT_PROGRESS] done=%d total=%d video_fields=%d guards=%d\n",done,total,_frame_counter,drop_guards());
 }
-static void drawUi(){console_ui(emulator->video_buffer(),int(ui),selected,ui==Screen::Help?helpGame:game,diskSide,ui==Screen::Help?int(helpReturn):lastGameError);}
+static void drawUi(){
+    if(padScreen()){
+        auto s=drop_pad_status();padDrawRevision=s.revision;padDrawSeconds=s.seconds;
+        console_pads_ui(emulator->video_buffer(),int(ui),selected,managedPlayer,s);
+    }else console_ui(emulator->video_buffer(),int(ui),selected,ui==Screen::Help?helpGame:game,diskSide,ui==Screen::Help?int(helpReturn):lastGameError);
+}
 static void showUi(Screen screen){ui=screen;menuOpen=screen!=Screen::Playing;selected=screen==Screen::Library?librarySelected:0;lastDirection=0;repeatAt=0;uiArmed[0]=uiArmed[1]=false;
     if(menuOpen){for(auto& pulse:nativePulse)pulse=0;genericOption=keyPulseFrames=0;drawUi();}Serial.printf("[UI] screen=%d game=%d\n",int(ui),game);
 }
@@ -120,6 +130,44 @@ static bool beginBasic(){
     Serial.printf("[BASIC_READY] result=%d enabled=%d ram_kb=%d guards=%d ready=%d\n",result,!Atari800_disable_basic,MEMORY_ram_size,drop_guards(),ok);
     if(!ok)lastGameError=2005;
     showUi(ok?Screen::Playing:Screen::Error);return ok;
+}
+static void managePads(const DropInput sample[2],const uint16_t pressed[2]){
+    for(int i=0;i<4;i++){_joy[i]=0;_trig[i]=0;}console_keys=INPUT_key_consol=7;INPUT_key_code=AKEY_NONE;
+    auto s=drop_pad_status();
+    if(ui==Screen::Pairing&&s.commandSequence!=padAwaitCommand&&s.pairingPlayer<0){showUi(Screen::Controllers);return;}
+    if(s.revision!=padDrawRevision||s.seconds!=padDrawSeconds)drawUi();
+    if(!sample[owner].valid)for(int i=0;i<2;i++)if(sample[i].valid){owner=i;break;}
+    for(int i=0;i<2;i++)if(pressed[i]){owner=i;break;}
+    auto& in=sample[owner];auto keys=pressed[owner];
+    if(keys&(mask(Button::B)|mask(Button::View))){
+        if(ui==Screen::Pairing){if(!drop_pad_request(PadCommand::CancelPairing))return;showUi(Screen::Controllers);}
+        else if(ui==Screen::Controllers)showUi(Screen::Settings);
+        else if(ui==Screen::ForgetPad)showUi(Screen::PadDetails);
+        else showUi(Screen::Controllers);
+        return;
+    }
+    int count=ui==Screen::Controllers?4:ui==Screen::PadDetails?3:ui==Screen::ForgetPad?2:1;
+    int direction=(in.held&mask(Button::Up))||in.ly>.35f?-1:(in.held&mask(Button::Down))||in.ly<-.35f?1:0;
+    uint32_t now=millis();
+    if(in.valid&&direction&&(direction!=lastDirection||int32_t(now-repeatAt)>=0)){
+        repeatAt=now+(direction!=lastDirection?380:160);selected=(selected+direction+count)%count;drawUi();
+    }
+    lastDirection=direction;
+    if(!(keys&mask(Button::A)))return;
+    if(ui==Screen::Controllers){
+        if(selected<2){managedPlayer=selected;showUi(Screen::PadDetails);}
+        else if(selected==2){if(s.known[0]||s.known[1])drop_pad_request(PadCommand::Swap);}
+        else showUi(Screen::Settings);
+    }else if(ui==Screen::PadDetails){
+        if(selected==0&&!s.known[managedPlayer]){
+            padAwaitCommand=s.commandSequence;
+            if(drop_pad_request(managedPlayer?PadCommand::Pair2:PadCommand::Pair1))showUi(Screen::Pairing);
+        }else if(selected==1&&s.known[managedPlayer]){showUi(Screen::ForgetPad);selected=1;drawUi();}
+        else if(selected==2)showUi(Screen::Controllers);
+    }else if(ui==Screen::ForgetPad){
+        if(selected==1)showUi(Screen::PadDetails);
+        else if(drop_pad_request(managedPlayer?PadCommand::Forget2:PadCommand::Forget1))showUi(Screen::Controllers);
+    }else if(drop_pad_request(PadCommand::CancelPairing))showUi(Screen::Controllers);
 }
 static void beginGame(int which){
     basicMode=false;
@@ -177,6 +225,7 @@ static void applyInput(){
         lastDirection=axis;
         return;
     }
+    if(padScreen()){managePads(sample,pressed);return;}
     if(ui==Screen::Playing){for(int i=0;i<2;i++)if(pressed[i]&mask(Button::View)){owner=i;drop_menu(true,0);showUi(basicMode?Screen::BasicMenu:Screen::Pause);break;}}
     else if(ui==Screen::Pause&&(pressed[owner]&mask(Button::View))){drop_publish();showUi(Screen::Playing);suppressed[0]=suppressed[1]=face;return;}
     else if(ui==Screen::Library){for(int i=0;i<2;i++)if(pressed[i]&mask(Button::View)){owner=i;openSettings(Screen::Library);return;}}
@@ -191,7 +240,7 @@ static void applyInput(){
         auto& in=sample[owner];int direction=(in.held&mask(Button::Up))||in.ly>.35f?-1:(in.held&mask(Button::Down))||in.ly<-.35f?1:0;
         if(!direction&&ui==Screen::Library)direction=(in.held&mask(Button::Left))||in.lx<-.35f?-2:(in.held&mask(Button::Right))||in.lx>.35f?2:0;
         if(synthetic&mask(Button::Down))direction=1;if(synthetic&mask(Button::Up))direction=-1;
-        int count=ui==Screen::Pause?(game_info(game).disk2?6:5):(ui==Screen::Settings||ui==Screen::BasicMenu)?2:console_game_count;
+        int count=ui==Screen::Pause?(game_info(game).disk2?6:5):ui==Screen::Settings?3:ui==Screen::BasicMenu?2:console_game_count;
         uint32_t nowMs=millis();
         if(in.valid&&direction&&(direction!=lastDirection||int32_t(nowMs-repeatAt)>=0)){
             bool initial=direction!=lastDirection;repeatAt=nowMs+(initial?380:abs(direction)==2?260:110);
@@ -208,7 +257,7 @@ static void applyInput(){
             else if(ui==Screen::BasicMenu){drop_publish();showUi(Screen::Playing);}
         }else if(pressed[owner]&mask(Button::A)){
             if(ui==Screen::Library)beginGame(selected);
-            else if(ui==Screen::Settings){if(selected==0)drop_update_mode();else showUi(settingsReturn);}
+            else if(ui==Screen::Settings){if(selected==0)showUi(Screen::Controllers);else if(selected==1)drop_update_mode();else showUi(settingsReturn);}
             else if(ui==Screen::BasicMenu){if(selected==0){drop_publish();showUi(Screen::Playing);}else openSettings(Screen::BasicMenu);}
 
             else if(ui==Screen::Pause){if(selected==0){drop_publish();showUi(Screen::Playing);suppressed[0]=suppressed[1]=face;}else if(selected==1){beginGame(game);}else if(selected==2)showUi(Screen::Library);else if(selected==3)openHelp(Screen::Pause,game);else if(selected==4)openSettings(Screen::Pause);else{
@@ -329,7 +378,7 @@ static void run(void*){
 }
 void drop_setup(){
     Serial.setTxBufferSize(1024);Serial.begin(115200);delay(800);setCpuFrequencyMhz(240);
-    Serial.println("[BOOT] WroverArchon-v1.13.0-demand-load; ATARI-WROVER-GAME-OTA-v1; two independent joystick ports");drop_update_info();
+    Serial.println("[BOOT] WroverArchon-v1.14.0-pad-management; ATARI-WROVER-GAME-OTA-v1; two independent joystick ports");drop_update_info();
     if(ESP.getFlashChipSize()!=16777216||ESP.getChipRevision()<3||!psramFound()){Serial.println("[FAIL] board configuration");return;}
     control=xEventGroupCreate();if(!control)return;
     // Allocate the same internal framebuffer once. Video stays active while

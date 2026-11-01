@@ -17,6 +17,7 @@ source='''#include <Arduino.h>
 #include <cassert>
 #include <cstring>
 #include "game-catalog.h"
+#include "pad-management.h"
 const GameInfo console_games[]={ENTRIES};
 const int console_game_count=COUNT;
 static bool allAvailable=true;
@@ -56,7 +57,20 @@ int main(){
   memset(data,0xcd,sizeof(data));console_ui(rows,0,selected,0,false,0);
   for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
  }
- puts("PASS 133 UI states: menus, availability, boot and game loading; row guards intact");
+ for(int selected: {0,1,2}){
+  memset(data,0xcd,sizeof(data));console_ui(rows,3,selected,0,false,0);
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+ }
+ for(int kind: {9,10,11,12})for(int state=0;state<4;state++)for(int player=0;player<2;player++)for(int selected=0;selected<(kind==9?4:kind==10?3:kind==11?1:2);selected++){
+  PadStatus s{};s.known[0]=state>0;s.connected[0]=state>0;s.known[1]=state>0;s.connected[1]=state==2;
+  if(state==2){s.pairingPlayer=1;s.seconds=42;}
+  if(state==3)s.notice=PadNotice::SaveError;
+  memset(data,0xcd,sizeof(data));console_pads_ui(rows,kind,selected,player,s);
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+  char name[80];snprintf(name,sizeof(name),"pads-%d-%d-%d-%d.raw",kind,state,player,selected);
+  FILE* f=fopen(name,"wb");assert(f);for(auto row:rows)fwrite(row,1,384,f);fclose(f);
+ }
+ puts("PASS 216 UI states: menus, controllers, availability, boot and loading; row guards intact");
 }
 '''.replace('ENTRIES',','.join(entries)).replace('COUNT',str(len(games)))
 (OUT/'render.cpp').write_text(source)
@@ -74,7 +88,7 @@ palette=[]
 for color in re.findall(r'0x[0-9a-fA-F]+',section):
  v=int(color,16);palette.extend(((v>>16)&255,(v>>8)&255,v&255))
 assert len(palette)==768
-for raw in list(OUT.glob('ui-*.raw'))+list(OUT.glob('boot-*.raw')):
+for raw in list(OUT.glob('ui-*.raw'))+list(OUT.glob('boot-*.raw'))+list(OUT.glob('pads-*.raw')):
  im=Image.frombytes('P',(384,240),raw.read_bytes());im.putpalette(palette);im.convert('RGB').save(raw.with_suffix('.png'))
 sheet=Image.new('RGB',(768,480))
 for name,pos in [('ui-6-15',(0,0)),('ui-6-15-p1',(384,0)),('ui-6-01',(0,240)),('ui-6-01-p1',(384,240))]:
@@ -86,3 +100,8 @@ for name,pos in [('boot-00',(0,0)),('boot-01',(384,0)),('boot-07',(0,240)),('boo
  sheet.paste(Image.open(OUT/(name+'.png')),pos)
 sheet.save(OUT/'boot-preview.png')
 print('Boot preview:',OUT/'boot-preview.png')
+sheet=Image.new('RGB',(768,480))
+for name,pos in [('pads-9-1-0-0',(0,0)),('pads-10-1-1-1',(384,0)),('pads-11-2-1-0',(0,240)),('pads-12-1-1-1',(384,240))]:
+ sheet.paste(Image.open(OUT/(name+'.png')),pos)
+sheet.save(OUT/'controllers-preview.png')
+print('Controllers preview:',OUT/'controllers-preview.png')

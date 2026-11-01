@@ -22,6 +22,7 @@ static XboxController controller0(backend0),controller1(backend1);
 static XboxController* controllers[]={&controller0,&controller1};
 struct PairInput { DropInput players[2]; };
 static QueueHandle_t queue;
+static QueueHandle_t padRequests,padStatuses;
 static std::atomic<uint16_t> edges[2];
 static std::atomic<unsigned> connected{0};
 static std::atomic<uint32_t> maxPollGap{0},maxPollCost{0};
@@ -137,13 +138,23 @@ bool drop_begin(){
     esp_vfs_t v={};v.flags=ESP_VFS_FLAG_DEFAULT;v.open=openGame;v.read=readGame;v.lseek=seekGame;v.close=closeGame;v.stat=statGame;v.fstat=fstatGame;
     auto result=esp_vfs_register("/game",&v,nullptr);
     queue=xQueueCreate(1,sizeof(PairInput));
+    padRequests=xQueueCreate(1,sizeof(PadCommand));padStatuses=xQueueCreate(1,sizeof(PadStatus));
     Serial.printf("[FILES] readonly=1 result=%d games=%d source=microSD_cache no_format=1\n",result,unsigned(console_game_count));
-    return result==ESP_OK && queue && hub.begin() && controller0.begin() && controller1.begin();
+    return result==ESP_OK && queue && padRequests && padStatuses && hub.begin() && controller0.begin() && controller1.begin();
 }
 void drop_poll(){
     if(!queue)return;
     uint32_t pollStart=micros();if(lastPoll && pollStart-lastPoll>maxPollGap.load())maxPollGap=pollStart-lastPoll;lastPoll=pollStart;
+    PadCommand command;
+    if(xQueueReceive(padRequests,&command,0)==pdTRUE){
+        hub.command(command,millis());
+        for(int i=0;i<2;i++){mapping[i]=PadMapping{};edges[i]=0;}
+    }
     hub.update();PairInput sample{};unsigned maskConnected=0;
+    auto padStatus=hub.status(millis());static uint32_t publishedRevision=0;static uint8_t publishedSeconds=0;
+    if(padStatus.revision!=publishedRevision||padStatus.seconds!=publishedSeconds){
+        xQueueOverwrite(padStatuses,&padStatus);publishedRevision=padStatus.revision;publishedSeconds=padStatus.seconds;
+    }
     for(int i=0;i<2;i++){
         auto change=controllers[i]->update(millis());const auto& s=controllers[i]->state();
         auto& input=sample.players[i];input.valid=s.connected&&s.inputValid;
@@ -164,6 +175,8 @@ DropInput drop_input(int player){PairInput sample{};if(queue)xQueuePeek(queue,&s
 uint16_t drop_pressed(int player){return edges[player].exchange(0);}
 bool drop_connected(){return connected.load()!=0;}
 unsigned archon_connected(){return connected.load();}
+PadStatus drop_pad_status(){PadStatus s{};if(padStatuses)xQueuePeek(padStatuses,&s,0);return s;}
+bool drop_pad_request(PadCommand command){return padRequests&&xQueueSend(padRequests,&command,0)==pdTRUE;}
 extern "C" uint8_t* library_map_file(const char* path,int len){
     if(strncmp(path,"/game/",6))return nullptr;auto f=asset(path+5);
     return f.data&&size_t(len)==f.size?const_cast<uint8_t*>(f.data):nullptr;

@@ -213,9 +213,11 @@ jeszcze pozostałych przewodów, dopóki nie uzyskasz poprawnego obrazu.
 3. Poczekaj na połączenie z konsolą i naciśnij A. Pierwszy kontroler zostanie
    zapamiętany jako gracz 1; stan jest zapisany w pamięci płytki.
 4. View (dwa nachodzące kwadraty) otwiera menu BASIC-a. Sprawdź ruch krzyżakiem.
-5. Jeśli używasz drugiego pada, dopiero teraz włącz go, uruchom parowanie
-   i naciśnij A po połączeniu.
-   Będzie graczem 2, także jeśli przy kolejnym starcie połączy się wcześniej.
+5. Jeśli używasz drugiego pada, otwórz **View → Ustawienia → Kontrolery →
+   Gracz 2 → Dodaj pad**. Włącz drugi pad, uruchom parowanie przyciskiem obok
+   USB i po połączeniu naciśnij i puść A.
+6. Będzie przypisany do gracza 2, także jeśli przy kolejnym starcie połączy się
+   wcześniej. Przypisania możesz później zamienić w ekranie Kontrolery.
 
 Odłącz pada od komputera/konsoli Xbox, jeśli automatycznie wraca do innego
 urządzenia. Najprościej tymczasowo wyłączyć tam Bluetooth. Nie czyść kluczy

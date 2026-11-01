@@ -77,11 +77,12 @@ Podgląd interfejsu na Windows wymaga Pillow i MSVC:
 .\.venv\Scripts\python.exe tools/wrover/preview-ui.py
 ```
 
-Narzędzie renderuje 133 stany menu i ekranów postępu, sprawdzając granice
+Narzędzie renderuje 216 stanów menu i ekranów postępu, sprawdzając granice
 rysowania. Testy na komputerze nie zastępują parowania padów ani prób na TV.
 
 W zestawie publikacyjnym sprawdzono kompilację obu programów bez gier
-i oryginalnego ROM-u, dwa testy kontrolerów oraz podgląd interfejsu. Pełna
+i oryginalnego ROM-u oraz podgląd interfejsu. Testy kontrolerów obejmują także
+zarządzanie przypisaniami, migrację ustawień i nieudany zapis. Pełna
 procedura pierwszej instalacji na drugiej, pustej płytce wymaga jeszcze próby
 sprzętowej.
 

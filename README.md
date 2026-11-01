@@ -11,7 +11,7 @@ przygotowania oprogramowania, ale nie do samej gry.
 ## Co już działa
 
 - Biblioteka gier z menu i instrukcjami na ekranie telewizora.
-- Dwa pady Xbox z zapamiętanym przypisaniem do graczy.
+- Dwa pady Xbox: dodawanie, usuwanie przypisań i zamiana graczy z menu.
 - Gry na microSD, wczytywane dopiero po wybraniu tytułu.
 - Obraz przez RCA i dźwięk mono w obu kanałach telewizora.
 - Aktualizacja oprogramowania przez Wi-Fi.
@@ -45,8 +45,8 @@ dostosowania projektu.
 
 ## Co dalej
 
-Planujemy zarządzanie biblioteką przez przeglądarkę, wygodne dodawanie i usuwanie
-padów oraz obsługę klawiatury Bluetooth. Na razie katalog gier jest zapisany
+Planujemy zarządzanie biblioteką przez przeglądarkę i obsługę klawiatury
+Bluetooth. Na razie katalog gier jest zapisany
 w oprogramowaniu, a BASIC nie obsługuje jeszcze pisania z klawiatury BT ani
 zapisywania własnych programów.
 
