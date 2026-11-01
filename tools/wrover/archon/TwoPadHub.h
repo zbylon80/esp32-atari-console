@@ -103,17 +103,38 @@ public:
             if(c->miscStart())raw.buttons|=mask(Button::Menu);if(c->miscSelect())raw.buttons|=mask(Button::View);
             raw.lx=c->axisX();raw.ly=c->axisY();raw.rx=c->axisRX();raw.ry=c->axisRY();raw.lt=c->brake();raw.rt=c->throttle();
             if(entry.releaseRequired){
-                if(!raw.buttons&&raw.lt<150&&raw.rt<150&&abs(raw.lx)<150&&abs(raw.ly)<150)entry.releaseRequired=false;
-                raw={}; // Changing roles or enrolling never emits a game action.
+                // Suppress only controls already held at the session boundary.
+                // A drifting stick must never disable View/B or the whole pad.
+                entry.blockedButtons=raw.buttons;
+                entry.blockedLt=raw.lt>=150;entry.blockedRt=raw.rt>=150;
+                entry.blockedStick=stickActive(raw);
+                entry.releaseRequired=false;
+                Serial.printf("[PAD_BASELINE] player=%d held=0x%04x lx=%d ly=%d lt=%d rt=%d\n",entry.player+1,
+                    unsigned(raw.buttons),int(raw.lx),int(raw.ly),int(raw.lt),int(raw.rt));
             }
+            entry.blockedButtons&=raw.buttons;raw.buttons&=~entry.blockedButtons;
+            if(raw.lt<150)entry.blockedLt=false;if(raw.rt<150)entry.blockedRt=false;
+            if(entry.blockedLt)raw.lt=0;if(entry.blockedRt)raw.rt=0;
+            if(entry.blockedStick&&!stickActive(raw))entry.blockedStick=false;
+            if(entry.blockedStick)raw.lx=raw.ly=0;
         }
     }
 private:
-    struct Pending{Controller* controller=nullptr;int player=-1;bool rejected=false,releaseRequired=true,enrollmentArmed=false;};
+    struct Pending{
+        Controller* controller=nullptr;int player=-1;
+        bool rejected=false,releaseRequired=true,enrollmentArmed=false;
+        uint16_t blockedButtons=0;bool blockedLt=false,blockedRt=false,blockedStick=false;
+    };
     Pending pending[BP32_MAX_CONTROLLERS];
     uint8_t addresses[2][6]={};bool known[2]={};
     int pairing=-1;uint32_t pairingDeadline=0,revision=1,commandSequence=0;bool pairingTimed=false;PadNotice notice=PadNotice::None;
     static TwoPadHub* instance;
+    static bool stickActive(const esp32controller::RawControllerInput& raw){
+        // Match the normalized gameplay/menu threshold, including its dead zone.
+        // Measured resting input (13,-153) must not require an extra stick cycle.
+        auto s=esp32controller::normalizeStick(raw.lx,raw.ly,esp32controller::ControllerConfig{}.leftStickDeadZone,false);
+        return s.x<-.35f||s.x>.35f||s.y<-.35f||s.y>.35f;
+    }
     int find(const uint8_t* address)const{for(int i=0;i<2;i++)if(known[i]&&!memcmp(addresses[i],address,6))return i;return -1;}
     bool save(const uint8_t next[2][6],const bool present[2]){
         uint8_t roles[14]={};for(int i=0;i<2;i++){roles[i]=present[i];memcpy(roles+2+i*6,next[i],6);}

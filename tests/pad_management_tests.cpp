@@ -75,4 +75,22 @@ static void heldEnrollmentAndClockWrap(){
     now=uint32_t(0)-60000;h.command(PadCommand::Pair2,now);CHECK(h.status(now).seconds==60);
     now=0;h.update();CHECK(h.status(now).pairingPlayer<0&&h.status(now).notice==PadNotice::TimedOut);
 }
-int main(){try{migrationAndSwap();deliberateEnrollmentAndRemoval();timeoutCancelAndFailedSave();heldEnrollmentAndClockWrap();puts("PASS pad management: persistence, migration, two players, release gate, removal, timeout and failed writes");}catch(const std::exception& e){puts(e.what());return 1;}}
+static void stickMustNotLockButtons(){
+    reset();auto a=pad(1);saved["p1"]={a.properties.btaddr,a.properties.btaddr+6};
+    a.lx=511;a.lt=1023;a.aDown=true;TwoPadHub h;h.begin();connect(h,a);
+    CHECK(h.frames[0].input.buttons==0&&h.frames[0].input.lx==0&&h.frames[0].input.lt==0);
+    // Even a stuck axis / held fire must not suppress a newly pressed menu key.
+    a.viewDown=true;report(h,a);CHECK(h.frames[0].input.buttons==esp32controller::mask(esp32controller::Button::View));
+    a.viewDown=false;a.bDown=true;report(h,a);CHECK(h.frames[0].input.buttons==esp32controller::mask(esp32controller::Button::B));
+    a.bDown=false;a.aDown=false;a.lt=0;a.lx=0;report(h,a);
+    a.aDown=true;a.lt=1023;a.lx=511;report(h,a);
+    CHECK(h.frames[0].input.buttons==esp32controller::mask(esp32controller::Button::A));
+    CHECK(h.frames[0].input.lt==1023&&h.frames[0].input.lx==511);
+}
+static void measuredRestingStick(){
+    reset();auto a=pad(1);saved["p1"]={a.properties.btaddr,a.properties.btaddr+6};a.lx=13;a.ly=-153;
+    TwoPadHub h;h.begin();connect(h,a);
+    CHECK(h.frames[0].input.lx==13&&h.frames[0].input.ly==-153);
+    a.lx=511;report(h,a);CHECK(h.frames[0].input.lx==511);
+}
+int main(){try{migrationAndSwap();deliberateEnrollmentAndRemoval();timeoutCancelAndFailedSave();heldEnrollmentAndClockWrap();stickMustNotLockButtons();measuredRestingStick();puts("PASS pad management: persistence, migration, two players, independent release gates, resting drift, removal, timeout and failed writes");}catch(const std::exception& e){puts(e.what());return 1;}}
