@@ -1,0 +1,88 @@
+"""Render the production UI C++ on Windows; no emulator or desktop app is opened."""
+from pathlib import Path
+import json,re,subprocess,sys
+ROOT=Path(__file__).resolve().parents[2]
+OUT=ROOT/'.build/menu-preview';OUT.mkdir(exist_ok=True)
+sys.path.insert(0,str(ROOT/'.tools/python-libs'))
+from PIL import Image
+games=json.loads((ROOT/'tools/wrover/library.json').read_text())['games']
+font=ROOT/'.build/wrover-archon/WroverArchon/src/drop-font.h'
+(OUT/'drop-font.h').write_bytes(font.read_bytes())
+(OUT/'Arduino.h').write_text('#pragma once\n#include <cstdint>\n#include <cstdio>\n#include <algorithm>\nusing std::min;\n#define __ATOMIC_RELAXED 0\n#define __atomic_store_n(p,v,o) (*(p)=(v))\n')
+entries=[]
+for g in games:
+ fields=[json.dumps(g[k]) for k in ('id','title','file','hint')]
+ entries.append('{'+','.join(fields)+',GameProfile::'+g['profile']+',0,nullptr,0,'+json.dumps(g['players'])+','+('"sideB"' if g.get('disk2') else 'nullptr')+',false,'+json.dumps('\n'.join(g['help']))+','+json.dumps('\n'.join(g['about']))+'}')
+source='''#include <Arduino.h>
+#include <cassert>
+#include <cstring>
+#include "game-catalog.h"
+const GameInfo console_games[]={ENTRIES};
+const int console_game_count=COUNT;
+static bool allAvailable=true;
+bool library_game_available(int index){return allAvailable||index%2==0;}
+void console_ui(uint8_t**,int,int,int,bool,int);
+void console_boot_ui(uint8_t**,int,int,const char*);
+void console_load_ui(uint8_t**,int,int,const char*);
+int main(){
+ uint8_t data[240][416],*rows[240];
+ for(int y=0;y<240;y++)rows[y]=data[y]+16;
+ for(int kind: {0,2,3,6,5})for(int g=0;g<console_game_count;g++)for(int page=0;page<(kind==6?2:1);page++){
+  memset(data,0xcd,sizeof(data));
+  console_ui(rows,kind,kind==0?g:kind==2?3:page,g,false,kind==6?0:2);
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+  char name[80];snprintf(name,sizeof(name),page?"ui-%d-%02d-p1.raw":"ui-%d-%02d.raw",kind,g);
+  FILE* f=fopen(name,"wb");assert(f);for(auto row:rows)fwrite(row,1,384,f);fclose(f);
+ }
+ for(int done: {0,1,7,20,21}){
+  memset(data,0xcd,sizeof(data));
+  console_boot_ui(rows,done,21,done?"Montezuma's Revenge":nullptr);
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+  char name[80];snprintf(name,sizeof(name),"boot-%02d.raw",done);
+  FILE* f=fopen(name,"wb");assert(f);for(auto row:rows)fwrite(row,1,384,f);fclose(f);
+ }
+ for(int item: {0,1}){
+  memset(data,0xcd,sizeof(data));console_ui(rows,7,item,0,false,0);
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+ }
+ memset(data,0xcd,sizeof(data));console_ui(rows,8,0,0,false,0);
+ for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+ for(int done: {0,1,2}){
+  memset(data,0xcd,sizeof(data));console_load_ui(rows,done,2,"Seksmisja - A.D. 2044");
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+ }
+ allAvailable=false;
+ for(int selected: {0,1}){
+  memset(data,0xcd,sizeof(data));console_ui(rows,0,selected,0,false,0);
+  for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
+ }
+ puts("PASS 133 UI states: menus, availability, boot and game loading; row guards intact");
+}
+'''.replace('ENTRIES',','.join(entries)).replace('COUNT',str(len(games)))
+(OUT/'render.cpp').write_text(source)
+vswhere=Path(r'C:/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe')
+vs=subprocess.check_output([str(vswhere),'-latest','-products','*','-requires','Microsoft.VisualStudio.Component.VC.Tools.x86.x64','-property','installationPath'],text=True).strip()
+assert vs,'MSVC tools required'
+batch='@echo off\ncall "'+str(Path(vs)/'VC/Auxiliary/Build/vcvars64.bat')+'" >nul\nif errorlevel 1 exit /b 1\n'
+batch+='cl /nologo /std:c++17 /EHsc /I"'+str(OUT)+'" /I"'+str(ROOT/'tools/wrover/archon')+'" "'+str(OUT/'render.cpp')+'" "'+str(ROOT/'tools/wrover/archon/console-ui.cpp')+'" /Fe:"'+str(OUT/'render.exe')+'"\n'
+batch+='if errorlevel 1 exit /b 1\nrender.exe\n'
+(OUT/'build.cmd').write_text(batch)
+subprocess.run(['cmd','/d','/c',str(OUT/'build.cmd')],cwd=OUT,check=True)
+cpp=(ROOT/'.build/wrover-archon/WroverArchon/src/emu_atari800.cpp').read_text()
+section=cpp.split('const uint32_t atari_palette_rgb[256] = {')[1].split('};')[0]
+palette=[]
+for color in re.findall(r'0x[0-9a-fA-F]+',section):
+ v=int(color,16);palette.extend(((v>>16)&255,(v>>8)&255,v&255))
+assert len(palette)==768
+for raw in list(OUT.glob('ui-*.raw'))+list(OUT.glob('boot-*.raw')):
+ im=Image.frombytes('P',(384,240),raw.read_bytes());im.putpalette(palette);im.convert('RGB').save(raw.with_suffix('.png'))
+sheet=Image.new('RGB',(768,480))
+for name,pos in [('ui-6-15',(0,0)),('ui-6-15-p1',(384,0)),('ui-6-01',(0,240)),('ui-6-01-p1',(384,240))]:
+ sheet.paste(Image.open(OUT/(name+'.png')),pos)
+sheet.save(OUT/'preview.png')
+print('Preview:',OUT/'preview.png')
+sheet=Image.new('RGB',(768,480))
+for name,pos in [('boot-00',(0,0)),('boot-01',(384,0)),('boot-07',(0,240)),('boot-21',(384,240))]:
+ sheet.paste(Image.open(OUT/(name+'.png')),pos)
+sheet.save(OUT/'boot-preview.png')
+print('Boot preview:',OUT/'boot-preview.png')

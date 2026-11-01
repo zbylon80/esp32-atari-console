@@ -1,0 +1,382 @@
+{
+  "repository": "rossumur/esp_8_bit",
+  "commit": "55eb7b86eda290d96b02c38c3e787efb8ae6a8c0",
+  "files": [
+    {
+      "path": "src/atari800/afile.c",
+      "sha256": "ee80432e2e84929037828f597f3f55fc81107cea32186dd61683a0cf6b9ab9a6"
+    },
+    {
+      "path": "src/atari800/afile.h",
+      "sha256": "1794484009d731d36be6066a4b6c9bdf4e0eabf723461edf288180888965cedd"
+    },
+    {
+      "path": "src/atari800/akey.h",
+      "sha256": "3e6a98af48bcf703cc4d43a2099d58ae71746726d57a9e6f6315d4b79704a1da"
+    },
+    {
+      "path": "src/atari800/antic.c",
+      "sha256": "e869bc750b48c669cc0338636a4f73ca50cf80f5a4b447658c6cfdfd1ce8413d"
+    },
+    {
+      "path": "src/atari800/antic.h",
+      "sha256": "cc0a48746dc36296fb6488f985300e6b3161f185c5f70a74128866bb9e0ad041"
+    },
+    {
+      "path": "src/atari800/artifact.c",
+      "sha256": "1aa8222164fd95d1c7b6c841e6b7242319d105ad4d97dc6f585d55626887d9ef"
+    },
+    {
+      "path": "src/atari800/artifact.h",
+      "sha256": "0665c278f365ae897de436b7f7351253eed20558113608e31b7daef7d908f710"
+    },
+    {
+      "path": "src/atari800/atari.c",
+      "sha256": "c0a1f6f7ae40a810dd08df2f3ab72a097e67109b591400f74ef9e404c8ca66df"
+    },
+    {
+      "path": "src/atari800/atari.h",
+      "sha256": "46896e7c27d5dad7d6098e15bae8e90837f361cc3c1b9290b5c9de2d3a71f284"
+    },
+    {
+      "path": "src/atari800/binload.c",
+      "sha256": "bc82a8586894ce3e86c7c0956f99cda65c9b13fc6ea9c58704b9c3845687e1a0"
+    },
+    {
+      "path": "src/atari800/binload.h",
+      "sha256": "18a41edb30be92914599ab7c5e38a2af895ef941786ff3ad27fc916cd42772d5"
+    },
+    {
+      "path": "src/atari800/cartridge.c",
+      "sha256": "a02257e1e3dc1dd04c3e6131afb1c694cd21e09b3f717c38a58c6bbf16b44784"
+    },
+    {
+      "path": "src/atari800/cartridge.h",
+      "sha256": "0f44f9887eaf34125df6af5c2a6d793063dec14cdcdbee24369be9e78bb7b9f3"
+    },
+    {
+      "path": "src/atari800/cassette.c",
+      "sha256": "c413252f5b00a297e1bc6ad36934e6c0c2e37f6fccbd7a2803c6f1b846c79777"
+    },
+    {
+      "path": "src/atari800/cassette.h",
+      "sha256": "be94db8d80e5bd50db5fd7764235b88348c0d24d9b0ddc41c4dc7399d892c1af"
+    },
+    {
+      "path": "src/atari800/cfg.c",
+      "sha256": "c959e8f74fba2704b16a24db5c605a9985a0bd86f9bc6c91f7ff38dac55dd488"
+    },
+    {
+      "path": "src/atari800/cfg.h",
+      "sha256": "fb405df99e3c0af2e5af339b2e0af824c60a13656cf37892095009c6f65309fc"
+    },
+    {
+      "path": "src/atari800/compfile.c",
+      "sha256": "2fdfd4f3d67a01766f58533e27c2b03fbc26e99f60d9cc2f97707dbc45bab3cf"
+    },
+    {
+      "path": "src/atari800/compfile.h",
+      "sha256": "25af64bbb2b02ab1fa5c43a1a01f2006b1c3cb144bfeb967fa51ef22130076f7"
+    },
+    {
+      "path": "src/atari800/config.h",
+      "sha256": "fb97eb0d1b09c083d856fd6c4f7309c477edb2d7c414bc87228580cb5ab2cf6f"
+    },
+    {
+      "path": "src/atari800/cpu.c",
+      "sha256": "c02de392a94da41d333b4d4e0320ed298978703a71e2ef9aa879922b9b6c5ca4"
+    },
+    {
+      "path": "src/atari800/cpu.h",
+      "sha256": "d5f24f30a67068d24eb4629e5f203e3824a3d33ecd20e3c35f1dce348b8f0125"
+    },
+    {
+      "path": "src/atari800/crc32.c",
+      "sha256": "dd817e348b1200c6e1c28881bc61681fcf6342669c3ed4a68efb0228d82e222c"
+    },
+    {
+      "path": "src/atari800/crc32.h",
+      "sha256": "e58ebd9f14e5340040f0175543374b6a17dddce6cbf679d001622162f8d3f8fe"
+    },
+    {
+      "path": "src/atari800/devices.c",
+      "sha256": "0b03318ff1b93cd212348a856b20842a5b251079016cf36aef5badb137b6b013"
+    },
+    {
+      "path": "src/atari800/devices.h",
+      "sha256": "5cf6589e64cf490a140b81f60cb7bdf682f5572a67502abf99c369b33f7a26cb"
+    },
+    {
+      "path": "src/atari800/esc.c",
+      "sha256": "5d0a7b051efe02b022296a5dab61b2541f98ae803aa06596ddd7b1e550bee365"
+    },
+    {
+      "path": "src/atari800/esc.h",
+      "sha256": "8eaee5683e3e7fa8f5319837b3b049e0c07e6b233d4975f146731835e07c4f8c"
+    },
+    {
+      "path": "src/atari800/gtia.c",
+      "sha256": "a66970f542b0f4302a74ab2e0f8d0d72baa426dc0c89530912ef69e218a45668"
+    },
+    {
+      "path": "src/atari800/gtia.h",
+      "sha256": "0ae0ac9dee068028ffaf28b642befb1bf8018d284de47fdf2ec072b7e50be8a3"
+    },
+    {
+      "path": "src/atari800/img_tape.c",
+      "sha256": "9c9841fee8851ccb96fc313e21ab6f74455fe7f0b765891805a126c93fbf2066"
+    },
+    {
+      "path": "src/atari800/img_tape.h",
+      "sha256": "afa49a66f841a21f1f3b517b2e9e2bca2c281b3e91415b070c40ba1fb9c2f2e1"
+    },
+    {
+      "path": "src/atari800/input.c",
+      "sha256": "ef31dca2b7196dfdc0bd92f31994864ba7b2247e69c4961c7d02b71776bc83ad"
+    },
+    {
+      "path": "src/atari800/input.h",
+      "sha256": "8a5f68b2f751571e30751df417fbb9b84fcd8c4a4ae7ebb42ecbdc4dd2a5edfb"
+    },
+    {
+      "path": "src/atari800/libatari800.h",
+      "sha256": "a8bd2206f681f7dddd7989669375ab6f3365b9ef9cdbe87ad94aaa19bba20d09"
+    },
+    {
+      "path": "src/atari800/libatari800_exit.c",
+      "sha256": "2185f19b31436e07c7fa1dcd3d22b4d8d5da418a9cd0bfa215eadb50030c7d17"
+    },
+    {
+      "path": "src/atari800/libatari800_init.c",
+      "sha256": "59759bc69b3830819678f5f8dc71507954bd749e0104194a73a8f2dd7ad1bb94"
+    },
+    {
+      "path": "src/atari800/libatari800_init.h",
+      "sha256": "9ced739ce30b692be36edb127e2c7010946d1d88496d0d9074e9a8da2fc4f9cf"
+    },
+    {
+      "path": "src/atari800/libatari800_input.h",
+      "sha256": "e9315c39248f8936c1f01ee440d42e90ed710ce4a37ce47409e05e86d7920955"
+    },
+    {
+      "path": "src/atari800/libatari800_main.c",
+      "sha256": "f87b6ba3aeaf398932357be862b25f80f7d9a110d03e4d165160734e3f4863d7"
+    },
+    {
+      "path": "src/atari800/libatari800_main.h",
+      "sha256": "f7a0aae3f2d1311ec1874eb77fd1c424ad310082bf2857b0002e81a76f5a5ce1"
+    },
+    {
+      "path": "src/atari800/libatari800_sound.c",
+      "sha256": "d04e7352214bd4321213ea6d1a79df865084df3bb28b4b016ed521e8ccd62fc8"
+    },
+    {
+      "path": "src/atari800/libatari800_sound.h",
+      "sha256": "4bb7e82f6650952317e9f3b9ae09214972e5e0b68c28ac3edaf0d1827f636345"
+    },
+    {
+      "path": "src/atari800/libatari800_statesav.c",
+      "sha256": "e0a5d21e7c75dfb8445d71180c6eb9e8a84e8a7bfc8d51f69da6dcea34a3d2ad"
+    },
+    {
+      "path": "src/atari800/libatari800_statesav.h",
+      "sha256": "8d66faf03a7b10c2b6fdb56a3012db004316574775a25c876c83e34aff650a7f"
+    },
+    {
+      "path": "src/atari800/libatari800_video.c",
+      "sha256": "c82e4cb665683b98007ed319239187faaad7b4febf373f50f18b711a12a1b151"
+    },
+    {
+      "path": "src/atari800/libatari800_video.h",
+      "sha256": "0f5b133a2243632d6a0caa75db7bd1772528ba9bb8e284a091afe87eb3cbe793"
+    },
+    {
+      "path": "src/atari800/log.c",
+      "sha256": "5a3a802ccb88919678ae04b41284408e8ecd0439f56f3d6c20d3fe69b811f478"
+    },
+    {
+      "path": "src/atari800/log.h",
+      "sha256": "26758d914af41ea040ea5bd8c28d8d6b3315e5692ab9668e9b4dec86758b74e5"
+    },
+    {
+      "path": "src/atari800/memory.c",
+      "sha256": "c513e0ba5543ff9f906b7e23938672488779d7170eaa8081729fde801edaebbf"
+    },
+    {
+      "path": "src/atari800/memory.h",
+      "sha256": "5a88ed982c8a407bc5ce49496bb837441c321ee507db9b4c2fbb0658d867c070"
+    },
+    {
+      "path": "src/atari800/monitor.h",
+      "sha256": "171b53c2a5513fe9a925ca5b4ee140ccf9a5ea77264e0b8fb9d708bc2a396d24"
+    },
+    {
+      "path": "src/atari800/pal_blending.h",
+      "sha256": "8ae3fe71512bf8d067784e887d457232cd8c2ad4ca0bd0da0e83884634701022"
+    },
+    {
+      "path": "src/atari800/pbi.c",
+      "sha256": "ed5d4ae6fca8358746651917798e413c66d7b3e1a7fb14e5450b9bd4fd86b9c5"
+    },
+    {
+      "path": "src/atari800/pbi.h",
+      "sha256": "5cec7316df989a14cb7283110b41c159a21e514c710a896dc964f1d257b52090"
+    },
+    {
+      "path": "src/atari800/pia.c",
+      "sha256": "312a039f02092ec80780dd2419f4f9106f993c80308b42a44ff13127b8646113"
+    },
+    {
+      "path": "src/atari800/pia.h",
+      "sha256": "1c811e994d78c2f64b857d1f08701d14e049cfaaa7564a64bfde612870aa21b2"
+    },
+    {
+      "path": "src/atari800/platform.h",
+      "sha256": "4c67dab3cc6e7fe177629b46fcfe30e4a15a99ca0357d19f21bb238b0caa74ff"
+    },
+    {
+      "path": "src/atari800/pokey.c",
+      "sha256": "c8570942c3e0368de0d206aebe53a1b51fd86c5d7f58ddfda1b693f7d08702a6"
+    },
+    {
+      "path": "src/atari800/pokey.h",
+      "sha256": "99db356bf70a20ba00ee10efbc74fa67b20539950ba7a50f86df5007ffac9b39"
+    },
+    {
+      "path": "src/atari800/pokeysnd.c",
+      "sha256": "0fc8fcbe581737a4f954138202faabef7e98ab8e212c6c1dff9d088dd2a02107"
+    },
+    {
+      "path": "src/atari800/pokeysnd.h",
+      "sha256": "44fef8aa8f846626f36cc6a82cd983f4a0720556f3e3fc2e408bffcfef692dab"
+    },
+    {
+      "path": "src/atari800/rdevice.c",
+      "sha256": "5e57e07acdddf5f76ad1d52b0a28cf53bdf748286da4aeb92fc51f47a7a1f2da"
+    },
+    {
+      "path": "src/atari800/rdevice.h",
+      "sha256": "73dbdfefa1401080e09dda556d1284a1c9a26448bafe840e4ea5a809d8a3a2a0"
+    },
+    {
+      "path": "src/atari800/roms_altirra_5200_os.c",
+      "sha256": "e138171250af1e5a070e453106a85d44baf88be3ce5a80cc1930218a72b879c4"
+    },
+    {
+      "path": "src/atari800/roms_altirra_5200_os.h",
+      "sha256": "ee77ae087d89fd5a11971309ddb4ce4017fa52efc99f3454f7aadf34f9088c3e"
+    },
+    {
+      "path": "src/atari800/roms_altirra_basic.c",
+      "sha256": "3370d08a950476d12ec957d82922e6216453904849c570b5fdce580207764633"
+    },
+    {
+      "path": "src/atari800/roms_altirra_basic.h",
+      "sha256": "25d12cb83828f77b0cbf97b0c760689602d928d09a397f0933a39089f2198991"
+    },
+    {
+      "path": "src/atari800/roms_altirraos_800.c",
+      "sha256": "74a544db00532cff320c42403940dafade575946e12a1b4c6104dcd78ea33d00"
+    },
+    {
+      "path": "src/atari800/roms_altirraos_800.h",
+      "sha256": "32749ff8b5e9f1b020f80e0d18a564702f149075a40dd674880ce324382c2286"
+    },
+    {
+      "path": "src/atari800/roms_altirraos_xl.c",
+      "sha256": "c2e36dee142d9e6c14f09da709629e2fa3317bee7b914c34bcbc52c344e752c9"
+    },
+    {
+      "path": "src/atari800/roms_altirraos_xl.h",
+      "sha256": "078fb78ca4e009de2b55a98cd34c294509ea32298d5b08c71fdefe400ca6c7fc"
+    },
+    {
+      "path": "src/atari800/screen.c",
+      "sha256": "9f7f9b20c3cdd85b2503dc4cfc950f4c68a6b09ae464ec657a41eb137518009e"
+    },
+    {
+      "path": "src/atari800/screen.h",
+      "sha256": "2f4ede5ad8c117ad1c81d6795de855ad87b7dced41a61a031c9db70aab1e0bf8"
+    },
+    {
+      "path": "src/atari800/sio.c",
+      "sha256": "ff2e183e6f7472ca19067c0faa6a48cd7901a8e2735cfe91282bef016b694c00"
+    },
+    {
+      "path": "src/atari800/sio.h",
+      "sha256": "09baf7dd6fd5ec28b995b05afdf4c21880f19a9065fd4e181c4473d811249c17"
+    },
+    {
+      "path": "src/atari800/sndsave.c",
+      "sha256": "6e70ada29ab07ece0d27f04952efa05cc8370972627a3f51c95a2daaca7e9f16"
+    },
+    {
+      "path": "src/atari800/sndsave.h",
+      "sha256": "44c229be2e025c71dbc2da0ffdee8d4e3966e8fdcc6c8e4c44d7986bbeb7e1e3"
+    },
+    {
+      "path": "src/atari800/sound.c",
+      "sha256": "70d16df2f379e39dce0db2c88b78a90ac5d6a008024605ef327ca29d36ed9843"
+    },
+    {
+      "path": "src/atari800/sound.h",
+      "sha256": "65308fc14e713c7cd99612e7d19365ca238eb6cbb8a8b4cc1cb591da03ab8fd4"
+    },
+    {
+      "path": "src/atari800/statesav.c",
+      "sha256": "4b41fdfb31f2f92cadd6c8e214d19fca69eb5415f2dd4ccf8e511975d3e9d573"
+    },
+    {
+      "path": "src/atari800/statesav.h",
+      "sha256": "76aab6cf210de3f8aa57982e2d4b3e12954912c423ae3c26e3758aad95a53707"
+    },
+    {
+      "path": "src/atari800/sysrom.c",
+      "sha256": "5500f4fe096152254dae20d3b3256d04a17c2f4c5ad0259c2366047ae6b8c249"
+    },
+    {
+      "path": "src/atari800/sysrom.h",
+      "sha256": "2279421b7567474f89e147c7118109e37f6432af20ce8545ca5eed644b4711fc"
+    },
+    {
+      "path": "src/atari800/util.c",
+      "sha256": "41b660c706023acfe53e3807feae5a6c7310815ae73d9dc376f5f086def8d7fd"
+    },
+    {
+      "path": "src/atari800/util.h",
+      "sha256": "f16053e09ab76fcb01a36311ed20280b243bfb8c8d2f84ffa9041d4d9e95cfd3"
+    },
+    {
+      "path": "src/emu.cpp",
+      "sha256": "6d2bd58aabe3bef63a76489d9cee0cb9c4c097a11d0726b0bbe7ef2993e0383b"
+    },
+    {
+      "path": "src/emu.h",
+      "sha256": "e75b1cf83dc60c1259c4079d14d82d7b56e5493e92ed71cebd1934b54db7cb7a"
+    },
+    {
+      "path": "src/emu_atari800.cpp",
+      "sha256": "ff51067dc7d714657424e4e626018451a93bc06bb98cb3aad707a2c6a4da8fd4"
+    },
+    {
+      "path": "src/gui.cpp",
+      "sha256": "ce3f69d45e9555f2b3258357adc33e3221c607bb70eaff79887ae52ef91c8c12"
+    },
+    {
+      "path": "src/hid_server/hci_server.h",
+      "sha256": "c66c0c84d694274c4423137e72a9533debdbb0e316141459cc76525b501fd0bf"
+    },
+    {
+      "path": "src/hid_server/hci_transport.h",
+      "sha256": "306268f2736ce9f8558d7042313881a50c47445c512680aea678f1d1f1d73739"
+    },
+    {
+      "path": "src/hid_server/hid_server.h",
+      "sha256": "223549e6d68ba5713d54ba4f8cff2fe9155b316d3de3621c502d54c3ca742840"
+    },
+    {
+      "path": "src/ir_input.h",
+      "sha256": "7d9ce0e695e6fd241967092776390130ae9efaf28d351fa9321a060eefb0574d"
+    }
+  ]
+}

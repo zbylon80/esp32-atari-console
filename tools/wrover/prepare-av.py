@@ -1,0 +1,1 @@
+FQBN='esp32-bluepad32:esp32:esp32:PSRAM=enabled,PartitionScheme=default,CPUFreq=240,FlashMode=dio,FlashFreq=40,FlashSize=16M,UploadSpeed=115200,LoopCore=1,EventsCore=1,DebugLevel=info,EraseFlash=none'
