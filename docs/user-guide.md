@@ -1,53 +1,105 @@
-# Korzystanie z konsolki
+# Obsługa konsoli
 
-Krzyżak i lewy drążek mają to samo zadanie. A jest główną akcją; LT i RT
-działają jak A. View (dwa kwadraty) otwiera menu konsoli. Menu ☰ zawsze
-wysyła Atari OPTION. RB/LB nie otwierają nakładek emulatora.
+[← Strona projektu](../README.md) · [Budowa krok po kroku](getting-started.md)
 
-W bibliotece A wczytuje wybraną grę. X pokazuje instrukcję „Cel i zasady”
-oraz „Sterowanie”; zmieniasz stronę X lub lewo/prawo. B/View zamyka instrukcję.
-Lewo/prawo w bibliotece zmienia stronę listy.
+## Sterowanie
 
-Liczbę graczy, stronę i wariant wybierasz na oryginalnych ekranach gry.
-Konsolka nie wymusza własnego trybu Archona. Pierwszy zapisany pad jest
-graczem1, drugi graczem2, niezależnie od kolejności ponownego połączenia.
+| Przycisk | Działanie |
+| --- | --- |
+| Krzyżak lub lewy drążek | Ruch w grze i wybór pozycji w menu |
+| A, LT lub RT | Główna akcja w grze; potwierdzenie wyboru w menu |
+| View — dwa nachodzące kwadraty | Menu konsoli |
+| Menu — trzy poziome kreski | Przycisk OPTION emulowanego Atari |
+| X w bibliotece lub pauzie | Instrukcja wybranej gry |
+| B w menu | Powrót do poprzedniego ekranu |
 
-## Biblioteka
+W bibliotece lewo i prawo zmieniają stronę listy. Instrukcja każdej gry ma dwie
+strony: **Cel i zasady** oraz **Sterowanie**. Przełączasz je przyciskiem X albo
+krzyżakiem w lewo lub w prawo. B lub View zamyka instrukcję.
 
-Katalog zawiera nazwy i instrukcje: Archon, Archon II, Blue Max, Boulder Dash,
-Bruce Lee, Dropzone, Fred, Hans Kloss, International Karate, Misja,
-Montezuma's Revenge, RealSports Tennis, River Raid, Robbo, Seksmisja,
-Spy vs. Spy, Spy vs. Spy II, The Goonies, Tron (Mirage) i Zorro.
-Ich pliki nie są dołączone ani pobierane. Brakujące pliki są przygaszone.
+Pozostałe funkcje ABXY zależą od gry i są opisane w jej instrukcji.
+RB i LB nie otwierają menu emulatora.
 
-Przy starcie wykonywany jest skan obecności/rozmiarów, nie odczyt całych gier.
-Dopiero wybór wczytuje tytuł do PSRAM i sprawdza SHA256. Podczas gry nie ma
-odczytów microSD. Restart używa bieżącej kopii w pamięci.
+## Gra w dwie osoby
 
-Seksmisja ma dwie strony, wczytywane razem. Gdy gra poprosi o zmianę dysku,
-otwórz View i wybierz WŁÓŻ STRONĘ A/B. Nie restartuj gry.
-Misja i oba Spy wymagają zgodnego, samodzielnie dostarczonego ROM-u Atari XL
-w lokalnej kompilacji. Bez tego te trzy profile pozostają niedostępne.
+Pierwszy zarejestrowany pad pozostaje przypisany do gracza 1, a drugi do
+gracza 2. Kolejność ich włączania przy następnym uruchomieniu nie ma znaczenia.
 
-Bez odpowiedzi karty konsolka uruchamia Altirra BASIC. „Brak odpowiedzi”
-może też oznaczać odłączony moduł lub błąd przewodów; nie jest fizycznym
-czujnikiem obecności karty. Błędy FAT/plików pozostają komunikatami błędów.
-View w BASIC-u daje powrót do programu i ustawienia. Klawiatura BT i zapis
-własnych programów nie są jeszcze zaimplementowane.
+Tryb jednoosobowy lub dwuosobowy, strony i poziom trudności wybierasz na
+oryginalnych ekranach danej gry. Dotyczy to również Archona — konsola nie
+zastępuje jego ekranu wyboru własnym menu.
 
-## Aktualizacje i ograniczenia
+## Biblioteka gier
 
-Najpierw zbuduj nowy firmware. Potem wybierz View → Ustawienia → Aktualizacja
-Wi-Fi → A i uruchom `tools/update.py --host ADRES_Z_EKRANU` z komputera
-w tej samej sieci. Zachowaj `local/config.json` z pierwotnym tokenem.
-Poza tym trybem konsola nie uruchamia Wi-Fi.
+Przy starcie konsola sprawdza, które znane pliki znajdują się na karcie.
+Dopiero A na wybranym tytule rozpoczyna wczytywanie i sprawdzanie zawartości.
+Podczas gry konsola korzysta z pamięci PSRAM, więc karta nie jest odczytywana.
+Restart tego samego tytułu nie wymaga ponownego wczytywania pliku.
 
-Nie ma jeszcze edytowalnego katalogu gier, panelu zarządzania padami ani
-sprawdzania nowych wydań z internetu. Samo dodanie dowolnego pliku do karty
-nie tworzy nowej pozycji menu. Nazwy, profile i instrukcje są we firmware.
+Przygaszona pozycja oznacza brak pliku, niewłaściwy rozmiar lub brak wymaganego
+ROM-u systemowego. Samo skopiowanie dowolnej nowej gry na kartę nie dodaje jej
+do menu — obecny katalog ma zdefiniowane nazwy, wersje i ustawienia.
 
-Kartę zmieniaj przy wyłączonym zasilaniu; pełne ponowne wykrycie wymaga startu
-konsoli. Zasilany osobno konwerter AV→HDMI i tryb obrazu Gra w TV są istotne
-dla poprawnego obrazu i małego opóźnienia. Dźwięk L/R to wspólne mono.
+### Tytuły w katalogu
 
-Budowę i polecenia opisuje [instrukcja od zera](getting-started.md).
+| Archon – Misja | Montezuma – Zorro |
+| --- | --- |
+| Archon | Montezuma’s Revenge |
+| Archon II: Adept | RealSports Tennis |
+| Blue Max | River Raid |
+| Boulder Dash | Robbo |
+| Bruce Lee | Seksmisja |
+| Dropzone | Spy vs. Spy |
+| Fred | Spy vs. Spy II |
+| Hans Kloss | The Goonies |
+| International Karate | Tron (Mirage) |
+| Misja | Zorro |
+
+Pliki dostarczasz samodzielnie. Przygotowanie karty opisuje
+[etap 11 instrukcji budowy](getting-started.md#11-dodaj-własne-gry).
+
+**Seksmisja** korzysta z dwóch stron dysku, wczytywanych razem. Gdy poprosi
+o zmianę strony, otwórz View i wybierz **WŁÓŻ STRONĘ A/B**.
+
+**Misja i obie części Spy vs. Spy** wymagają własnego ROM-u Atari XL
+dołączonego do lokalnej kompilacji. Pozostałe profile korzystają z AltirraOS.
+
+## BASIC bez karty
+
+Jeśli karta nie odpowiada, po krótkim komunikacie pojawi się Altirra BASIC
+z napisem `Ready`. View otwiera menu z powrotem do BASIC-a i ustawieniami.
+Klawiatura Bluetooth oraz zapis własnych programów są planowane.
+
+Jeśli karta jest włożona, a mimo to uruchamia się BASIC, sprawdź połączenia
+i zasilanie czytnika. Moduł nie ma osobnego czujnika obecności karty, więc brak
+odpowiedzi może też oznaczać problem z przewodami lub samą kartą.
+
+Kartę zmieniaj przy wyłączonym zasilaniu. Aby wrócić do biblioteki, wyłącz
+konsolę, włóż kartę i uruchom ją ponownie.
+
+## Aktualizacja przez Wi-Fi
+
+1. Na komputerze przygotuj nowy program poleceniem `tools/build.py`.
+2. W konsoli wybierz **View → Ustawienia → Aktualizacja Wi-Fi → A**.
+3. Odczytaj z telewizora adres IP i uruchom na komputerze:
+
+   ```powershell
+   .\.venv\Scripts\python.exe tools/update.py --host ADRES_Z_EKRANU
+   ```
+
+4. Poczekaj na zakończenie i ponowne uruchomienie konsoli.
+
+Komputer i konsola muszą być w tej samej sieci. Zachowaj plik
+`local/config.json` z pierwotnym tokenem aktualizacji. Jeśli tryb aktualizacji
+zdążył wygasnąć, włącz go ponownie z menu.
+
+Przez pozostały czas Wi-Fi jest wyłączone. Konsola nie sprawdza jeszcze
+samodzielnie dostępności nowych wydań w internecie.
+
+## Obraz i dźwięk
+
+W telewizorze wybierz tryb obrazu **Gra**. Sama nazwa wejścia „Komputer” może
+nie wyłączać przetwarzania obrazu powodującego opóźnienie.
+
+Konwerter AV → HDMI wymaga osobnego zasilania USB. Oba kanały audio otrzymują
+ten sam sygnał mono. [Diagnostyka połączeń →](getting-started.md#14-gdy-coś-nie-działa)
