@@ -6,7 +6,7 @@ WORK=ROOT/'.build/wrover-archon';OUT=WORK/'WroverArchon'
 def main():
     spec=importlib.util.spec_from_file_location('base',HERE/'prepare-dropzone.py');base=importlib.util.module_from_spec(spec);spec.loader.exec_module(base)
     base.WORK=WORK;base.OUT=OUT
-    sys.argv=['prepare-dropzone.py','--refresh','--variant','console-v1-14-0-pad-management'];base.main()
+    sys.argv=['prepare-dropzone.py','--refresh','--variant','console-v1-14-1-pad-reconnect'];base.main()
     # Keep scanline scheduling and ordinary ANTIC rasterizers in internal
     # instruction RAM. No pixel/collision/CPU semantics are changed.
     p=OUT/'src/atari800/antic.c';t=p.read_text(encoding='utf-8')
@@ -88,7 +88,7 @@ def main():
     shutil.copy2(extract/'spi_hal_iram.c.obj',spi_object)
     manifest=json.loads((WORK/'av-source.json').read_text())
     manifest['build_properties']['compiler.c.elf.extra_flags']+=' "'+str(spi_object)+'"'
-    manifest.update({'firmware_version':'WroverArchon-v1.14.0-pad-management','application':'archon','media_storage':'microSD-demand-cache-v1','boot_video':True,'basic_fallback':True,'sd_clock_khz':4000,'sd_spi_hal_sha256':hashlib.sha256(spi_object.read_bytes()).hexdigest(),'benchmark_protocol':0,'iram_renderer_functions':names+['GTIA_NewPmScanline'],
+    manifest.update({'firmware_version':'WroverArchon-v1.14.1-pad-reconnect','application':'archon','media_storage':'microSD-demand-cache-v1','boot_video':True,'basic_fallback':True,'sd_clock_khz':4000,'sd_spi_hal_sha256':hashlib.sha256(spi_object.read_bytes()).hexdigest(),'benchmark_protocol':0,'iram_renderer_functions':names+['GTIA_NewPmScanline'],
         'library':library,'game_sha256':hashlib.sha256(game).hexdigest(),'files':{p.relative_to(OUT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in OUT.rglob('*') if p.is_file()}})
     (WORK/'av-source.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     print('Archon CART/two-player sketch staged separately')

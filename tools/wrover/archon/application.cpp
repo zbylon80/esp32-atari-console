@@ -378,7 +378,7 @@ static void run(void*){
 }
 void drop_setup(){
     Serial.setTxBufferSize(1024);Serial.begin(115200);delay(800);setCpuFrequencyMhz(240);
-    Serial.println("[BOOT] WroverArchon-v1.14.0-pad-management; ATARI-WROVER-GAME-OTA-v1; two independent joystick ports");drop_update_info();
+    Serial.println("[BOOT] WroverArchon-v1.14.1-pad-reconnect; ATARI-WROVER-GAME-OTA-v1; two independent joystick ports");drop_update_info();
     if(ESP.getFlashChipSize()!=16777216||ESP.getChipRevision()<3||!psramFound()){Serial.println("[FAIL] board configuration");return;}
     control=xEventGroupCreate();if(!control)return;
     // Allocate the same internal framebuffer once. Video stays active while

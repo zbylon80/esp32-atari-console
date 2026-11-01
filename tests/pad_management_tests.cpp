@@ -29,12 +29,12 @@ static Controller pad(int id){Controller c;c.properties.btaddr[5]=uint8_t(id);c.
 static void connect(TwoPadHub& h,Controller& c){c.connected=true;c.fresh=true;BP32.connectCallback(&c);BP32.active=&c;BP32.pendingReport=true;h.update();}
 static void report(TwoPadHub& h,Controller& c){BP32.active=&c;BP32.pendingReport=true;h.update();}
 static void disconnect(Controller& c){BP32.disconnectCallback(&c);c.connected=false;c.fresh=false;}
-static void reset(){saved.clear();staged.clear();failCommit=false;BP32=FakeBluepad32{};now=100;}
+static void reset(){saved.clear();staged.clear();failCommit=false;BP32=FakeBluepad32{};BP32.requiresBleScan=true;now=100;}
 
 static void migrationAndSwap(){
     reset();auto a=pad(1),b=pad(2);
     saved["p1"]={a.properties.btaddr,a.properties.btaddr+6};saved["p2"]={b.properties.btaddr,b.properties.btaddr+6};
-    saved["unrelated"]={42};TwoPadHub h;h.begin();CHECK(!BP32.discovery);
+    saved["unrelated"]={42};TwoPadHub h;h.begin();CHECK(BP32.discovery);
     connect(h,b);connect(h,a);CHECK(h.frames[0].connected&&h.frames[1].connected);
     a.aDown=true;report(h,a);CHECK(h.frames[0].input.buttons&esp32controller::mask(esp32controller::Button::A));
     h.command(PadCommand::Swap,now);CHECK(h.frames[0].input.buttons==0&&h.frames[1].input.buttons==0);
@@ -49,10 +49,10 @@ static void migrationAndSwap(){
 static void deliberateEnrollmentAndRemoval(){
     reset();TwoPadHub h;h.begin();CHECK(h.status(now).pairingPlayer==0&&BP32.discovery);
     auto a=pad(1),b=pad(2),other=pad(3);connect(h,a);CHECK(!h.status(now).known[0]);
-    a.aDown=true;report(h,a);CHECK(h.status(now).known[0]&&!BP32.discovery);
+    a.aDown=true;report(h,a);CHECK(h.status(now).known[0]&&BP32.discovery);
     a.aDown=false;report(h,a);connect(h,other);CHECK(other.disconnects==1);disconnect(other);
     h.command(PadCommand::Pair2,now);connect(h,b);b.aDown=true;report(h,b);
-    CHECK(h.status(now).known[1]&&!BP32.discovery);b.aDown=false;report(h,b);
+    CHECK(h.status(now).known[1]&&BP32.discovery);b.aDown=false;report(h,b);
     h.command(PadCommand::Forget2,now);
     CHECK(h.status(now).known[0]&&!h.status(now).known[1]);CHECK(a.connected&&!b.connected);
     CHECK(h.status(now).connected[0]&&!h.status(now).connected[1]);disconnect(b);
@@ -62,8 +62,8 @@ static void deliberateEnrollmentAndRemoval(){
 static void timeoutCancelAndFailedSave(){
     reset();auto a=pad(1);saved["p1"]={a.properties.btaddr,a.properties.btaddr+6};TwoPadHub h;h.begin();connect(h,a);
     h.command(PadCommand::Pair2,now);CHECK(h.status(now).seconds==60);
-    now+=60001;h.update();CHECK(h.status(now).notice==PadNotice::TimedOut&&!BP32.discovery);
-    h.command(PadCommand::Pair2,now);h.command(PadCommand::CancelPairing,now);CHECK(h.status(now).pairingPlayer<0&&!BP32.discovery);
+    now+=60001;h.update();CHECK(h.status(now).notice==PadNotice::TimedOut&&BP32.discovery);
+    h.command(PadCommand::Pair2,now);h.command(PadCommand::CancelPairing,now);CHECK(h.status(now).pairingPlayer<0&&BP32.discovery);
     auto before=saved;failCommit=true;h.command(PadCommand::Forget1,now);
     CHECK(h.status(now).notice==PadNotice::SaveError&&h.status(now).known[0]&&a.connected);CHECK(saved==before);
     h.command(PadCommand::Swap,now);CHECK(h.status(now).known[0]&&!h.status(now).known[1]);

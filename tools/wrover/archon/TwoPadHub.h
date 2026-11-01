@@ -25,7 +25,7 @@ public:
         }
         BP32.setup(onConnect,onDisconnect);
         if(!known[0]&&!known[1])startPairing(0,0); // First use: no pad to operate a menu yet.
-        else BP32.enableNewBluetoothConnections(false);
+        else BP32.enableNewBluetoothConnections(true);
         Serial.printf("[PADS] persistent_p1=%d persistent_p2=%d\n",known[0],known[1]);
         return true;
     }
@@ -123,7 +123,9 @@ private:
         return error==ESP_OK;
     }
     void startPairing(int p,uint32_t deadline){pairing=p;pairingDeadline=deadline;pairingTimed=deadline!=0;notice=PadNotice::None;++revision;BP32.enableNewBluetoothConnections(true);}
-    void stopPairing(){pairing=-1;pairingDeadline=0;pairingTimed=false;BP32.enableNewBluetoothConnections(false);}
+    // Xbox BLE reconnection needs the radio's scan/autoconnect path too.
+    // Enrollment is gated by `pairing`, not by stopping Bluetooth discovery.
+    void stopPairing(){pairing=-1;pairingDeadline=0;pairingTimed=false;BP32.enableNewBluetoothConnections(true);}
     void attach(Pending& e,int p){
         e.player=p;e.releaseRequired=true;auto& f=frames[p];++f.session;f.connected=true;f.input={};
         auto properties=e.controller->getProperties();

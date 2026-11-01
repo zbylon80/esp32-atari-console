@@ -53,11 +53,15 @@ public:
     Controller* pendingConnect = nullptr;
     bool pendingDisconnect = false, pendingReport = false;
     bool discovery=true;
+    bool requiresBleScan=false;
     void enableNewBluetoothConnections(bool enabled){discovery=enabled;}
     void setup(std::function<void(Controller*)> connect, std::function<void(Controller*)> disconnect) {
         connectCallback = connect; disconnectCallback = disconnect;
     }
     bool update() {
+        // Model BLE's scan-dependent reconnect path in hub lifecycle tests.
+        // This is a behavioral seam, not a substitute for a physical radio test.
+        if(requiresBleScan&&!discovery){pendingReport=false;return false;}
         if (pendingDisconnect && active) {
             disconnectCallback(active); active->connected = false; active = nullptr;
         }
