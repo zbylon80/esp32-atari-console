@@ -12,7 +12,7 @@ font=ROOT/'.build/wrover-archon/WroverArchon/src/drop-font.h'
 entries=[]
 for g in games:
  fields=[json.dumps(g[k]) for k in ('id','title','file','hint')]
- entries.append('{'+','.join(fields)+',GameProfile::'+g['profile']+',0,nullptr,0,'+json.dumps(g['players'])+','+('"sideB"' if g.get('disk2') else 'nullptr')+',false,'+json.dumps('\n'.join(g['help']))+','+json.dumps('\n'.join(g['about']))+'}')
+ entries.append('{'+','.join(fields)+',GameProfile::'+g['profile']+',0,nullptr,0,'+json.dumps(g['players'])+','+('"sideB"' if g.get('disk2') else 'nullptr')+',false,'+json.dumps('\n'.join(g['help']))+','+json.dumps('\n'.join(g['about']))+','+json.dumps(g['players_en'])+','+json.dumps('\n'.join(g['help_en']))+','+json.dumps('\n'.join(g['about_en']))+'}')
 source='''#include <Arduino.h>
 #include <cassert>
 #include <cstring>
@@ -23,23 +23,29 @@ const int console_game_count=COUNT;
 static bool allAvailable=true;
 bool library_game_available(int index){return allAvailable||index%2==0;}
 void console_ui(uint8_t**,int,int,int,bool,int);
+void console_set_language(bool);
 void console_boot_ui(uint8_t**,int,int,const char*);
 void console_load_ui(uint8_t**,int,int,const char*);
 int main(){
  uint8_t data[240][416],*rows[240];
  for(int y=0;y<240;y++)rows[y]=data[y]+16;
+ for(bool english: {false,true}){
+ console_set_language(english);
+ allAvailable=true;
  for(int kind: {0,2,3,6,5})for(int g=0;g<console_game_count;g++)for(int page=0;page<(kind==6?2:1);page++){
   memset(data,0xcd,sizeof(data));
   console_ui(rows,kind,kind==0?g:kind==2?3:page,g,false,kind==6?0:2);
   for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
-  char name[80];snprintf(name,sizeof(name),page?"ui-%d-%02d-p1.raw":"ui-%d-%02d.raw",kind,g);
+  char name[84];snprintf(name,sizeof(name),page?"ui-%d-%02d-p1.raw":"ui-%d-%02d.raw",kind,g);
+  if(english){char localized[88];snprintf(localized,sizeof(localized),"en-%s",name);strcpy(name,localized);}
   FILE* f=fopen(name,"wb");assert(f);for(auto row:rows)fwrite(row,1,384,f);fclose(f);
  }
  for(int done: {0,1,7,20,21}){
   memset(data,0xcd,sizeof(data));
   console_boot_ui(rows,done,21,done?"Montezuma's Revenge":nullptr);
   for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
-  char name[80];snprintf(name,sizeof(name),"boot-%02d.raw",done);
+  char name[84];snprintf(name,sizeof(name),"boot-%02d.raw",done);
+  if(english){char localized[88];snprintf(localized,sizeof(localized),"en-%s",name);strcpy(name,localized);}
   FILE* f=fopen(name,"wb");assert(f);for(auto row:rows)fwrite(row,1,384,f);fclose(f);
  }
  for(int item: {0,1}){
@@ -57,7 +63,7 @@ int main(){
   memset(data,0xcd,sizeof(data));console_ui(rows,0,selected,0,false,0);
   for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
  }
- for(int selected: {0,1,2}){
+ for(int selected: {0,1,2,3}){
   memset(data,0xcd,sizeof(data));console_ui(rows,3,selected,0,false,0);
   for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
  }
@@ -67,10 +73,12 @@ int main(){
   if(state==3)s.notice=PadNotice::SaveError;
   memset(data,0xcd,sizeof(data));console_pads_ui(rows,kind,selected,player,s);
   for(int y=0;y<240;y++)for(int x=0;x<16;x++)assert(data[y][x]==0xcd&&data[y][400+x]==0xcd);
-  char name[80];snprintf(name,sizeof(name),"pads-%d-%d-%d-%d.raw",kind,state,player,selected);
+  char name[84];snprintf(name,sizeof(name),"pads-%d-%d-%d-%d.raw",kind,state,player,selected);
+  if(english){char localized[88];snprintf(localized,sizeof(localized),"en-%s",name);strcpy(name,localized);}
   FILE* f=fopen(name,"wb");assert(f);for(auto row:rows)fwrite(row,1,384,f);fclose(f);
  }
- puts("PASS 216 UI states: menus, controllers, availability, boot and loading; row guards intact");
+ }
+ puts("PASS Polish and English UI states; row guards intact");
 }
 '''.replace('ENTRIES',','.join(entries)).replace('COUNT',str(len(games)))
 (OUT/'render.cpp').write_text(source)
@@ -88,7 +96,7 @@ palette=[]
 for color in re.findall(r'0x[0-9a-fA-F]+',section):
  v=int(color,16);palette.extend(((v>>16)&255,(v>>8)&255,v&255))
 assert len(palette)==768
-for raw in list(OUT.glob('ui-*.raw'))+list(OUT.glob('boot-*.raw'))+list(OUT.glob('pads-*.raw')):
+for raw in list(OUT.glob('ui-*.raw'))+list(OUT.glob('boot-*.raw'))+list(OUT.glob('pads-*.raw'))+list(OUT.glob('en-*.raw')):
  im=Image.frombytes('P',(384,240),raw.read_bytes());im.putpalette(palette);im.convert('RGB').save(raw.with_suffix('.png'))
 sheet=Image.new('RGB',(768,480))
 for name,pos in [('ui-6-15',(0,0)),('ui-6-15-p1',(384,0)),('ui-6-01',(0,240)),('ui-6-01-p1',(384,240))]:

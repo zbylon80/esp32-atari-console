@@ -12,6 +12,7 @@
 #include "perf-report.h"
 #include "video_out.h"
 #include "pad-management.h"
+#include "pad-mapping.h"
 extern "C" {
 #include "atari800/atari.h"
 #include "atari800/memory.h"
@@ -60,6 +61,29 @@ static void nativePress(int key){
 }
 static uint16_t suppressed[2];
 void console_ui(uint8_t**,int,int,int,bool,int);
+void console_set_language(bool english);
+static bool english;
+static void restoreLanguage(){
+    nvs_handle_t settings;
+    uint8_t value=0;
+    if(nvs_open("atari_ui",NVS_READONLY,&settings)==ESP_OK){
+        nvs_get_u8(settings,"english",&value);
+        nvs_close(settings);
+    }
+    english=value==1;
+    console_set_language(english);
+}
+static void toggleLanguage(){
+    nvs_handle_t settings;
+    if(nvs_open("atari_ui",NVS_READWRITE,&settings)!=ESP_OK)return;
+    esp_err_t result=nvs_set_u8(settings,"english",!english);
+    if(result==ESP_OK)result=nvs_commit(settings);
+    nvs_close(settings);
+    if(result==ESP_OK){
+        english=!english;
+        console_set_language(english);
+    }
+}
 void console_boot_ui(uint8_t**,int,int,const char*);
 void console_load_ui(uint8_t**,int,int,const char*);
 void console_game_progress(int done,int total,const char* file){
@@ -99,7 +123,7 @@ static int16_t audio[640];
 static bool synchronizedVideo=true;static int lastRenderField=-1;
 extern volatile uint32_t archon_lead_min,archon_crossings;
 static uint32_t inputSeen[2],inputSamples[2],inputMaxAge[2],phaseMin=262,phaseMax;
-static constexpr uint16_t face=mask(Button::A)|mask(Button::B)|mask(Button::X)|mask(Button::Y)|mask(Button::Menu);
+static constexpr uint16_t face=mask(Button::A)|mask(Button::B)|mask(Button::X)|mask(Button::Y)|mask(Button::Menu)|mask(Button::LB)|mask(Button::RB)|kAtariStart;
 static void saveFailure(int error){
     lastGameError=error;PerfReport r={};r.magic=perfMagic;r.request=esp_random();
     snprintf(r.variant,sizeof(r.variant),"failure-%s",game_info(game).id);
@@ -184,7 +208,7 @@ static void beginGame(int which){
         }
     }
     bool loaded=loadGame();showUi(loaded?Screen::Playing:Screen::Error);if(loaded)drop_publish();
-    Serial.println("[NATIVE_GAME] automatic_console_keys=0; fresh title; A=START Y=OPTION X=SELECT");
+    Serial.println("[NATIVE_GAME] automatic_console_keys=0; fresh title; LT=START RB=OPTION LB=SELECT");
 }
 static void applyInput(){
     DropInput sample[]={drop_input(0),drop_input(1)};
@@ -240,7 +264,7 @@ static void applyInput(){
         auto& in=sample[owner];int direction=(in.held&mask(Button::Up))||in.ly>.35f?-1:(in.held&mask(Button::Down))||in.ly<-.35f?1:0;
         if(!direction&&ui==Screen::Library)direction=(in.held&mask(Button::Left))||in.lx<-.35f?-2:(in.held&mask(Button::Right))||in.lx>.35f?2:0;
         if(synthetic&mask(Button::Down))direction=1;if(synthetic&mask(Button::Up))direction=-1;
-        int count=ui==Screen::Pause?(game_info(game).disk2?6:5):ui==Screen::Settings?3:ui==Screen::BasicMenu?2:console_game_count;
+        int count=ui==Screen::Pause?(game_info(game).disk2?6:5):ui==Screen::Settings?4:ui==Screen::BasicMenu?2:console_game_count;
         uint32_t nowMs=millis();
         if(in.valid&&direction&&(direction!=lastDirection||int32_t(nowMs-repeatAt)>=0)){
             bool initial=direction!=lastDirection;repeatAt=nowMs+(initial?380:abs(direction)==2?260:110);
@@ -257,7 +281,7 @@ static void applyInput(){
             else if(ui==Screen::BasicMenu){drop_publish();showUi(Screen::Playing);}
         }else if(pressed[owner]&mask(Button::A)){
             if(ui==Screen::Library)beginGame(selected);
-            else if(ui==Screen::Settings){if(selected==0)showUi(Screen::Controllers);else if(selected==1)drop_update_mode();else showUi(settingsReturn);}
+            else if(ui==Screen::Settings){if(selected==0)showUi(Screen::Controllers);else if(selected==1)drop_update_mode();else if(selected==2){toggleLanguage();drawUi();}else showUi(settingsReturn);}
             else if(ui==Screen::BasicMenu){if(selected==0){drop_publish();showUi(Screen::Playing);}else openSettings(Screen::BasicMenu);}
 
             else if(ui==Screen::Pause){if(selected==0){drop_publish();showUi(Screen::Playing);suppressed[0]=suppressed[1]=face;}else if(selected==1){beginGame(game);}else if(selected==2)showUi(Screen::Library);else if(selected==3)openHelp(Screen::Pause,game);else if(selected==4)openSettings(Screen::Pause);else{
@@ -270,7 +294,7 @@ static void applyInput(){
     console_keys=7;INPUT_key_code=AKEY_NONE;
     if(basicMode){
         for(int i=0;i<4;i++){_joy[i]=0;_trig[i]=0;}
-        for(int i=0;i<2;i++)if(sample[i].valid&&(sample[i].held&mask(Button::Menu)))console_keys&=~4;
+        for(int i=0;i<2;i++)if(sample[i].valid&&(sample[i].held&mask(Button::RB)))console_keys&=~4;
         INPUT_key_consol=console_keys;return;
     }
     bool misjaLoader=game_info(game).profile==GameProfile::Misja&&CPU_regPC>=0x1d00&&CPU_regPC<0x1d91&&MEMORY_mem[0x1d00]==0xa9&&MEMORY_mem[0x1d01]==0x91&&MEMORY_mem[0x1d02]==0x8d;
@@ -281,16 +305,17 @@ static void applyInput(){
         if(inject[i]){--inject[i];held=mask(Button::A)|mask(i?Button::Left:Button::Right);x=y=0;}
         _joy[i]=drop_joystick((held&mask(Button::Left))||x<-.35f,(held&mask(Button::Right))||x>.35f,(held&mask(Button::Up))||y>.35f,(held&mask(Button::Down))||y<-.35f);
         bool a=held&mask(Button::A);
-        if(!(sample[i].held&mask(Button::A)))startBlocked[i]=false;
-        if(misjaLoader&&a&&!startBlocked[i]){keyPulseFrames=12;startBlocked[i]=true;}
+        bool start=held&kAtariStart;
+        if(!(sample[i].held&kAtariStart))startBlocked[i]=false;
+        if(misjaLoader&&start&&!startBlocked[i]){keyPulseFrames=12;startBlocked[i]=true;}
         if(isArchon()){
-            if(nativeTitle&&a&&!startBlocked[i]){nativePress(0);startBlocked[i]=true;}
-            if((pressed[i]&mask(Button::X))&&!(suppressed[i]&mask(Button::X)))nativePress(1);
-            if(pressed[i]&~suppressed[i]&(mask(Button::Y)|mask(Button::Menu)))nativePress(2);
+            if(nativeTitle&&start&&!startBlocked[i]){nativePress(0);startBlocked[i]=true;}
+            if(pressed[i]&~suppressed[i]&mask(Button::LB))nativePress(1);
+            if(pressed[i]&~suppressed[i]&mask(Button::RB))nativePress(2);
         }
         _trig[i]=a&&!startBlocked[i]&&!nativeTitle;
         if(game_info(game).profile==GameProfile::Spy){
-            uint16_t option=mask(Button::Menu)|(i==0?mask(Button::Y):0);
+            uint16_t option=mask(Button::RB);
             if(pressed[i]&~suppressed[i]&option){
                 genericOption=12;
                 // Returning to native options must wait for every fire source
@@ -298,19 +323,27 @@ static void applyInput(){
                 suppressed[0]|=mask(Button::A);suppressed[1]|=mask(Button::A);
             }
         }
-        if(!isArchon()&&(held&mask(Button::Menu)))console_keys&=~4;
+        if(!isArchon()){
+            if(held&mask(Button::RB))console_keys&=~4;
+            if(held&mask(Button::LB))console_keys&=~2;
+            if(pressed[i]&~suppressed[i]&kAtariStart)genericStart=8;
+            if(start)console_keys&=~1;
+        }
         if(!isArchon()&&i==0){
             auto profile=game_info(game).profile;
             if(profile==GameProfile::Dropzone){
                 if(held&mask(Button::B))INPUT_key_code=AKEY_SPACE;else if(held&mask(Button::X))INPUT_key_code=AKEY_c;
-            }else if(profile==GameProfile::Goonies){
-                if(held&mask(Button::B))INPUT_key_code=AKEY_SPACE;else if(held&mask(Button::X))INPUT_key_code=AKEY_s;
-            }else{
-                if(pressed[0]&mask(Button::B))genericStart=8;
-                if(held&mask(Button::B))console_keys&=~1;
-                if(held&mask(Button::X))console_keys&=~2;
+            }else if(profile==GameProfile::Goonies||profile==GameProfile::Zorro){
+                if(profile==GameProfile::Goonies&&(held&mask(Button::B)))INPUT_key_code=AKEY_SPACE;
+                else if(held&mask(Button::X))INPUT_key_code=AKEY_s;
+            }else if(profile==GameProfile::BoulderDash||profile==GameProfile::BlueMax||profile==GameProfile::NewYorkCity){
+                if(held&mask(Button::B))INPUT_key_code=AKEY_SPACE;
+                else if(profile==GameProfile::BoulderDash&&(held&mask(Button::Y)))INPUT_key_code=AKEY_ESCAPE;
+            }else if(profile==GameProfile::RoadRace){
+                if(held&mask(Button::B))INPUT_key_code=AKEY_SPACE;
+                else if(held&mask(Button::X))INPUT_key_code=AKEY_n;
+                else if(held&mask(Button::Y))INPUT_key_code=AKEY_y;
             }
-            if(held&mask(Button::Y))console_keys&=~4;
         }
     }
     if(isArchon())for(int key=0;key<3;key++)if(nativePulse[key]>0){
@@ -384,6 +417,7 @@ void drop_setup(){
     // Allocate the same internal framebuffer once. Video stays active while
     // ordinary (non-IRAM) SPI interrupts load media; no flash writes are made.
     emulator=NewAtari800(1);if(!emulator||emulator->insert(":basic:",1,0)!=0||!emulator->video_buffer()){Serial.println("[FAIL] boot display");return;}
+    restoreLanguage();
     _lines=emulator->video_buffer();console_boot_ui(_lines,0,console_media_count,nullptr);
     video_init(4,EMU_ATARI,emulator->composite_palette(),1);
     Serial.printf("[BOOT_VIDEO] active=1 internal_free=%u\n",heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));

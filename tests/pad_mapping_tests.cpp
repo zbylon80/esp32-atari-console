@@ -8,18 +8,18 @@ int main(){
         const auto a=mask(Button::A);
         PadMapping p,q;
         p.update(true,0,.24f,0);CHECK(p.held==0);
-        p.update(true,0,.25f,0);CHECK(p.held==a&&p.pressed==a);
-        p.update(true,0,.20f,0);CHECK(p.held==a&&p.pressed==0);
-        p.update(true,a,0,0);CHECK(p.held==a&&p.pressed==0);
+        p.update(true,0,.25f,0);CHECK(p.held==kAtariStart&&p.pressed==kAtariStart);
+        p.update(true,0,.20f,0);CHECK(p.held==kAtariStart&&p.pressed==0);
+        p.update(true,a,0,0);CHECK(p.held==a&&p.pressed==a);
         p.update(true,a,0,1);CHECK(p.held==a&&p.pressed==0);
         p.update(true,0,0,.16f);CHECK(p.held==a&&p.pressed==0);
         p.update(true,0,0,.14f);CHECK(p.held==0&&p.pressed==0);
         p.update(true,0,0,.25f);CHECK(p.pressed==a);
-        p.update(true,0,1,1);CHECK(p.pressed==0);
-        p.update(true,0,1,0);CHECK(p.held==a&&p.pressed==0);
+        p.update(true,0,1,1);CHECK(p.pressed==kAtariStart&&p.held==(a|kAtariStart));
+        p.update(true,0,1,0);CHECK(p.held==kAtariStart&&p.pressed==0);
         q.update(true,mask(Button::View)|mask(Button::Menu),0,0);
         CHECK(q.held==(mask(Button::View)|mask(Button::Menu))&&!(q.held&a));
-        CHECK(p.held==a); // Independent player state.
+        CHECK(p.held==kAtariStart); // Independent player state.
         p.update(false,a,1,1);CHECK(p.held==0&&p.pressed==0);
         p.update(true,0,.20f,.20f);CHECK(p.held==0); // Disconnect clears hysteresis.
         p.update(true,0,0,1);CHECK(p.pressed==a);

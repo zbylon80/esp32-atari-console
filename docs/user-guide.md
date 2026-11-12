@@ -7,9 +7,11 @@
 | Przycisk | Działanie |
 | --- | --- |
 | Krzyżak lub lewy drążek | Ruch w grze i wybór pozycji w menu |
-| A, LT lub RT | Główna akcja w grze; potwierdzenie wyboru w menu |
+| A lub RT | Główna akcja w grze; potwierdzenie wyboru w menu |
 | View — dwa nachodzące kwadraty | Menu konsoli |
-| Menu — trzy poziome kreski | Przycisk OPTION emulowanego Atari |
+| RB | Atari OPTION |
+| LB | Atari SELECT |
+| LT | Atari START |
 | X w bibliotece lub pauzie | Instrukcja wybranej gry |
 | B w menu | Powrót do poprzedniego ekranu |
 

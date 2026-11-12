@@ -34,7 +34,7 @@ def main():
         assert 1<=len(help_lines)<=10 and all(len(line)<=38 and line.isascii() for line in help_lines),item['id']+' help layout'
         about=item['about']
         assert 1<=len(about)<=10 and all(len(line)<=38 and line.isascii() for line in about),item['id']+' about layout'
-        entries.append('{'+','.join(fields)+',GameProfile::'+item['profile']+','+str(item['cartridge_type'])+',nullptr,'+str(len(data))+','+json.dumps(item['players'])+','+(json.dumps(second['file']) if second else 'nullptr')+','+('true' if item.get('original_os') else 'false')+','+json.dumps('\n'.join(help_lines))+','+json.dumps('\n'.join(about))+'}')
+        entries.append('{'+','.join(fields)+',GameProfile::'+item['profile']+','+str(item['cartridge_type'])+',nullptr,'+str(len(data))+','+json.dumps(item['players'])+','+(json.dumps(second['file']) if second else 'nullptr')+','+('true' if item.get('original_os') else 'false')+','+json.dumps('\n'.join(help_lines))+','+json.dumps('\n'.join(about))+','+json.dumps(item['players_en'])+','+json.dumps('\n'.join(item['help_en']))+','+json.dumps('\n'.join(item['about_en']))+'}')
         media.append('{'+json.dumps(item['file'])+',nullptr,'+str(len(data))+','+json.dumps(item['sha256'])+'}')
         if second:
             raw=range(second['bytes'])

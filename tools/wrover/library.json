@@ -2,20 +2,91 @@
   "version": "library-v1.10.2-render-iram",
   "games": [
     {
+      "id": "agent-usa",
+      "title": "Agent USA",
+      "path": "local/games/agent-usa.xex",
+      "file": "agent-usa.xex",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 39498,
+      "sha256": "56d02e0ae9ec0a99a230ef14b3ef9e824d24278d42c014498588cf1a8f2f41ce",
+      "cartridge_type": 0,
+      "players": "1 GRACZ",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "KIERUNKI: RUCH PO MIESCIE.",
+        "NA STACJI WPISZ NAZWE CELU.",
+        "WPISYWANIE WYMAGA KLAWIATURY ATARI.",
+        "SAM PAD NIE WYSTARCZY DO PODROZY."
+      ],
+      "about": [
+        "POWSTRZYMAJ FUZZBOMB I ZARAZENIE.",
+        "PODROZUJ POCIAGAMI MIEDZY MIASTAMI.",
+        "ZBIERAJ I ROZMNAZAJ KRYSZTALY."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE",
+        "AT A STATION, TYPE YOUR DESTINATION.",
+        "ATARI KEYBOARD INPUT IS REQUIRED."
+      ],
+      "about_en": [
+        "RIDE TRAINS BETWEEN CITIES.",
+        "GROW CRYSTALS AND STOP THE FUZZBOMB."
+      ]
+    },
+    {
+      "id": "alley-cat",
+      "title": "Alley Cat",
+      "path": "local/games/alley-cat-clean.xex",
+      "file": "alley-cat-clean.xex",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 30464,
+      "sha256": "4a4abebce4603267f21cda883a34ab9af6ec1665e616f3970069ad824f82449e",
+      "cartridge_type": 0,
+      "players": "1 GRACZ",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LEWO/PRAWO: RUCH. A / RT: SKOK.",
+        "SKACZ NA KUBLY, PLOT I SZNURY.",
+        "WSKOCZ W OTWARTE OKNO."
+      ],
+      "about": [
+        "W POKOJACH CZEKAJA ROZNE ZADANIA.",
+        "UWAZAJ NA PSY, MIOTLE I PRZESZKODY.",
+        "PO WYKONANIU ZADANIA SZUKAJ KOTKI."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LEFT-RIGHT: RUN. A OR RT: JUMP.",
+        "CLIMB THE FENCE AND CLOTHESLINES.",
+        "JUMP THROUGH OPEN WINDOWS."
+      ],
+      "about_en": [
+        "COMPLETE THE CHALLENGE IN EACH ROOM.",
+        "AVOID DOGS, BROOMS AND OTHER HAZARDS.",
+        "FIND YOUR SWEETHEART AFTER THE TASK."
+      ],
+      "original_os": true
+    },
+    {
       "id": "archon",
       "title": "Archon",
       "path": "local/games/archon.car",
       "file": "archon.car",
       "profile": "Archon",
-      "hint": "A START/AKCJA X SELECT Y OPTION",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 32784,
       "sha256": "43672ff3e15b1cbc63d8a0df630aa8e3338240e78eca7b126e429b14ef69ccd5",
       "cartridge_type": 12,
       "players": "1-2 GRACZY",
       "help": [
-        "START: A NA EKRANIE TYTULOWYM.",
-        "Y/MENU: TRYB 1P/2P I STRONA KOMPUTERA.",
-        "X: WYBOR STRONY ROZPOCZYNAJACEJ.",
+        "START: LT NA EKRANIE TYTULOWYM.",
+        "RB: TRYB 1P/2P I STRONA KOMPUTERA.",
+        "LB: WYBOR STRONY ROZPOCZYNAJACEJ.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: WYBIERZ FIGURE, RUCH / STRZAL.",
@@ -34,6 +105,21 @@
         "",
         "KOLOR POLA WPLYWA NA SILE FIGUR.",
         "CZARODZIEJ I CZAROWNICA RZUCAJA CZARY."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LT: START AT THE TITLE SCREEN.",
+        "RB: CHOOSE PLAYERS AND COMPUTER SIDE.",
+        "LB: CHOOSE WHICH SIDE GOES FIRST.",
+        "A OR RT: SELECT, MOVE OR FIRE.",
+        "SELECT YOUR WIZARD TO CAST SPELLS."
+      ],
+      "about_en": [
+        "HOLD ALL FIVE POWER POINTS OR DEFEAT",
+        "EVERY ENEMY PIECE. MOVE IN TURNS.",
+        "ENTER AN OCCUPIED SQUARE TO DUEL.",
+        "SQUARE COLOR AFFECTS FIGHTER STRENGTH."
       ]
     },
     {
@@ -42,14 +128,14 @@
       "path": "local/games/archon2.xex",
       "file": "archon2.xex",
       "profile": "Joystick",
-      "hint": "A AKCJA B START X SELECT",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 36224,
       "sha256": "8b46cd1e0f56a115b56cfec1940ae0c6427d912cf79f4680d536794170b5f706",
       "cartridge_type": 0,
       "players": "1-2 GRACZY",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "WARIANT WYBIERASZ W ORYGINALNEJ GRZE.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
@@ -69,6 +155,17 @@
         "ARMII I MAGIA JA ZUZYWAJA.",
         "",
         "WEJSCIE NA POLE WROGA TO POJEDYNEK."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "A OR RT: SELECT OR FIGHT.",
+        "SELECT THE ADEPT TO SEE SPELLS.",
+        "CHOOSE 1 OR 2 PLAYERS IN THE GAME."
+      ],
+      "about_en": [
+        "MOVE YOUR UNITS TO CONTROL THE BOARD.",
+        "USE SPELLS AND WIN REAL-TIME DUELS."
       ]
     },
     {
@@ -76,21 +173,21 @@
       "title": "Blue Max",
       "path": "local/games/bluemax.car",
       "file": "bluemax.car",
-      "profile": "Joystick",
-      "hint": "A STRZAL B START X SELECT",
+      "profile": "BlueMax",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 32784,
       "sha256": "8b240afc78902d75831edcb3c978cc893798e7205913f63da389ac086401e3c7",
       "cartridge_type": 12,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
-        "",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
-        "A: STRZELANIE (TAKZE LT LUB RT).",
-        "",
+        "A: STRZELANIE (TAKZE RT).",
         "1 GRACZ.",
-        "PILNUJ PALIWA I OMIJAJ PRZESZKODY."
+        "PILNUJ PALIWA I OMIJAJ PRZESZKODY.",
+        "B: PAUZA (SPACJA, WERSJA SYNAPSE).",
+        "LB: PAUZA W WYDANIU ATARI."
       ],
       "about": [
         "PILOTUJ BOMBOWIEC NAD WROGIM TERENEM I",
@@ -100,6 +197,17 @@
         "LOTNISKA POZWALAJA UZUPELNIAC ZAPASY.",
         "NIE KAZDY CEL JEST NA TEJ SAMEJ",
         "WYSOKOSCI."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "STICK: FLY. A OR RT: FIRE.",
+        "B: PAUSE IN THE SYNAPSE EDITION.",
+        "LB: PAUSE IN THE ATARI EDITION."
+      ],
+      "about_en": [
+        "DESTROY TARGETS AND LAND TO REFUEL.",
+        "WATCH FUEL AND AVOID OBSTACLES."
       ]
     },
     {
@@ -107,21 +215,21 @@
       "title": "Boulder Dash",
       "path": "local/games/boulderdash.car",
       "file": "boulderdash.car",
-      "profile": "Joystick",
-      "hint": "A AKCJA B START X SELECT Y OPTION",
+      "profile": "BoulderDash",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 16400,
       "sha256": "a46275e3a759306af6d2d99ab3f6bec0d87e02e00258a9026e0ca204f254a162",
       "cartridge_type": 2,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
-        "",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A + KIERUNEK: AKCJA BEZ PRZESUNIECIA.",
-        "",
         "1 GRACZ.",
-        "ZBIERZ DIAMENTY I DOTRZYJ DO WYJSCIA."
+        "ZBIERZ DIAMENTY I DOTRZYJ DO WYJSCIA.",
+        "B: PAUZA (SPACJA).",
+        "Y: UCIECZKA (ESC), KOSZT: 1 ZYCIE."
       ],
       "about": [
         "WYKOP TYLE DIAMENTOW, ILE WYMAGA",
@@ -131,6 +239,16 @@
         "KAMIENIE SPADAJA PO USUNIECIU ZIEMI.",
         "MOZNA NIMI USUWAC PRZECIWNIKOW, ALE",
         "LATWO PRZYGNIESC SAMEGO SIEBIE."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "A OR RT + DIRECTION: ACT IN PLACE.",
+        "B: PAUSE. Y: ESCAPE, COSTS ONE LIFE."
+      ],
+      "about_en": [
+        "COLLECT ENOUGH DIAMONDS TO OPEN EXIT.",
+        "AVOID FALLING ROCKS AND ENEMIES."
       ]
     },
     {
@@ -139,15 +257,15 @@
       "path": "local/games/brucelee.xex",
       "file": "brucelee.xex",
       "profile": "Joystick",
-      "hint": "A CIOS B START X SELECT Y OPTION",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 23196,
       "sha256": "d3657d21939dd69e763e1cf98f81ea9a8c7d56532111ee2196b7c0e4b87c9070",
       "cartridge_type": 0,
       "players": "1-2 GRACZY",
       "help": [
-        "START: A LUB B (ATARI START).",
-        "Y/MENU: LICZBA GRACZY.",
-        "X: KOMPUTER LUB LUDZKI PRZECIWNIK.",
+        "START: LT LUB FIRE.",
+        "RB: LICZBA GRACZY.",
+        "LB: KOMPUTER LUB LUDZKI PRZECIWNIK.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: CIOS; KIERUNKI: SKOK / WSPINANIE.",
@@ -164,6 +282,19 @@
         "CELEM: NAJWAZNIEJSZE SA LATARNIE.",
         "",
         "DRUGI GRACZ MOZE BYC PRZECIWNIKIEM."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LT OR FIRE: START.",
+        "RB: PLAYER COUNT. LB: OPPONENT TYPE.",
+        "A OR RT: STRIKE. STICK: JUMP AND",
+        "CLIMB.",
+        "SECOND PAD CAN CONTROL YAMO."
+      ],
+      "about_en": [
+        "COLLECT LANTERNS AND CROSS THE ROOMS.",
+        "AVOID TRAPS AND FIGHT YOUR RIVALS."
       ]
     },
     {
@@ -172,17 +303,17 @@
       "path": "local/games/dropzone.xex",
       "file": "dropzone.xex",
       "profile": "Dropzone",
-      "hint": "A STRZAL B BOMBA X KAMUFLAZ",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 35511,
       "sha256": "e51c571da62abb16b8d7dd85de06f7f646e3289af6027014cae4a14d8a8ad774",
       "cartridge_type": 0,
       "players": "1 GRACZ",
       "help": [
-        "START: A NA EKRANIE TYTULOWYM.",
+        "START: LT LUB FIRE NA TYTULE.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: STRZAL. B: BOMBA (SPACE).",
-        "X: KAMUFLAZ. Y/MENU: OPTION.",
+        "X: KAMUFLAZ. RB: OPTION.",
         "",
         "1 GRACZ.",
         "RATUJ LUDZI I ODSTAWIAJ ICH DO BAZY."
@@ -195,6 +326,17 @@
         "ZBLIZ SIE DO CZLOWIEKA, PODNIES GO I",
         "WROC DO BAZY. BOMBA POMAGA W TLOKU, A",
         "KAMUFLAZ DAJE CHWILE WYTCHNIENIA."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LT OR FIRE: START.",
+        "A OR RT: SHOOT. B: BOMB.",
+        "X: CLOAK."
+      ],
+      "about_en": [
+        "RESCUE PEOPLE AND RETURN TO BASE.",
+        "USE BOMBS AND CLOAK WHEN IN DANGER."
       ]
     },
     {
@@ -203,14 +345,14 @@
       "path": "local/games/fred.xex",
       "file": "fred.xex",
       "profile": "Joystick",
-      "hint": "A AKCJA B START X SELECT",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 35188,
       "sha256": "5389119bdb392a29a175280c3bd2d4b30986fcc9b26619097ca2353e2819a254",
       "cartridge_type": 0,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: PRZYCISK AKCJI / FIRE.",
@@ -225,7 +367,61 @@
         "UNIKAJ PRZECIWNIKOW I PRZESZKOD.",
         "KAMIENIE POZWALAJA WALCZYC NA DYSTANS;",
         "NIE KAZDEGO WROGA TRZEBA POKONAC."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT: FIRE."
+      ],
+      "about_en": [
+        "EXPLORE THE PASSAGES AND FIND THE",
+        "EXIT.",
+        "AVOID ENEMIES AND COLLECT ITEMS."
       ]
+    },
+    {
+      "id": "hero",
+      "title": "H.E.R.O.",
+      "file": "hero.car",
+      "cartridge_type": 2,
+      "help": [
+        "LT START. LB SELECT: WYBOR GRY.",
+        "KRZYZAK / DRAZEK: RUCH.",
+        "GORA: LOT I UNOSZENIE SIE.",
+        "A / RT: LASER.",
+        "DOL NA ZIEMI: PODLOZ DYNAMIT.",
+        "PO PODLOZENIU SZYBKO SIE ODSUN!"
+      ],
+      "help_en": [
+        "LT START. LB SELECT: GAME SELECTION.",
+        "D-PAD / STICK: MOVE.",
+        "UP: FLY AND HOVER.",
+        "A / RT: FIRE LASER.",
+        "DOWN ON THE GROUND: PLACE DYNAMITE.",
+        "MOVE AWAY FROM THE BLAST!"
+      ],
+      "about": [
+        "ODNAJDZ UWIEZIONEGO W KOPALNI GORNIKA.",
+        "LEC W DOL SZYBOW I SZUKAJ PRZEJSCIA.",
+        "DYNAMITEM WYSADZAJ SCIANY, A LASEREM",
+        "USUWAJ PRZECIWNIKOW I PRZESZKODY.",
+        "UWAZAJ NA LAWE I LIMIT ENERGII."
+      ],
+      "about_en": [
+        "RESCUE THE MINER TRAPPED UNDERGROUND.",
+        "EXPLORE SHAFTS WITH YOUR PROPELLER.",
+        "BLAST WALLS WITH DYNAMITE AND USE",
+        "YOUR LASER AGAINST ENEMIES.",
+        "AVOID LAVA AND WATCH YOUR POWER."
+      ],
+      "profile": "Joystick",
+      "players": "1 GRACZ",
+      "players_en": "1 PLAYER",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "path": "local/games/hero.car",
+      "bytes": 16400,
+      "sha256": "467d3c2f06ec5a4f9c8476cce3c055f48b87ed49859651d90ef6b7cb940f5d7b"
     },
     {
       "id": "kloss",
@@ -233,14 +429,14 @@
       "path": "local/games/kloss.xex",
       "file": "kloss.xex",
       "profile": "Joystick",
-      "hint": "A AKCJA B START X SELECT",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 36281,
       "sha256": "8e88e453d15b46ed7512e34ac9b93f8347872b4d55a6cb6e37ec9889ae500e5a",
       "cartridge_type": 0,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: PRZYCISK AKCJI / FIRE.",
@@ -255,6 +451,16 @@
         "PILNUJ GLODU I PRAGNIENIA: ZBIERAJ",
         "JEDZENIE I KAWE. NIE MASZ BRONI, WIEC",
         "OMIJAJ LUB PRZESKAKUJ WROGOW."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT: ACTION."
+      ],
+      "about_en": [
+        "SEARCH THE ROOMS FOR THE SECRET PLANS.",
+        "AVOID GUARDS AND FIND YOUR WAY OUT."
       ]
     },
     {
@@ -263,14 +469,14 @@
       "path": "local/games/karate.xex",
       "file": "karate.xex",
       "profile": "Karate",
-      "hint": "A CIOS B START X SELECT Y OPTION",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 36519,
       "sha256": "cf1b3460d542739a201b12f1ed05202de3af285d674b0f0e691343ac051329a9",
       "cartridge_type": 0,
       "players": "1-2 GRACZY",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A + KIERUNEK: ROZNE CIOSY.",
@@ -286,6 +492,127 @@
         "DOBIERAJ CIOS DO ODLEGLOSCI I POZYCJI",
         "PRZECIWNIKA. PO TRAFIENIU WALKA JEST",
         "PRZERYWANA, A SEDZIA PRZYZNAJE PUNKTY."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "A OR RT + DIRECTION: STRIKES.",
+        "CHOOSE PLAYER MODE IN THE GAME.",
+        "USE A SEPARATE PAD FOR EACH PLAYER."
+      ],
+      "about_en": [
+        "WIN KARATE BOUTS WITH TIMED STRIKES.",
+        "VARY ATTACKS AND CONTROL DISTANCE."
+      ]
+    },
+    {
+      "id": "jungle-hunt",
+      "title": "Jungle Hunt",
+      "path": "local/games/jungle-hunt.car",
+      "file": "jungle-hunt.car",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 16400,
+      "sha256": "678157f37d43749532baa164b5ebec8813974faa32e393d8d9ab29f55546ce58",
+      "cartridge_type": 2,
+      "players": "1 GRACZ",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "A / RT: SKOK Z LIANY NA LIANE.",
+        "W WODZIE: KIERUNKI PLYWANIA.",
+        "A / RT POD WODA: ATAK NOZEM.",
+        "NA LADZIE: SKACZ LUB KUCNIJ."
+      ],
+      "about": [
+        "POKONAJ CZTERY ODCINKI DZUNGLI.",
+        "MIN LIANY, KROKODYLE I GLAZY.",
+        "NA KONCU URATUJ TOWARZYSZKE."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "A OR RT: JUMP BETWEEN VINES.",
+        "STICK: SWIM. FIRE UNDERWATER: KNIFE.",
+        "ON LAND: JUMP OR DUCK."
+      ],
+      "about_en": [
+        "CROSS FOUR JUNGLE SECTIONS.",
+        "PASS VINES, CROCODILES AND BOULDERS.",
+        "RESCUE YOUR COMPANION."
+      ]
+    },
+    {
+      "id": "karateka",
+      "title": "Karateka",
+      "path": "local/games/karateka.car",
+      "file": "karateka.car",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 131088,
+      "sha256": "484b3264cba11f042d2990610d5109b9e4195db78f5b8e401b30b8dfbc88cb1c",
+      "cartridge_type": 14,
+      "players": "1 GRACZ",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "W WALCE: KIERUNKI I A / RT.",
+        "POZA WALKA: A / RT TO UKLON.",
+        "UKOS W GORE I W PRAWO: BIEG."
+      ],
+      "about": [
+        "POKONAJ STRAZNIKOW AKUMY.",
+        "PRZEBIJ SIE PRZEZ PALAC DO MARIKO.",
+        "W POZYCJI STOJACEJ LATWO O CIOS."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "STICK + FIRE: FIGHT.",
+        "A OR RT WHILE STANDING: BOW.",
+        "UP-RIGHT WHILE STANDING: RUN."
+      ],
+      "about_en": [
+        "DEFEAT AKUMA'S GUARDS AND RESCUE",
+        "MARIKO.",
+        "STAND OR RUN ONLY WHEN SAFE."
+      ]
+    },
+    {
+      "id": "keystone-kapers",
+      "title": "Keystone Kapers",
+      "path": "local/games/keystone-kapers.car",
+      "file": "keystone-kapers.car",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 8208,
+      "sha256": "c50b95787249e3c4802deab785b0c02c6f0120113858274e670cc39471a1f300",
+      "cartridge_type": 1,
+      "players": "1 GRACZ",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LEWO/PRAWO: BIEG. A / RT: SKOK.",
+        "DOL: KUCNIJ POD SAMOLOTEM.",
+        "GORA: WEJDZ DO WINDY. DOL: WYJDZ.",
+        "NA SCHODY RUCHOME WYSTARCZY WEJSC."
+      ],
+      "about": [
+        "ZLAP ZLODZIEJA PRZED KONCEM CZASU.",
+        "WINDY I SCHODY LACZA PIETRA SKLEPU.",
+        "OMIJAJ WOZKI, PILKI I SAMOLOTY.",
+        "MAPA NA DOLE POKAZUJE POZYCJE OBU."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LEFT-RIGHT: RUN. A OR RT: JUMP.",
+        "DOWN: DUCK UNDER PLANES.",
+        "UP: ENTER LIFT. DOWN: LEAVE LIFT.",
+        "WALK ONTO ESCALATORS TO GO UP."
+      ],
+      "about_en": [
+        "CATCH THE THIEF BEFORE TIME RUNS OUT.",
+        "USE LIFTS AND ESCALATORS.",
+        "DODGE CARTS, BALLS AND TOY PLANES.",
+        "CHECK THE MAP AT THE BOTTOM."
       ]
     },
     {
@@ -294,16 +621,16 @@
       "path": "local/games/misja.xex",
       "file": "misja.xex",
       "profile": "Misja",
-      "hint": "A START/STRZAL B START X SELECT",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 42381,
       "sha256": "541c8be8ca019dd1145f551771621b64b7d0d8b2d5d289f5b51014f0751ac1ea",
       "cartridge_type": 0,
       "players": "1 GRACZ",
       "original_os": true,
       "help": [
-        "START: A ZATWIERDZA EKRAN WSTEPNY.",
-        "DALEJ: A STRZAL, B ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT ZATWIERDZA EKRAN WSTEPNY.",
+        "DALEJ: A / RT STRZAL.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: STRZAL / PRZYCISK AKCJI.",
@@ -320,6 +647,17 @@
         "",
         "PO URUCHOMIENIU LADUNKOW LICZY SIE",
         "SZYBKI POWROT DO MIEJSCA EWAKUACJI."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LT: CONFIRM THE INTRO.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT: SHOOT."
+      ],
+      "about_en": [
+        "EXPLORE THE BASE AND COMPLETE MISSION.",
+        "AVOID GUARDS AND HAZARDS."
       ]
     },
     {
@@ -328,17 +666,17 @@
       "path": "local/games/montezuma.car",
       "file": "montezuma.car",
       "profile": "Joystick",
-      "hint": "A SKOK B START X SELECT Y OPTION",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 16400,
       "sha256": "c895ef8a50faa284a762f5026d9ae1c72b79680becac4a7e0ac5da00033cd363",
       "cartridge_type": 2,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
-        "A: SKOK (TAKZE LT LUB RT).",
+        "A: SKOK (TAKZE RT).",
         "",
         "1 GRACZ.",
         "ZBIERAJ KLUCZE I SZUKAJ PRZEJSC."
@@ -352,7 +690,223 @@
         "OMIJAJ WEZE, PAJAKI I PRZEPASCIE.",
         "ZANIM SKOCZYSZ, OBEJRZYJ DROGE",
         "POWROTU."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE AND CLIMB.",
+        "A OR RT: JUMP."
+      ],
+      "about_en": [
+        "COLLECT KEYS AND EXPLORE THE RUINS.",
+        "AVOID TRAPS AND FIND TREASURE."
       ]
+    },
+    {
+      "id": "new-york-city",
+      "title": "New York City - The Big Apple",
+      "file": "new-york-city.xex",
+      "path": "local/games/new-york-city.xex",
+      "profile": "NewYorkCity",
+      "original_os": true,
+      "cartridge_type": 0,
+      "bytes": 25485,
+      "sha256": "25305170c687d9565ce0dc4371dd3e1e3f40028093cde22889284142d2c0b425",
+      "players": "1 GRACZ",
+      "players_en": "1 PLAYER",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "KRZYZAK / DRAZEK: CHODZENIE I JAZDA.",
+        "PUSC KIERUNEK, ABY ZATRZYMAC AUTO.",
+        "ZAPARKUJ LEGALNIE, POTEM A / RT:",
+        "WYSIADASZ Z SAMOCHODU.",
+        "BY WSIASC, STAN Z LEWEJ STRONY AUTA",
+        "I NACISNIJ A / RT.",
+        "A / RT: AKCJA W ODWIEDZANYM BUDYNKU.",
+        "B: SPACJA, PAUZA GRY."
+      ],
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD / STICK: WALK AND DRIVE.",
+        "RELEASE DIRECTION TO STOP THE CAR.",
+        "PARK LEGALLY, THEN A / RT TO GET OUT.",
+        "TO GET IN, STAND AT THE LEFT END",
+        "OF THE CAR AND PRESS A / RT.",
+        "A / RT: ACTION INSIDE BUILDINGS.",
+        "B: SPACE BAR, PAUSE GAME."
+      ],
+      "about": [
+        "ODWIEDZ 12 MIEJSC PRZED KONCEM CZASU.",
+        "DOSTEPNE CELE WIDAC POD NAPISEM SIGHT.",
+        "W BUDYNKACH WYKONUJ OSOBNE ZADANIA.",
+        "PILNUJ PIENIEDZY, PALIWA I PARKOMATU.",
+        "W BANKU MOZESZ WYPLACIC GOTOWKE.",
+        "GDY ZGLODNIEJESZ, IDZ DO AUTOMATU.",
+        "METRO POMAGA PRZEMIESZCZAC SIE.",
+        "NA KONIEC IDZ DO RATUSZA."
+      ],
+      "about_en": [
+        "VISIT 12 LOCATIONS BEFORE TIME IS UP.",
+        "AVAILABLE SITES APPEAR UNDER SIGHT.",
+        "COMPLETE A MINI-GAME INSIDE EACH SITE.",
+        "WATCH MONEY, FUEL AND PARKING TIME.",
+        "WITHDRAW CASH FROM THE BANK.",
+        "WHEN HUNGRY, VISIT THE AUTOMAT.",
+        "USE THE SUBWAY TO CROSS THE CITY.",
+        "AFTER ALL TASKS, GO TO CITY HALL."
+      ]
+    },
+    {
+      "id": "ninja",
+      "title": "Ninja",
+      "path": "local/games/ninja.xex",
+      "file": "ninja.xex",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 46590,
+      "sha256": "1fccba830a52a09880eb0e98521785fee07e4b3dabea6870579b5c3a9f07ef74",
+      "cartridge_type": 0,
+      "players": "1 GRACZ",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "KIERUNKI: RUCH PO KOMNATACH.",
+        "A / RT + KIERUNEK: WALKA."
+      ],
+      "about": [
+        "PRZESZUKAJ TWIERDZE I ZBIERZ POSAZKI.",
+        "ZMIENIAJ PIETRA PRZEZ OTWORY.",
+        "POKONAJ STRAZNIKOW NA DRODZE."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT + DIRECTION: FIGHT."
+      ],
+      "about_en": [
+        "EXPLORE THE FORTRESS FOR STATUES.",
+        "USE OPENINGS TO CHANGE FLOORS.",
+        "FIGHT THE GUARDS ALONG THE WAY."
+      ]
+    },
+    {
+      "id": "one-on-one",
+      "title": "One-on-One",
+      "path": "local/games/one-on-one.car",
+      "file": "one-on-one.car",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "bytes": 32784,
+      "sha256": "ebccfe3aa59b309426de7903b339b126468dcf5dcd67c79f75e9b2452b0ed51c",
+      "cartridge_type": 12,
+      "players": "1-2 GRACZY",
+      "help": [
+        "LT START, LB SELECT, RB OPTION.",
+        "KIERUNKI: RUCH ZAWODNIKA.",
+        "A / RT: AKCJA Z PILKA LUB OBRONA.",
+        "DRUGI PAD STERUJE RYWALEM W 2P."
+      ],
+      "about": [
+        "ROZEGRAJ MECZ KOSZYKOWKI 1 NA 1.",
+        "W ATAKU RZUCAJ, W OBRONIE BLOKUJ.",
+        "ZDOBADZ WIECEJ PUNKTOW OD RYWALA."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE YOUR PLAYER.",
+        "A OR RT: BALL ACTION OR DEFENSE.",
+        "IN 2P, THE OTHER PAD CONTROLS RIVAL."
+      ],
+      "about_en": [
+        "PLAY ONE-ON-ONE BASKETBALL.",
+        "SCORE MORE POINTS THAN YOUR OPPONENT."
+      ]
+    },
+    {
+      "id": "pac-man",
+      "title": "Pac-Man",
+      "file": "pac-man.car",
+      "cartridge_type": 1,
+      "players": "1-2 GRACZY NA ZMIANE",
+      "players_en": "1-2 PLAYERS, TAKING TURNS",
+      "help": [
+        "LT START: ROZPOCZNIJ GRE.",
+        "LB SELECT: WYBOR LICZBY GRACZY.",
+        "KRZYZAK / DRAZEK: RUCH W LABIRYNCIE.",
+        "SKRET MOZNA PRZYTRZYMAC PRZED ROGIEM.",
+        "DWOCH GRACZY GRA NA ZMIANE."
+      ],
+      "help_en": [
+        "LT START: START THE GAME.",
+        "LB SELECT: CHOOSE PLAYER COUNT.",
+        "D-PAD / STICK: MOVE THROUGH THE MAZE.",
+        "HOLD A DIRECTION BEFORE THE CORNER.",
+        "TWO PLAYERS TAKE TURNS."
+      ],
+      "about": [
+        "ZJEDZ WSZYSTKIE KROPKI W LABIRYNCIE.",
+        "UNIKAJ DUCHOW. DUZA KROPKA POZWALA",
+        "PRZEZ CHWILE JE ZJADAC.",
+        "ZBIERAJ OWOCE DLA DODATKOWYCH PUNKTOW.",
+        "TUNELE PROWADZA NA DRUGA STRONE."
+      ],
+      "about_en": [
+        "EAT ALL THE DOTS TO CLEAR THE MAZE.",
+        "AVOID GHOSTS. POWER PELLETS LET YOU",
+        "EAT THEM FOR A SHORT TIME.",
+        "COLLECT FRUIT FOR BONUS POINTS.",
+        "TUNNELS LEAD TO THE OPPOSITE SIDE."
+      ],
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "path": "local/games/pac-man.car",
+      "bytes": 8208,
+      "sha256": "07477bb2b940d2c2e06e6825f561b3f54791606679ccf67bf426148b131810a7"
+    },
+    {
+      "id": "pole-position",
+      "title": "Pole Position",
+      "file": "pole-position.car",
+      "cartridge_type": 2,
+      "help": [
+        "LT START: START KWALIFIKACJI.",
+        "LB SELECT / RB OPTION: OPCJE GRY.",
+        "LEWO / PRAWO: SKRECANIE.",
+        "GORA: NISKI BIEG. DOL: WYSOKI BIEG.",
+        "A / RT: HAMULEC, NIE GAZ.",
+        "BOLID PRZYSPIESZA AUTOMATYCZNIE."
+      ],
+      "help_en": [
+        "LT START: START QUALIFYING.",
+        "LB SELECT / RB OPTION: GAME OPTIONS.",
+        "LEFT / RIGHT: STEER.",
+        "UP: LOW GEAR. DOWN: HIGH GEAR.",
+        "A / RT: BRAKE, NOT ACCELERATOR.",
+        "THE CAR ACCELERATES AUTOMATICALLY."
+      ],
+      "about": [
+        "NAJPIERW ZDOBADZ CZAS KWALIFIKACYJNY,",
+        "ABY DOSTAC SIE DO WLASCIWEGO WYSCIGU.",
+        "OMIJAJ BOLIDY I PILNUJ LIMITU CZASU.",
+        "ZACZYNAJ NA NISKIM BIEGU, POTEM ZMIEN",
+        "NA WYSOKI. PO KRAKSIE ZREDUKUJ BIEG."
+      ],
+      "about_en": [
+        "SET A QUALIFYING TIME TO ENTER",
+        "THE GRAND PRIX.",
+        "AVOID OTHER CARS AND BEAT THE CLOCK.",
+        "START IN LOW GEAR, THEN SHIFT HIGH.",
+        "SHIFT BACK TO LOW AFTER A CRASH."
+      ],
+      "profile": "Joystick",
+      "players": "1 GRACZ",
+      "players_en": "1 PLAYER",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "path": "local/games/pole-position.car",
+      "bytes": 16400,
+      "sha256": "dd148c9b66125be1c04cdfc6fdb0e5415e4471dab50afb425bd51a29f2ff10a6"
     },
     {
       "id": "tennis",
@@ -360,14 +914,14 @@
       "path": "local/games/tennis.car",
       "file": "tennis.car",
       "profile": "Joystick",
-      "hint": "A UDERZENIE B START X SELECT",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 16400,
       "sha256": "59bea6f23ddd0a15209e009025f0f93d699276bd983db9ff0769b6d92eb3b11e",
       "cartridge_type": 2,
       "players": "1-2 GRACZY",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "WARIANT I GRACZY WYBIERZ W GRZE.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
@@ -384,6 +938,17 @@
         "POZA KORTEM LUB W SIATCE OZNACZA",
         "STRATE. USTAWIAJ ZAWODNIKA DO ODBICIA,",
         "ZAMIAST TYLKO GONIC PILKE."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT: SERVE OR SWING.",
+        "CHOOSE PLAYERS IN THE GAME."
+      ],
+      "about_en": [
+        "WIN POINTS BY PLACING YOUR SHOTS.",
+        "PLAY AGAINST THE COMPUTER OR A FRIEND."
       ]
     },
     {
@@ -392,14 +957,14 @@
       "path": "local/games/riverraid.car",
       "file": "riverraid.car",
       "profile": "Joystick",
-      "hint": "A STRZAL B START X SELECT Y OPTION",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 8208,
       "sha256": "898a07f4a42c4f8ac3c283818ad92180f5c1e1f95b78d6abb6c04bc390094251",
       "cartridge_type": 1,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: LEWO/PRAWO - LOT.",
         "GORA/DOL - PREDKOSC. A: STRZAL.",
@@ -415,7 +980,73 @@
         "PRZELOT NAD ZBIORNIKIEM UZUPELNIA",
         "PALIWO; JEGO ZNISZCZENIE DAJE PUNKTY,",
         "ALE ODBIERA MOZLIWOSC TANKOWANIA."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LEFT-RIGHT: STEER. UP-DOWN: SPEED.",
+        "A OR RT: SHOOT."
+      ],
+      "about_en": [
+        "FLY UP THE RIVER AND DESTROY TARGETS.",
+        "FLY OVER FUEL DEPOTS TO REFUEL."
       ]
+    },
+    {
+      "id": "road-race",
+      "title": "Road Race",
+      "file": "road-race.xex",
+      "cartridge_type": 0,
+      "profile": "RoadRace",
+      "original_os": true,
+      "help": [
+        "LB SELECT: USTAW TRASE.",
+        "X = N (NIE). Y = Y (TAK). B: PAUZA.",
+        "N NA PYTANIE O WCZYTANIE RYWALI.",
+        "Y ZATWIERDZA TRASE. LT START: MAPA.",
+        "RB OPTION: CZAS STARTU; LT ZATWIERDZA.",
+        "KIERUNKI + A / RT: WYBOR MIASTA.",
+        "A / RT: GAZ. LEWO/PRAWO: KIEROWNICA.",
+        "DOL: HAMULEC. ZMIANA BIEGOW:",
+        "PUSC GAZ, GORA/DOL, PONOWNIE GAZ.",
+        "WYBIERAJ X (N), GDY GRA PYTA O DYSK."
+      ],
+      "help_en": [
+        "LB SELECT: SET UP YOUR ROUTE.",
+        "X = N (NO). Y = Y (YES). B: PAUSE.",
+        "N: KEEP THE EXISTING OPPOSING FIELD.",
+        "Y: ACCEPT ROUTE. LT START: MAP.",
+        "RB: SET DEPARTURE TIME; LT: CONFIRM.",
+        "D-PAD + A / RT: CHOOSE DESTINATION.",
+        "A / RT: GAS. LEFT / RIGHT: STEER.",
+        "DOWN: BRAKE. TO CHANGE GEARS:",
+        "RELEASE GAS, TAP UP/DOWN, PRESS GAS.",
+        "CHOOSE X (N) FOR DISK LOAD/SAVE."
+      ],
+      "about": [
+        "THE GREAT AMERICAN CROSS-COUNTRY",
+        "ROAD RACE: WYSCIG PRZEZ USA.",
+        "WYBIERAJ MIASTA NA MAPIE I DOTRZYJ",
+        "DO CELU PRZED UPLYWEM CZASU.",
+        "TANKUJ PRZY STACJACH I OMIJAJ POLICJE.",
+        "ZMIENIAJ BIEGI PRZED 9500 OBR./MIN.",
+        "ZAPIS WYNIKOW NA DYSK JEST WYLACZONY."
+      ],
+      "about_en": [
+        "THE GREAT AMERICAN CROSS-COUNTRY",
+        "ROAD RACE: RACE ACROSS THE USA.",
+        "PLAN CITY STOPS AND FINISH EACH LEG",
+        "BEFORE THE TIMER RUNS OUT.",
+        "REFUEL AT PUMPS AND WATCH FOR POLICE.",
+        "SHIFT BEFORE REACHING 9500 RPM.",
+        "DISK SCORE SAVING IS NOT ENABLED."
+      ],
+      "players": "1 GRACZ",
+      "players_en": "1 PLAYER",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "path": "local/games/road-race.xex",
+      "bytes": 45087,
+      "sha256": "8cc12f2e4cdef4d5b1c3e9584cf0da06cd6263889e059443b54ed3dc6ddbea5b"
     },
     {
       "id": "robbo",
@@ -423,14 +1054,14 @@
       "path": "local/games/robbo.xex",
       "file": "robbo.xex",
       "profile": "Robbo",
-      "hint": "A STRZAL B START X SELECT Y OPTION",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 44358,
       "sha256": "c3d8e4222119d8f6607e2d00dea12df0dd3577fbf186d17fb8965418a49100ff",
       "cartridge_type": 0,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A + KIERUNEK: STRZELANIE.",
@@ -448,6 +1079,16 @@
         "",
         "STRZALY I WYBUCHY POMAGAJA USUWAC",
         "PRZESZKODY, ALE MOGA ZABIC ROBBO."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT + DIRECTION: SHOOT."
+      ],
+      "about_en": [
+        "COLLECT ALL BOLTS TO OPEN THE CAPSULE.",
+        "SOLVE PUZZLES AND AVOID HAZARDS."
       ]
     },
     {
@@ -456,7 +1097,7 @@
       "path": "local/games/seksmisja.atr",
       "file": "seksmisja.atr",
       "profile": "Joystick",
-      "hint": "A AKCJA B START / VIEW: STRONA A-B",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 133136,
       "sha256": "ccb4a5d5a704a9c5901e2ad7c21a9a2b165a4374e624ac6a42d7814b5d617eca",
       "cartridge_type": 0,
@@ -471,7 +1112,7 @@
       },
       "help": [
         "START: POCZEKAJ NA ZALADOWANIE GRY.",
-        "B = START, X = SELECT, Y = OPTION.",
+        "LT START, LB SELECT, RB OPTION.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: WYBIERZ IKONE LUB PRZEDMIOT.",
@@ -490,6 +1131,17 @@
         "",
         "CZYTAJ KOMUNIKATY I ROZWIAZUJ ZAGADKI.",
         "SAMA SZYBKOSC TU NIE WYSTARCZY."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "WAIT FOR THE GAME TO LOAD.",
+        "A OR RT: PICK ICON OR ITEM.",
+        "VIEW: INSERT SIDE A OR B WHEN ASKED."
+      ],
+      "about_en": [
+        "EXPLORE, TALK AND USE OBJECTS.",
+        "CHANGE DISK SIDES WHEN PROMPTED."
       ]
     },
     {
@@ -498,7 +1150,7 @@
       "path": "local/games/spy-native.atr",
       "file": "spy-native.atr",
       "profile": "Spy",
-      "hint": "KRZYZAK OPCJE / A START / MENU OPCJE",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 92176,
       "sha256": "5a38e1381f0e51e94ea43342a7ee3c2cd664eb7f1e60758cf21bcc796871754f",
       "cartridge_type": 0,
@@ -526,6 +1178,19 @@
         "",
         "WYGRAJ WYSCIG Z DRUGIM SZPIEGIEM I",
         "CZASEM. BIJATYKA TO TYLKO PRZESZKODA."
+      ],
+      "players_en": "1-2 PLAYERS / VERSUS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "UP-DOWN: OPTION. LEFT-RIGHT: VALUE.",
+        "FIRE AFTER SETTING OPTIONS TO START.",
+        "FIRE BY FURNITURE OR DOORS: SEARCH.",
+        "DOUBLE FIRE: TRAPS OR MAP.",
+        "FIRE + DIRECTION: FIGHT."
+      ],
+      "about_en": [
+        "FIND THE ITEMS AND ESCAPE FIRST.",
+        "SET TRAPS AND OUTSMART THE OTHER SPY."
       ]
     },
     {
@@ -534,7 +1199,7 @@
       "path": "local/games/spy2-native.atr",
       "file": "spy2-native.atr",
       "profile": "Spy",
-      "hint": "KRZYZAK OPCJE / A START / MENU OPCJE",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 92176,
       "sha256": "86ffced2299afcfa9f9baaa60a393f84a35a231bbf354ec9306f1dc158cd3123",
       "cartridge_type": 0,
@@ -562,6 +1227,18 @@
         "RAZEM.",
         "",
         "WALKA NIE ZASTAPI WYKONANIA MISJI."
+      ],
+      "players_en": "1-2 PLAYERS / VERSUS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "UP-DOWN: OPTION. LEFT-RIGHT: VALUE.",
+        "FIRE AFTER SETTING OPTIONS TO START.",
+        "A OR RT: CONTEXT ACTION.",
+        "VIEW > RESTART TO REOPEN OPTIONS."
+      ],
+      "about_en": [
+        "SEARCH THE ISLAND AND ESCAPE FIRST.",
+        "TRAPS AND THE OTHER SPY CAN STOP YOU."
       ]
     },
     {
@@ -570,19 +1247,17 @@
       "path": "local/games/goonies.atr",
       "file": "goonies.atr",
       "profile": "Goonies",
-      "hint": "A START/ZMIANA B PAUZA Y 2 GRACZY",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 133136,
       "sha256": "83e34d043bf86d355754156afb83938744009e7d9432de625706b332dcd53ba8",
       "cartridge_type": 0,
       "players": "1-2 GRACZY / WSPOLPRACA",
       "help": [
-        "START: A NA EKRANIE TYTULOWYM.",
-        "Y/MENU: WYBIERZ DWOCH GRACZY.",
-        "",
+        "START: LT LUB FIRE NA TYTULE.",
+        "RB: WYBIERZ DWOCH GRACZY.",
         "RUCH: KIERUNKI; GORA - SKOK.",
         "A: ZMIANA POSTACI W TRYBIE 1P.",
         "B: PAUZA (SPACE). X: MUZYKA (S).",
-        "",
         "2 GRACZY: JEDNOCZESNA WSPOLPRACA.",
         "KAZDY PAD STERUJE SWOIM GOONIE."
       ],
@@ -597,7 +1272,58 @@
         "",
         "SAM PRZELACZASZ POSTACIE; WE DWOJKE",
         "WSPOLPRACUJECIE JEDNOCZESNIE."
+      ],
+      "players_en": "1-2 PLAYERS / CO-OP",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "LT OR FIRE: START. RB: TWO PLAYERS.",
+        "UP: JUMP. FIRE: SWITCH IN SOLO PLAY.",
+        "B: PAUSE. X: TOGGLE MUSIC.",
+        "IN 2P, EACH PAD CONTROLS ONE GOONIE."
+      ],
+      "about_en": [
+        "USE BOTH CHARACTERS TO SOLVE PUZZLES.",
+        "GET BOTH TO THE EXIT OF EACH ROOM."
       ]
+    },
+    {
+      "id": "last-starfighter",
+      "title": "The Last Starfighter",
+      "file": "last-starfighter.xex",
+      "players": "1 GRACZ",
+      "players_en": "1 PLAYER",
+      "help": [
+        "KRZYZAK / DRAZEK: PILOTOWANIE.",
+        "A / RT: FIRE.",
+        "LT / LB / RB: START / SELECT / OPTION.",
+        "W GRZE ZMIENIAJA RODZAJ BRONI."
+      ],
+      "help_en": [
+        "D-PAD / STICK: PILOT YOUR SHIP.",
+        "A / RT: FIRE.",
+        "LT / LB / RB: START / SELECT / OPTION.",
+        "CONSOLE KEYS CHANGE WEAPONS IN GAME."
+      ],
+      "about": [
+        "PILOTUJ GUNSTAR I BRON GWIEZDNEJ LIGI.",
+        "NISZCZ WROGIE STATKI ORAZ BAZY.",
+        "UZUPELNIAJ ENERGIE PRZY GWIEZDZIE.",
+        "NIE ZBLIZAJ SIE DO NIEJ NA ZBYT DLUGO.",
+        "PROTOTYP GRY ZWIAZANEJ Z FILMEM."
+      ],
+      "about_en": [
+        "PILOT A GUNSTAR AND DEFEND THE LEAGUE.",
+        "DESTROY ENEMY SHIPS AND BASES.",
+        "RECHARGE YOUR SHIP NEAR A STAR.",
+        "DO NOT STAY TOO CLOSE FOR TOO LONG.",
+        "A PROTOTYPE BASED ON THE MOVIE."
+      ],
+      "path": "local/games/last-starfighter.xex",
+      "profile": "Joystick",
+      "hint": "LT START  LB SELECT  RB OPTION",
+      "cartridge_type": 0,
+      "bytes": 18491,
+      "sha256": "965744e0268c2221391a2f9ccc92d426400831c1dd5a6da8bc28f6411d2fff5d"
     },
     {
       "id": "tron",
@@ -605,14 +1331,14 @@
       "path": "local/games/tron.xex",
       "file": "tron.xex",
       "profile": "Joystick",
-      "hint": "A AKCJA B START X SELECT",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 38329,
       "sha256": "c24b3748368a587d090c7f1b1b13e72de07ddb76e7e439681b6a1815d9011f12",
       "cartridge_type": 0,
       "players": "1-2 GRACZY",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "WARIANT WYBIERASZ W ORYGINALNEJ GRZE.",
         "",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
@@ -629,6 +1355,17 @@
         "NIE UDERZ W SCIANE ANI ZADNA LINIE,",
         "TAKZE WLASNA. ODCINAJ RYWALOWI DROGE,",
         "ZOSTAWIAJAC SOBIE MIEJSCE NA SKRET."
+      ],
+      "players_en": "1-2 PLAYERS",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT: ACTION.",
+        "CHOOSE PLAYER MODE IN THE GAME."
+      ],
+      "about_en": [
+        "PLAY THROUGH THE TRON CHALLENGES.",
+        "AVOID HAZARDS AND BEAT YOUR RIVAL."
       ]
     },
     {
@@ -636,20 +1373,19 @@
       "title": "Zorro",
       "path": "local/games/zorro.xex",
       "file": "zorro.xex",
-      "profile": "Joystick",
-      "hint": "A ATAK B START X SELECT Y OPTION",
+      "profile": "Zorro",
+      "hint": "LT START  LB SELECT  RB OPTION",
       "bytes": 39418,
       "sha256": "f154f3ffadd41f291f5672a6ccbc43586de3275fd5d1e2dfa5e42142780dca96",
       "cartridge_type": 0,
       "players": "1 GRACZ",
       "help": [
-        "START: B = ATARI START.",
-        "X = SELECT, Y/MENU = OPTION.",
-        "",
+        "LT: ATARI START.",
+        "LB = SELECT, RB = OPTION.",
         "RUCH: KRZYZAK LUB LEWY DRAZEK.",
         "A: ATAK / PRZYCISK AKCJI.",
-        "",
-        "1 GRACZ."
+        "1 GRACZ.",
+        "X: WLACZ / WYLACZ MUZYKE (S)."
       ],
       "about": [
         "URATUJ UWIEZIONA DZIEWCZYNE.",
@@ -659,6 +1395,16 @@
         "WYKORZYSTUJ PRZEDMIOTY I ELEMENTY",
         "OTOCZENIA. POJEDYNKI Z ZOLNIERZAMI SA",
         "TYLKO CZESCIA ZADANIA."
+      ],
+      "players_en": "1 PLAYER",
+      "help_en": [
+        "LT START, LB SELECT, RB OPTION.",
+        "D-PAD OR STICK: MOVE.",
+        "A OR RT: ATTACK. X: TOGGLE MUSIC."
+      ],
+      "about_en": [
+        "SEARCH FOR ITEMS AND SOLVE PUZZLES.",
+        "OUTWIT THE GUARDS AND RESCUE THE LADY."
       ]
     }
   ],

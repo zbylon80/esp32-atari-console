@@ -318,8 +318,8 @@ Oba kanały L i R otrzymują ten sam dźwięk mono. Wystarcza do tego jeden pin 
 
 ## 13. Codzienne sterowanie i aktualizacja
 
-- Krzyżak i lewy drążek: ruch/wybór; A oraz LT/RT: akcja/potwierdzenie.
-- View, dwa kwadraty: menu konsoli; przycisk Menu ☰: Atari OPTION.
+- Krzyżak i lewy drążek: ruch/wybór; A oraz RT: akcja/potwierdzenie.
+- View, dwa kwadraty: menu konsoli; RB: OPTION, LB: SELECT, LT: START.
 - X w bibliotece/pauzie: instrukcja; X lub lewo/prawo zmienia jej stronę.
 - Tryb 1P/2P, strony i opcje wybierasz w oryginalnych ekranach gier.
 - Nie wyjmuj karty przy włączonym zasilaniu. Ponowne wykrycie biblioteki wymaga
