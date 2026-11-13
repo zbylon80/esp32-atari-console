@@ -1,10 +1,15 @@
 # Zbuduj własną konsolkę — instrukcja od zera
 
-[← Strona projektu](../README.md) · [Obsługa konsoli](user-guide.md)
+[← Strona projektu](../README.md) · [Obsługa konsoli](user-guide.md) · [English DIY guide](getting-started.en.md)
 
 Instrukcja prowadzi przez budowę zestawu z płytką Waveshare
 ESP32-DEV-KIT-WROVER-E-M (SKU 35528) i przygotowanie oprogramowania na Windows.
 Po każdym etapie znajdziesz opis oczekiwanego wyniku.
+
+**Stan weryfikacji:** prototyp działa, a kompilacja bez gier i oryginalnego ROM-u
+była sprawdzana. Pełne przejście tej instrukcji na drugiej, pustej płytce nie jest
+jeszcze potwierdzone sprzętowo. Pierwsza instalacja z etapu 8 dotyczy wyłącznie
+nowej płytki; działającą konsolę aktualizuj według etapu 13.
 
 1. **Uruchom obraz i BASIC** — [części i połączenia](#1-co-przygotować),
    [programy na komputerze](#4-zainstaluj-programy-na-komputerze),
@@ -29,6 +34,8 @@ Jeśli utkniesz, zajrzyj do [diagnostyki](#14-gdy-coś-nie-działa).
 | Kondensator audio | 1 × 10 nF ceramiczny, oznaczenie **103**. Uwaga: oznaczenie 104 wskazuje inną wartość — 100 nF. |
 | microSD | Moduł SDTF-02 ze stabilizatorem 3,3 V, karta FAT32; 4 lub 8 GB w zupełności wystarczy. |
 | Przewody | Dupont żeńsko-żeńskie do dwóch rzędów pinów oraz przewody do płytki stykowej i złączek. |
+| Płytka stykowa | 1 × do rozprowadzenia masy i filtra audio; większy model ułatwia montaż. |
+| Miernik | Multimetr z pomiarem ciągłości i rezystancji do sprawdzenia połączeń. |
 | Zasilanie | Kabel USB-C **z transmisją danych** do ESP32, zasilanie USB konwertera; docelowo stabilne 5 V. |
 | Komputer | Windows 10/11 z dostępem do internetu i wolnym USB. |
 | Czytnik karty | Potrzebny do opisanej najprostszej metody kopiowania własnych gier z komputera. Nie jest częścią konsolki. |
@@ -37,6 +44,13 @@ Wybierz podany model płytki. W ofertach „4 MB” często oznacza pamięć fla
 czyli miejsce na program, a nie RAM używany podczas jego pracy. Ten zestaw
 korzysta także z PSRAM — dodatkowej pamięci potrzebnej emulatorowi.
 Płytki ESP32-S3 i ESP32-C3 wymagają zmian w projekcie.
+
+Orientacyjny koszt podstawowych części prototypu wyniósł 67 zł, do tego przewody,
+rezystor i kondensator — w przybliżeniu 18 EUR. To koszt tego zestawu, nie aktualna
+wycena sklepowa. Pady, ekran, miernik, narzędzia i istniejący zasilacz są poza tą
+kwotą. Konwerter AV→HDMI oraz kabel HDMI dokupujesz tylko do ekranu bez zgodnego
+wejścia composite RCA. Audio podłączasz do wejścia liniowego TV/konwertera,
+nie bezpośrednio do głośnika.
 
 ## 2. Jak czytać piny i płytkę stykową
 
@@ -50,6 +64,28 @@ odczytania. Prawdziwe masy są m.in. **między 12 i 13** oraz **między 19 i 21*
 Nie podłączaj nic do CMD, CLK, D0–D3; są związane z pamięcią modułu.
 GPIO 16 i 17 są zajęte przez PSRAM; RX/TX pozostaw dla USB.
 Porównaj z [oficjalnym schematem Waveshare](https://files.waveshare.com/wiki/ESP32-DEV-KIT-XX/ESP32-DEV-KIT-XX.pdf).
+
+![Mapa złączy Waveshare i używanych sygnałów](images/board-pin-map.svg)
+
+To mapa logiczna obu złączy, nie zdjęcie ani szablon do liczenia pinów od góry.
+Odszukuj **nazwy** na swojej płytce; po odwróceniu płytki strony zamieniają się
+miejscami. Wyróżnione sygnały są używane przez konsolkę. CMD nie jest masą.
+
+### Wszystkie połączenia w jednym miejscu
+
+![Schemat połączeń całej konsolki](images/console-wiring.svg)
+
+| Wyprowadzenie ESP32 | Dokąd prowadzi |
+| --- | --- |
+| GPIO 25 | Środek żółtego RCA video |
+| GPIO 18 | Rezystor 1 kΩ, a za nim wspólny sygnał audio L/R i kondensator 10 nF do GND |
+| GPIO 22 / 19 / 23 / 21 | SCK / MISO / MOSI / CS aktywnego SDTF-02 |
+| 5V | Wyłącznie VCC aktywnego SDTF-02 opisanego w etapie 10 |
+| GND | Ekrany wszystkich RCA, masa filtra audio i GND modułu SD |
+
+Jeśli jedno GND jest zajęte, użyj innego prawdziwego GND lub wspólnego węzła na
+płytce stykowej. Wszystkie te masy mają być połączone. Zasilaj ESP32 przez USB-C;
+nie podłączaj jednocześnie drugiego źródła zasilania do jego pinów 5V/3V3.
 
 W płytce stykowej kilka otworów jest wewnętrznie połączonych. Kierunek
 połączeń zależy od modelu: mały blok 5 × 5 może łączyć kolumny, a duża płytka
@@ -67,13 +103,24 @@ Jeszcze nie podłączaj modułu SD ani audio. Przygotuj jedną złączkę RCA.
 | GPIO 25 | „+” złączki RCA, czyli środkowy styk video. |
 | G/GND | „−” złączki, czyli zewnętrzny ekran RCA. |
 
-1. Kabel RCA połącz z żółtym **CVBS/VIDEO IN** konwertera.
-2. HDMI konwertera połącz z TV i wybierz to wejście HDMI.
-3. Podłącz osobne zasilanie USB konwertera. Sam HDMI go nie zasila.
-4. Ustaw TV w trybie obrazu **Gra**. Nazwa wejścia „Komputer” nie gwarantuje
+**Wariant A — TV ma wejście composite RCA:** połącz żółty przewód bezpośrednio
+z **VIDEO IN / CVBS / AV IN** telewizora i wybierz wejście AV. Konwerter i kabel
+HDMI nie są potrzebne. TV musi przyjmować NTSC przez to wejście. Złącze component
+YPbPr nie jest automatycznie wejściem composite; sprawdź opis TV. Gniazdo AV
+w postaci minijacka wymaga przejściówki właściwej dla danego telewizora.
+
+**Wariant B — ekran ma tylko HDMI:**
+
+1. Kabel RCA połącz z żółtym **CVBS/VIDEO IN** konwertera AV→HDMI.
+2. Wyjście HDMI konwertera połącz z ekranem i wybierz to wejście HDMI.
+3. Podłącz własne zasilanie USB konwertera. Sam HDMI go nie zasila.
+
+**W obu wariantach:**
+
+1. Ustaw TV w trybie obrazu **Gra**. Nazwa wejścia „Komputer” nie gwarantuje
    tego samego. W testowanym telewizorze Philips dopiero tryb Gra usunął
    odczuwalne opóźnienie sterowania.
-5. ESP32 na razie podłącz kablem USB do komputera. Obraz pojawi się dopiero
+2. ESP32 na razie podłącz kablem USB do komputera. Obraz pojawi się dopiero
    po wgraniu firmware w etapie 8; pusty ekran teraz jest normalny.
 
 Program wysyła obraz w standardzie **NTSC**. Przełącznik 720/1080
@@ -92,6 +139,7 @@ Otwórz PowerShell. Utwórz folder `Projects` w swoim katalogu użytkownika,
 jeśli jeszcze go nie masz. Następnie pobierz kod:
 
 ```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\Projects" | Out-Null
 cd "$env:USERPROFILE\Projects"
 git clone https://github.com/zbylon80/esp32-atari-console.git
 cd esp32-atari-console
@@ -112,11 +160,30 @@ Sprawdź lokalizację CLI:
 ```powershell
 $cli = "$env:ProgramFiles\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
 Test-Path $cli
+```
+
+Oczekiwany wynik: `True`. Jeśli jest `False`, sprawdź również
+instalację tylko dla bieżącego użytkownika:
+
+```powershell
+$cli = "$env:LOCALAPPDATA\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
+Test-Path $cli
+```
+
+Jeśli nadal jest `False`, odszukaj `arduino-cli.exe` w katalogu instalacyjnym IDE
+i przypisz jego pełną ścieżkę do `$cli`. Nie kontynuuj z nieistniejącą ścieżką.
+Gdy `Test-Path` zwraca `True`, wykonaj:
+
+```powershell
+$env:ARDUINO_CLI = $cli
 & $cli version
 ```
 
-Oczekiwany wynik: `True` i numer wersji. Przy instalacji IDE w innym miejscu
-wpisz właściwą ścieżkę do `$cli` i ustaw `$env:ARDUINO_CLI = $cli`.
+To ustawienie dotyczy bieżącego okna PowerShell. W nowym oknie ustaw je ponownie,
+jeśli CLI nie jest zainstalowane w domyślnej lokalizacji. Poniższe polecenia
+korzystają z pakietów w standardowym `%LOCALAPPDATA%\Arduino15`.
+Jeśli celowo zmieniasz ten katalog, ustaw też `$env:ARDUINO_DATA_DIR` zgodnie
+z własną konfiguracją; początkującym zalecamy ustawienie domyślne.
 
 Zainstaluj dokładnie sprawdzony pakiet płytki, a nie jego najnowszą wersję:
 
@@ -179,6 +246,23 @@ Zastąp COM7 swoim portem. Odczyt powinien pokazać ESP32 rev3 lub nowszy,
 unikalny adres **MAC** i 16 MB pamięci flash. Zapisz MAC z tej konkretnej płytki.
 Jeśli nie pojawia się nowy port, wymień kabel, spróbuj bez huba USB i sprawdź
 sterownik CH343 producenta płytki. Kabel wyłącznie do ładowania nie wystarczy.
+
+### Gdy Windows nie pokazuje płytki
+
+1. Otwórz Menedżer urządzeń i obserwuj zmianę po odłączeniu/podłączeniu USB.
+2. Jeśli pojawia się nieznane urządzenie, sprawdź sterownik CH343/CH343P na
+   [stronie producenta układu WCH](https://www.wch-ic.com/downloads/CH343SER_EXE.html).
+   Po instalacji ponownie podłącz płytkę i odczytaj nowy numer COM.
+3. Jeśli lista urządzeń w ogóle się nie zmienia, najpierw wymień kabel na
+   sprawdzony kabel danych i podłącz bezpośrednio do komputera, bez huba.
+
+### Gdy jest COM, ale narzędzie zatrzymuje się na „Connecting”
+
+Najpierw zamknij miniterm i monitor portu Arduino IDE. Potem spróbuj wejścia
+w tryb pobierania opisanego w [FAQ Waveshare](https://docs.waveshare.com/ESP32-DEV-KIT-XX/FAQ):
+przytrzymaj **BOOT**, krótko naciśnij i puść **EN/RESET**, a następnie puść BOOT.
+Powtórz odczyt `board-info.py`. Po zakończeniu operacji EN/RESET uruchamia program
+normalnie. Nie zwieraj przypadkowych pinów i nie kasuj flash, żeby naprawić COM.
 
 ## 8. Pierwsze wgranie — tylko na nową płytkę
 
@@ -279,12 +363,30 @@ Cała biblioteka nie jest wczytywana na starcie. Podczas zmiany gry poprzednie
 bufory są zwalniane; restart tego samego tytułu używa pamięci podręcznej.
 Dla Seksmisji potrzebne są obie strony, ładowane razem.
 
-**Misja i oba Spy vs. Spy wymagają opcjonalnego, własnego ROM-u Atari XL rev. 2.**
+**Sześć profili wymaga własnego ROM-u Atari XL rev. 2:** Alley Cat, Misja,
+New York City - The Big Apple, Road Race, Spy vs. Spy i Spy vs. Spy II.
 Bez niego są niedostępne również przy obecnych plikach gier. Jeśli go posiadasz,
 umieść zgodny plik w `local/roms/atarixl.rom`, sprawdź sumę według katalogu,
 ponownie skompiluj program i zaktualizuj konsolę. Ten ROM pozostaje lokalnie,
 poza repozytorium. Pozostałe gry korzystają z AltirraOS. Dodanie nowego pliku na kartę
 nie dodaje automatycznie tytułu do menu — edytowalny katalog jest kolejnym etapem.
+
+Przykład sprawdzenia własnego ROM-u w PowerShell:
+
+```powershell
+Get-FileHash -Algorithm SHA256 .\local\roms\atarixl.rom
+```
+
+Oczekiwany rozmiar i SHA-256 znajdują się w sekcji `bios` pliku
+`tools/wrover/library.json`. ROM ma 16384 bajty. Nie wystarczy podobna nazwa pliku.
+Nie trzeba go dołączać, żeby uruchomić BASIC i pozostałe profile. Repozytorium
+nie zawiera gier, oryginalnego ROM-u ani narzędzia do ich pobierania.
+
+Obecny katalog ma **33 tytuły**; aktualną listę i ograniczenia znajdziesz
+w [instrukcji obsługi](user-guide.md#tytuły-w-katalogu).
+Agent USA wymaga wpisywania nazwy celu na klawiaturze Atari — sam pad nie
+wystarcza do podróżowania. Obecność profilu w menu nie oznacza, że każdą funkcję
+gry da się obsłużyć padem; sprawdzaj instrukcję konkretnego tytułu.
 
 ## 12. Dołącz dźwięk mono w obu kanałach
 
@@ -318,6 +420,16 @@ Oba kanały L i R otrzymują ten sam dźwięk mono. Wystarcza do tego jeden pin 
 
 ## 13. Codzienne sterowanie i aktualizacja
 
+### Język polski i angielski
+
+W bibliotece naciśnij **View → JĘZYK: POLSKI → A**. W ustawieniach zostanie
+włączony angielski, a pozycja zmieni nazwę na **LANGUAGE: ENGLISH**. Kolejne A na
+tej pozycji przywraca polski. Podczas gry ścieżka to **View → USTAWIENIA → JĘZYK**;
+w BASIC-u: **View → USTAWIENIA → JĘZYK**. Wybór pozostaje po wyłączeniu zasilania.
+Dotyczy menu i instrukcji konsoli, nie języka oryginalnych gier.
+
+### Sterowanie
+
 - Krzyżak i lewy drążek: ruch/wybór; A oraz RT: akcja/potwierdzenie.
 - View, dwa kwadraty: menu konsoli; RB: OPTION, LB: SELECT, LT: START.
 - X w bibliotece/pauzie: instrukcja; X lub lewo/prawo zmienia jej stronę.
@@ -325,8 +437,12 @@ Oba kanały L i R otrzymują ten sam dźwięk mono. Wystarcza do tego jeden pin 
 - Nie wyjmuj karty przy włączonym zasilaniu. Ponowne wykrycie biblioteki wymaga
   restartu; samo wsunięcie karty podczas BASIC-a nie przełącza trybu.
 
-Nową wersję najpierw zbuduj na komputerze. Dopiero potem włącz na konsoli
-View → Ustawienia → Aktualizacja Wi-Fi → A. Zapisz adres z ekranu, np.:
+### Zwykła aktualizacja działającej konsoli
+
+Nową wersję najpierw zbuduj na komputerze. W bibliotece wybierz
+**View → AKTUALIZACJA WI-FI → A**; w grze/BASIC-u przejdź najpierw do Ustawień.
+W języku angielskim te pozycje to **SETTINGS** i **WI-FI UPDATE**.
+Zapisz adres z ekranu, np.:
 
 ```powershell
 .\.venv\Scripts\python.exe tools/update.py --host 192.168.1.50
@@ -338,12 +454,31 @@ układu partycji i nie kasuje przypisań padów. Nie odłączaj zasilania podcza
 wgrywania. Tryb aktualizacji ma limit czasu; jeśli wygasł, uruchom go ponownie.
 Przycisk „sprawdź aktualizację z internetu” nie jest jeszcze zaimplementowany.
 
+Ten skrypt aktualizuje aplikację konsoli, nie osobny program aktualizatora.
+Ponowne uruchomienie `configure.py` zmienia lokalną konfigurację, ale samo nie
+zmienia sieci ani tokenu w już wgranym aktualizatorze. Nie traktuj go jako sposobu
+odzyskania utraconego tokenu; zachowaj kopię `local/config.json` w prywatnym miejscu.
+
+### Kontrola po zakończeniu budowy
+
+- [ ] Bez karty pojawia się BASIC / Ready; View otwiera jego menu.
+- [ ] Pierwszy pad steruje menu; drugi, jeśli używany, jest przypisany do gracza 2.
+- [ ] Po restarcie pady wracają bez ponownego parowania; działa zmiana języka.
+- [ ] Z kartą FAT32 pojawia się biblioteka; poprawny plik gry uruchamia się przez A.
+- [ ] View wraca do pauzy, a powrót do gry nie wymaga instalowania firmware.
+- [ ] Dźwięk jest w obu wejściach L/R (mono), obraz stabilny, tryb Gra włączony.
+- [ ] Jeśli korzystasz z Wi-Fi, aktualizacja istniejącej konsoli nie usuwa padów.
+
+To lista do sprawdzenia własnego zestawu, nie deklaracja, że autor przetestował
+od nowa instalację na drugiej, pustej płytce.
+
 ## 14. Gdy coś nie działa
 
 | Objaw | Sprawdź po kolei |
 | --- | --- |
 | Brak nowego COM | Kabel danych, inny port USB, sterownik CH343, zasilanie. COM1 z nazwą Communications Port to zwykle inny port. |
 | Port zajęty | Zamknij monitor portu IDE/miniterm przed odczytem i wgrywaniem. |
+| „Connecting” bez końca | Procedura BOOT + EN z etapu 7, właściwy COM, krótki kabel danych i zamknięte monitory portu. |
 | USB przestaje działać po podłączeniu SD | Wyłącz zasilanie i sprawdź masę: CMD obok 5V nie jest GND. Sprawdź też, czy przewód nie trafił na RX/TX. |
 | Konwerter pokazuje niebieskie „No signal” | Jego osobne USB, kierunek AV→HDMI, właściwe HDMI w TV, środek RCA do GPIO 25 i ekran do GND, ciągłość kabla, NTSC. |
 | Pad reaguje z opóźnieniem | Tryb obrazu Gra w TV, zamiast samej etykiety wejścia „Komputer”; następnie bateria i połączenie pada. |
@@ -353,6 +488,7 @@ Przycisk „sprawdź aktualizację z internetu” nie jest jeszcze zaimplementow
 | Błąd zawartości przy ładowaniu | SHA-256 różni się od katalogu; użyj zgodnego wydania i sprawdź odczyt karty. |
 | Dźwięk tylko z jednej strony | Oba środki L/R muszą być połączone z tym samym węzłem za rezystorem; oba ekrany do GND. |
 | Aktualizacja nie odpowiada | Tryb Wi-Fi jest włączony, komputer w tej samej sieci, poprawny adres z ekranu i zachowany local/config.json. |
+| Odmowa tokenu / HTTP 401 | Użyj oryginalnego local/config.json tej konsoli. Nowy losowy token z innego komputera nie pasuje do już wgranego aktualizatora. |
 
 Log można odczytać bez programu terminalowego IDE:
 

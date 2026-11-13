@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="970" viewBox="0 0 1280 970" role="img" aria-labelledby="title desc">
+<title id="title">Waveshare connector map / Mapa zlaczy</title><desc id="desc">Logical named headers J3 and J4, based on the Waveshare schematic. This is not a physical front or back view. Used pins and memory pins are identified.</desc>
+<rect width="100%" height="100%" fill="#fff"/>
+<style>text{font-family:Arial,sans-serif;fill:#172b3a} .small{font-size:18px} .label{font-size:22px} .head{font-size:28px;font-weight:bold} .pin{font-family:Consolas,monospace;font-size:21px} .wire{fill:none;stroke-width:3}</style>
+<text x="45" y="48" class="head">ESP32-DEV-KIT-WROVER-E-M: connector names</text>
+<text x="45" y="83" class="small">Logical map, NOT a front/back view. Match pin NAMES on your board.</text>
+<text x="45" y="110" class="small">Mapa logiczna, nie widok przodu/tylu. Odszukuj NAZWY pinow.</text>
+<text x="45" y="155" class="head">J3</text>
+<rect x="45" y="173" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="196" class="pin" style="fill:#172b3a">3V3</text>
+<text x="215" y="195" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="207" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="230" class="pin" style="fill:#172b3a">EN</text>
+<text x="215" y="229" class="small" style="fill:#172b3a">reset</text>
+<rect x="45" y="241" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="264" class="pin" style="fill:#172b3a">VP</text>
+<text x="215" y="263" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="275" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="298" class="pin" style="fill:#172b3a">VN</text>
+<text x="215" y="297" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="309" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="332" class="pin" style="fill:#172b3a">34</text>
+<text x="215" y="331" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="343" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="366" class="pin" style="fill:#172b3a">35</text>
+<text x="215" y="365" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="377" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="400" class="pin" style="fill:#172b3a">32</text>
+<text x="215" y="399" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="411" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="434" class="pin" style="fill:#172b3a">33</text>
+<text x="215" y="433" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="445" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="57" y="468" class="pin" style="fill:#172b3a">25</text>
+<text x="215" y="467" class="small" style="fill:#172b3a">VIDEO</text>
+<rect x="45" y="479" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="502" class="pin" style="fill:#172b3a">26</text>
+<text x="215" y="501" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="513" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="536" class="pin" style="fill:#172b3a">27</text>
+<text x="215" y="535" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="547" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="570" class="pin" style="fill:#172b3a">14</text>
+<text x="215" y="569" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="581" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="604" class="pin" style="fill:#172b3a">12</text>
+<text x="215" y="603" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="615" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="57" y="638" class="pin" style="fill:#172b3a">GND</text>
+<text x="215" y="637" class="small" style="fill:#172b3a">GROUND / MASA</text>
+<rect x="45" y="649" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="57" y="672" class="pin" style="fill:#172b3a">13</text>
+<text x="215" y="671" class="small" style="fill:#172b3a"></text>
+<rect x="45" y="683" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="57" y="706" class="pin" style="fill:#a02724">D2</text>
+<text x="215" y="705" class="small" style="fill:#a02724">MEMORY - DO NOT USE</text>
+<rect x="45" y="717" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="57" y="740" class="pin" style="fill:#a02724">D3</text>
+<text x="215" y="739" class="small" style="fill:#a02724">MEMORY - DO NOT USE</text>
+<rect x="45" y="751" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="57" y="774" class="pin" style="fill:#a02724">CMD</text>
+<text x="215" y="773" class="small" style="fill:#a02724">NOT GND!</text>
+<rect x="45" y="785" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="57" y="808" class="pin" style="fill:#172b3a">5V / VSYS</text>
+<text x="215" y="807" class="small" style="fill:#172b3a">SDTF-02 VCC only</text>
+<text x="675" y="155" class="head">J4</text>
+<rect x="675" y="173" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="196" class="pin" style="fill:#172b3a">GND</text>
+<text x="845" y="195" class="small" style="fill:#172b3a">GROUND / MASA</text>
+<rect x="675" y="207" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="230" class="pin" style="fill:#172b3a">23</text>
+<text x="845" y="229" class="small" style="fill:#172b3a">SD MOSI</text>
+<rect x="675" y="241" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="264" class="pin" style="fill:#172b3a">22</text>
+<text x="845" y="263" class="small" style="fill:#172b3a">SD SCK</text>
+<rect x="675" y="275" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="298" class="pin" style="fill:#172b3a">TX</text>
+<text x="845" y="297" class="small" style="fill:#172b3a">USB serial - leave free</text>
+<rect x="675" y="309" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="332" class="pin" style="fill:#172b3a">RX</text>
+<text x="845" y="331" class="small" style="fill:#172b3a">USB serial - leave free</text>
+<rect x="675" y="343" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="366" class="pin" style="fill:#172b3a">21</text>
+<text x="845" y="365" class="small" style="fill:#172b3a">SD CS</text>
+<rect x="675" y="377" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="400" class="pin" style="fill:#172b3a">GND</text>
+<text x="845" y="399" class="small" style="fill:#172b3a">GROUND / MASA</text>
+<rect x="675" y="411" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="434" class="pin" style="fill:#172b3a">19</text>
+<text x="845" y="433" class="small" style="fill:#172b3a">SD MISO</text>
+<rect x="675" y="445" width="555" height="30" rx="6" fill="#e9f3fa" stroke="#bbc9d0"/>
+<text x="687" y="468" class="pin" style="fill:#172b3a">18</text>
+<text x="845" y="467" class="small" style="fill:#172b3a">AUDIO</text>
+<rect x="675" y="479" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="502" class="pin" style="fill:#172b3a">5</text>
+<text x="845" y="501" class="small" style="fill:#172b3a"></text>
+<rect x="675" y="513" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="687" y="536" class="pin" style="fill:#a02724">17</text>
+<text x="845" y="535" class="small" style="fill:#a02724">PSRAM - DO NOT USE</text>
+<rect x="675" y="547" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="687" y="570" class="pin" style="fill:#a02724">16</text>
+<text x="845" y="569" class="small" style="fill:#a02724">PSRAM - DO NOT USE</text>
+<rect x="675" y="581" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="604" class="pin" style="fill:#172b3a">4</text>
+<text x="845" y="603" class="small" style="fill:#172b3a"></text>
+<rect x="675" y="615" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="638" class="pin" style="fill:#172b3a">0</text>
+<text x="845" y="637" class="small" style="fill:#172b3a">BOOT</text>
+<rect x="675" y="649" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="672" class="pin" style="fill:#172b3a">2</text>
+<text x="845" y="671" class="small" style="fill:#172b3a"></text>
+<rect x="675" y="683" width="555" height="30" rx="6" fill="#f6f7f8" stroke="#bbc9d0"/>
+<text x="687" y="706" class="pin" style="fill:#172b3a">15</text>
+<text x="845" y="705" class="small" style="fill:#172b3a"></text>
+<rect x="675" y="717" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="687" y="740" class="pin" style="fill:#a02724">D1</text>
+<text x="845" y="739" class="small" style="fill:#a02724">MEMORY - DO NOT USE</text>
+<rect x="675" y="751" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="687" y="774" class="pin" style="fill:#a02724">D0</text>
+<text x="845" y="773" class="small" style="fill:#a02724">MEMORY - DO NOT USE</text>
+<rect x="675" y="785" width="555" height="30" rx="6" fill="#fff0ef" stroke="#bbc9d0"/>
+<text x="687" y="808" class="pin" style="fill:#a02724">CLK</text>
+<text x="845" y="807" class="small" style="fill:#a02724">MEMORY - DO NOT USE</text>
+<text x="45" y="866" class="label" style="fill:#a02724">CMD next to 5V is NOT GND. Ground examples: between 12/13 and 19/21.</text>
+<text x="45" y="904" class="small">GPIO 16/17 belong to PSRAM. Power the board through USB-C.</text>
+<text x="45" y="941" class="small">Source: files.waveshare.com/wiki/ESP32-DEV-KIT-XX/ESP32-DEV-KIT-XX.pdf</text>
+</svg>

@@ -8,6 +8,8 @@ przygotowania oprogramowania, ale nie do samej gry.
 
 **[Zbuduj własną konsolę →](docs/getting-started.md)**
 
+**[English: build your own console →](docs/getting-started.en.md)**
+
 ## Co już działa
 
 - Biblioteka gier z menu i instrukcjami na ekranie telewizora.
@@ -17,7 +19,7 @@ przygotowania oprogramowania, ale nie do samej gry.
 - Aktualizacja oprogramowania przez Wi-Fi.
 - Altirra BASIC uruchamiany, gdy karta microSD nie odpowiada.
 
-Katalog zawiera opisy i ustawienia **20 gier**. Ich pliki dostarczasz
+Katalog zawiera opisy i ustawienia **33 gier**. Ich pliki dostarczasz
 samodzielnie — repozytorium nie zawiera gier ani oryginalnych ROM-ów Atari.
 Oprogramowanie można zbudować również bez nich, korzystając z otwartych
 zamienników systemu i BASIC-a.

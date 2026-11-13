@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1030" viewBox="0 0 1280 1030" role="img" aria-labelledby="title desc">
+<title id="title">Console wiring / Polaczenia konsoli</title><desc id="desc">GPIO25 to composite video. GPIO18 through a one kiloohm resistor to both audio RCA centres, with a ten nanofarad capacitor to ground. SDTF-02 uses SCK22 MISO19 MOSI23 CS21 5V and ground. All grounds are common.</desc>
+<rect width="100%" height="100%" fill="#fff"/>
+<style>text{font-family:Arial,sans-serif;fill:#172b3a} .small{font-size:18px} .label{font-size:22px} .head{font-size:28px;font-weight:bold} .pin{font-family:Consolas,monospace;font-size:21px} .wire{fill:none;stroke-width:3}</style>
+<text x="45" y="48" class="head">ESP32 Atari console: wiring / polaczenia</text>
+<text x="45" y="82" class="small">Power OFF before wiring. RCA outputs go to a TV or AV-to-HDMI INPUT.</text>
+<rect x="45" y="115" width="275" height="390" rx="6" fill="#f3f6f8" stroke="#bbc9d0"/>
+<text x="65" y="150" class="head">ESP32 WROVER</text>
+<text x="65" y="200" class="pin">GPIO 25  VIDEO</text>
+<path class="wire" stroke="#ba8300" d="M320 195 H1013"/>
+<text x="790" y="180" class="label">Yellow RCA centre</text>
+<text x="65" y="285" class="pin">GPIO 18  AUDIO</text>
+<path class="wire" stroke="#263c4c" d="M320 280 H375"/>
+<rect x="375" y="262" width="95" height="36" rx="6" fill="#fff" stroke="#bbc9d0"/>
+<text x="388" y="287" class="small">1 kohm</text>
+<path class="wire" stroke="#263c4c" d="M470 280 H1013"/>
+<text x="790" y="262" class="label">White RCA centre (L)</text>
+<circle cx="580" cy="280" r="5" fill="#172b3a"/>
+<path class="wire" stroke="#263c4c" d="M580 280 L580 345"/>
+<path class="wire" stroke="#263c4c" d="M580 345 H1013"/>
+<text x="790" y="328" class="label">Red RCA centre (R)</text>
+<circle cx="580" cy="345" r="5" fill="#172b3a"/>
+<path class="wire" stroke="#263c4c" d="M580 345 L580 390"/>
+<path class="wire" stroke="#263c4c" d="M555 390 H605"/>
+<path class="wire" stroke="#263c4c" d="M555 405 H605"/>
+<path class="wire" stroke="#263c4c" d="M580 405 L580 465"/>
+<text x="620" y="398" class="label">10 nF / 103</text>
+<text x="620" y="427" class="small">ceramic / ceramiczny</text>
+<text x="65" y="470" class="pin">GND</text>
+<path class="wire" stroke="#263c4c" d="M320 465 H1100"/>
+<circle cx="580" cy="465" r="5" fill="#172b3a"/>
+<text x="790" y="492" class="label">All RCA outer shields</text>
+<circle cx="1030" cy="195" r="17" fill="#dca700" stroke="#263c4c" stroke-width="3"/>
+<circle cx="1030" cy="280" r="17" fill="#ffffff" stroke="#263c4c" stroke-width="3"/>
+<circle cx="1030" cy="345" r="17" fill="#d04338" stroke="#263c4c" stroke-width="3"/>
+<text x="45" y="550" class="small">Both audio channels carry MONO. Do not connect a passive speaker directly.</text>
+<text x="45" y="585" class="label">ACTIVE SDTF-02 with 3.3 V regulator + buffer (NOT a bare SD socket)</text>
+<rect x="45" y="610" width="275" height="300" rx="6" fill="#f3f6f8" stroke="#bbc9d0"/>
+<rect x="835" y="610" width="365" height="300" rx="6" fill="#f3f6f8" stroke="#bbc9d0"/>
+<text x="65" y="643" class="head">ESP32</text>
+<text x="855" y="643" class="head">SDTF-02</text>
+<text x="65" y="687" class="pin">22</text>
+<text x="855" y="687" class="pin">SCK</text>
+<path class="wire" stroke="#2866a0" d="M320 680 H835"/>
+<text x="65" y="727" class="pin">19</text>
+<text x="855" y="727" class="pin">MISO</text>
+<path class="wire" stroke="#2866a0" d="M320 720 H835"/>
+<text x="65" y="767" class="pin">23</text>
+<text x="855" y="767" class="pin">MOSI</text>
+<path class="wire" stroke="#2866a0" d="M320 760 H835"/>
+<text x="65" y="807" class="pin">21</text>
+<text x="855" y="807" class="pin">CS</text>
+<path class="wire" stroke="#2866a0" d="M320 800 H835"/>
+<text x="65" y="847" class="pin">5V</text>
+<text x="855" y="847" class="pin">VCC</text>
+<path class="wire" stroke="#bd302a" d="M320 840 H835"/>
+<text x="65" y="887" class="pin">GND</text>
+<text x="855" y="887" class="pin">GND</text>
+<path class="wire" stroke="#263c4c" d="M320 880 H835"/>
+<text x="45" y="953" class="label" style="fill:#a02724">All GND connections above join the SAME ground. Never substitute CMD for GND.</text>
+<text x="45" y="995" class="small">USB-C powers ESP32. The optional AV-to-HDMI converter needs its own USB power.</text>
+</svg>

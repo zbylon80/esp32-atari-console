@@ -36,7 +36,8 @@ zamienniki Altirra. Plik `media.h` z pakietem gier i katalog `data` są pomijane
 Kompilacja nie wymaga obrazów gier. Firmware zawiera metadane, a pliki trafiają
 do PSRAM z karty dopiero po wybraniu tytułu. Opcjonalny ROM systemowy
 `local/roms/atarixl.rom` jest sprawdzany i dołączany tylko do lokalnego obrazu.
-Bez niego trzy zależne profile pozostają niedostępne.
+Bez niego sześć zależnych profili pozostaje niedostępnych: Alley Cat, Misja,
+New York City - The Big Apple, Road Race i obie części Spy vs. Spy.
 
 ## Pamięć i ładowanie
 

@@ -22,6 +22,14 @@ krzyżakiem w lewo lub w prawo. B lub View zamyka instrukcję.
 Pozostałe funkcje ABXY zależą od gry i są opisane w jej instrukcji.
 RB i LB nie otwierają menu emulatora.
 
+## Język menu i instrukcji
+
+W bibliotece **View** otwiera od razu Ustawienia. W grze lub BASIC-u naciśnij
+View, a potem wybierz Ustawienia. Wskaż **JĘZYK: POLSKI** i naciśnij A, aby
+włączyć angielski. Ta sama pozycja jako **LANGUAGE: ENGLISH** przełącza z powrotem
+na polski. Wybór jest pamiętany po wyłączeniu zasilania. Nie tłumaczy oryginalnych
+ekranów gier. [English DIY guide](getting-started.en.md)
+
 ## Gra w dwie osoby
 
 Konsola pamięta przypisanie padów do graczy 1 i 2. Kolejność ich włączania
@@ -35,7 +43,8 @@ zastępuje jego ekranu wyboru własnym menu.
 
 ![Lista kontrolerów w ustawieniach konsoli](images/controllers.png)
 
-Otwórz **View → Ustawienia → Kontrolery**. Przy każdym graczu zobaczysz,
+W bibliotece otwórz **View → Kontrolery**; w grze/BASIC-u:
+**View → Ustawienia → Kontrolery**. Przy każdym graczu zobaczysz,
 czy jego pad jest połączony, zapisany, ale rozłączony, czy jeszcze nieprzypisany.
 
 - **Dodawanie:** wybierz wolnego gracza, a następnie **Dodaj pad**. Masz
@@ -69,26 +78,57 @@ do menu — obecny katalog ma zdefiniowane nazwy, wersje i ustawienia.
 
 ### Tytuły w katalogu
 
-| Archon – Misja | Montezuma – Zorro |
+Katalog zawiera **33 tytuły**. To metadane, nie pakiet plików gier.
+
+| Gra | System Atari |
 | --- | --- |
-| Archon | Montezuma’s Revenge |
-| Archon II: Adept | RealSports Tennis |
-| Blue Max | River Raid |
-| Boulder Dash | Robbo |
-| Bruce Lee | Seksmisja |
-| Dropzone | Spy vs. Spy |
-| Fred | Spy vs. Spy II |
-| Hans Kloss | The Goonies |
-| International Karate | Tron (Mirage) |
-| Misja | Zorro |
+| Agent USA | AltirraOS |
+| Alley Cat | Własny ROM XL rev. 2 |
+| Archon | AltirraOS |
+| Archon II: Adept | AltirraOS |
+| Blue Max | AltirraOS |
+| Boulder Dash | AltirraOS |
+| Bruce Lee | AltirraOS |
+| Dropzone | AltirraOS |
+| Fred | AltirraOS |
+| H.E.R.O. | AltirraOS |
+| Hans Kloss | AltirraOS |
+| International Karate | AltirraOS |
+| Jungle Hunt | AltirraOS |
+| Karateka | AltirraOS |
+| Keystone Kapers | AltirraOS |
+| Misja | Własny ROM XL rev. 2 |
+| Montezuma's Revenge | AltirraOS |
+| New York City - The Big Apple | Własny ROM XL rev. 2 |
+| Ninja | AltirraOS |
+| One-on-One | AltirraOS |
+| Pac-Man | AltirraOS |
+| Pole Position | AltirraOS |
+| RealSports Tennis | AltirraOS |
+| River Raid | AltirraOS |
+| Road Race | Własny ROM XL rev. 2 |
+| Robbo | AltirraOS |
+| Seksmisja - A.D. 2044 | AltirraOS |
+| Spy vs. Spy | Własny ROM XL rev. 2 |
+| Spy vs. Spy II | Własny ROM XL rev. 2 |
+| The Goonies | AltirraOS |
+| The Last Starfighter | AltirraOS |
+| Tron (Mirage) | AltirraOS |
+| Zorro | AltirraOS |
 
 Pliki dostarczasz samodzielnie. Przygotowanie karty opisuje
 [etap 11 instrukcji budowy](getting-started.md#11-dodaj-własne-gry).
 
+**Agent USA:** podróże wymagają wpisywania nazwy celu na klawiaturze Atari;
+sam pad nie wystarcza. Obecny firmware nie obsługuje jeszcze klawiatury BT.
+Katalog oznacza dostępne profile, nie potwierdzenie pełnej obsługi każdej gry
+wyłącznie kontrolerem. Sprawdzaj jej instrukcję ekranową.
+
 **Seksmisja** korzysta z dwóch stron dysku, wczytywanych razem. Gdy poprosi
 o zmianę strony, otwórz View i wybierz **WŁÓŻ STRONĘ A/B**.
 
-**Misja i obie części Spy vs. Spy** wymagają własnego ROM-u Atari XL
+**Alley Cat, Misja, New York City - The Big Apple, Road Race i obie części
+Spy vs. Spy** wymagają własnego ROM-u Atari XL
 dołączonego do lokalnej kompilacji. Pozostałe profile korzystają z AltirraOS.
 
 ## BASIC bez karty
@@ -107,7 +147,8 @@ konsolę, włóż kartę i uruchom ją ponownie.
 ## Aktualizacja przez Wi-Fi
 
 1. Na komputerze przygotuj nowy program poleceniem `tools/build.py`.
-2. W konsoli wybierz **View → Ustawienia → Aktualizacja Wi-Fi → A**.
+2. W bibliotece wybierz **View → Aktualizacja Wi-Fi → A**. W grze lub BASIC-u
+   po View przejdź najpierw do Ustawień. Po angielsku: **SETTINGS / WI-FI UPDATE**.
 3. Odczytaj z telewizora adres IP i uruchom na komputerze:
 
    ```powershell
@@ -122,6 +163,10 @@ zdążył wygasnąć, włącz go ponownie z menu.
 
 Przez pozostały czas Wi-Fi jest wyłączone. Konsola nie sprawdza jeszcze
 samodzielnie dostępności nowych wydań w internecie.
+
+`tools/update.py` aktualizuje aplikację konsoli, a nie osobny aktualizator.
+Nowe uruchomienie `configure.py` nie zmienia tokenu ani sieci zapisanych już
+w tym aktualizatorze. Zachowaj oryginalny `local/config.json` dla swojej konsoli.
 
 ## Obraz i dźwięk
 
