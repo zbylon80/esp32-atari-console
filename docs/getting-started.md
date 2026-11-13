@@ -282,10 +282,12 @@ inicjalizuje wyłącznie nowy obszar wyboru aplikacji i zapisuje sprawdzone obra
 Nie używaj `erase_flash`, standardowego Upload z IDE ani porad każących zapisać
 `boot_app0.bin` pod adresem 0xE000 — w naszym układzie ten adres należy do NVS.
 
-Oczekiwany wynik po restarcie bez karty: ekran startowy, krótki komunikat o braku
-odpowiedzi microSD, a następnie **Altirra BASIC / Ready**. To potwierdza pracę
-emulatora i wyjścia obrazu. Klawiatura BT i pisanie programów nie są jeszcze
-obsługiwane w tej wersji.
+Oczekiwany wynik po restarcie bez karty: ekran startowy, następnie
+**Diagnostyka → microSD: BRAK ODPOWIEDZI**. Menu, grafiki i metadane gier są
+w firmware, nie na karcie. Brak karty nie uruchamia już automatycznie BASIC-a.
+Po sparowaniu pada B/View przenosi do biblioteki; View otwiera jej ustawienia.
+**URUCHOM BASIC** w ustawieniach otwiera Altirra BASIC / Ready bez karty.
+Klawiatura BT i pisanie programów nie są jeszcze obsługiwane w tej wersji.
 
 Jeśli obraz nie działa, zacznij od tabeli diagnostycznej na końcu. Nie dokładaj
 jeszcze pozostałych przewodów, dopóki nie uzyskasz poprawnego obrazu.
@@ -296,7 +298,8 @@ jeszcze pozostałych przewodów, dopóki nie uzyskasz poprawnego obrazu.
 2. Przytrzymaj mały przycisk parowania przy USB pada, aż logo szybko miga.
 3. Poczekaj na połączenie z konsolą i naciśnij A. Pierwszy kontroler zostanie
    zapamiętany jako gracz 1; stan jest zapisany w pamięci płytki.
-4. View (dwa nachodzące kwadraty) otwiera menu BASIC-a. Sprawdź ruch krzyżakiem.
+4. B lub View zamyka diagnostykę i otwiera bibliotekę. View w bibliotece otwiera
+   ustawienia. Sprawdź ruch krzyżakiem.
 5. Jeśli używasz drugiego pada, otwórz **View → Ustawienia → Kontrolery →
    Gracz 2 → Dodaj pad**. Włącz drugi pad, uruchom parowanie przyciskiem obok
    USB i po połączeniu naciśnij i puść A.
@@ -431,11 +434,20 @@ Dotyczy menu i instrukcji konsoli, nie języka oryginalnych gier.
 ### Sterowanie
 
 - Krzyżak i lewy drążek: ruch/wybór; A oraz RT: akcja/potwierdzenie.
-- View, dwa kwadraty: menu konsoli; RB: OPTION, LB: SELECT, LT: START.
+- Menu ☰ krótko: START; View krótko: SELECT po puszczeniu; Share: OPTION.
+- View przytrzymany przez 0,7 s: menu konsoli, bez wysyłania SELECT.
+- LB, RB i LT nie wysyłają funkcji Atari; A i RT to FIRE.
+- Ustawienia → Przyciski Atari: wspólne przypisania dla wszystkich gier i obu
+  padów, zapis po restarcie i przywracanie domyślnych. Instrukcje uwzględniają
+  wybrany układ. W bibliotece View otwiera ustawienia od razu.
+
+W ścieżkach poniżej i powyżej View podczas gry/BASIC-a oznacza przytrzymanie
+przez 0,7 s; w bibliotece wystarczy krótkie naciśnięcie.
 - X w bibliotece/pauzie: instrukcja; X lub lewo/prawo zmienia jej stronę.
 - Tryb 1P/2P, strony i opcje wybierasz w oryginalnych ekranach gier.
-- Nie wyjmuj karty przy włączonym zasilaniu. Ponowne wykrycie biblioteki wymaga
-  restartu; samo wsunięcie karty podczas BASIC-a nie przełącza trybu.
+- Nie wyjmuj karty ani nie poprawiaj przewodów przy włączonym zasilaniu.
+  Karta jest sprawdzana przy starcie, ładowaniu gry lub po świadomym wybraniu
+  A w diagnostyce; nie jest odpytywana w tle podczas grania.
 
 ### Zwykła aktualizacja działającej konsoli
 
@@ -461,11 +473,12 @@ odzyskania utraconego tokenu; zachowaj kopię `local/config.json` w prywatnym mi
 
 ### Kontrola po zakończeniu budowy
 
-- [ ] Bez karty pojawia się BASIC / Ready; View otwiera jego menu.
+- [ ] Bez karty pojawia się diagnostyka; B/View otwiera bibliotekę i jej ustawienia.
+- [ ] URUCHOM BASIC z ustawień działa bez karty; jego menu pozwala wrócić do biblioteki.
 - [ ] Pierwszy pad steruje menu; drugi, jeśli używany, jest przypisany do gracza 2.
 - [ ] Po restarcie pady wracają bez ponownego parowania; działa zmiana języka.
 - [ ] Z kartą FAT32 pojawia się biblioteka; poprawny plik gry uruchamia się przez A.
-- [ ] View wraca do pauzy, a powrót do gry nie wymaga instalowania firmware.
+- [ ] Przytrzymanie View przez 0,7 s otwiera pauzę, a powrót do gry nie wymaga instalowania firmware.
 - [ ] Dźwięk jest w obu wejściach L/R (mono), obraz stabilny, tryb Gra włączony.
 - [ ] Jeśli korzystasz z Wi-Fi, aktualizacja istniejącej konsoli nie usuwa padów.
 
@@ -482,7 +495,7 @@ od nowa instalację na drugiej, pustej płytce.
 | USB przestaje działać po podłączeniu SD | Wyłącz zasilanie i sprawdź masę: CMD obok 5V nie jest GND. Sprawdź też, czy przewód nie trafił na RX/TX. |
 | Konwerter pokazuje niebieskie „No signal” | Jego osobne USB, kierunek AV→HDMI, właściwe HDMI w TV, środek RCA do GPIO 25 i ekran do GND, ciągłość kabla, NTSC. |
 | Pad reaguje z opóźnieniem | Tryb obrazu Gra w TV, zamiast samej etykiety wejścia „Komputer”; następnie bateria i połączenie pada. |
-| BASIC mimo włożonej karty | Karta nie odpowiada: zasilanie właściwego modułu, prawdziwe GND, CS21/SCK22/MISO19/MOSI23, styki. BASIC nie oznacza, że karta została poprawnie odczytana. |
+| Diagnostyka: brak odpowiedzi microSD | Karta/czytnik/połączenia nie odpowiadają. Odłącz zasilanie, sprawdź właściwy moduł, GND, 5V i CS21/SCK22/MISO19/MOSI23. Sam program nie rozpozna, który przewód jest wypięty. |
 | Błąd biblioteki | FAT32 zamiast exFAT, poprawne ścieżki i nazwy; nie formatuj karty z ważnymi danymi bez ich kopii. |
 | Przygaszona gra | Brak pliku, inny rozmiar albo wymagany oryginalny ROM nie jest dołączony do lokalnej kompilacji. |
 | Błąd zawartości przy ładowaniu | SHA-256 różni się od katalogu; użyj zgodnego wydania i sprawdź odczyt karty. |

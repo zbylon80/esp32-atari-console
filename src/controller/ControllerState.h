@@ -7,11 +7,11 @@ enum class Button : uint16_t {
     A = 1u << 0, B = 1u << 1, X = 1u << 2, Y = 1u << 3,
     Up = 1u << 4, Down = 1u << 5, Left = 1u << 6, Right = 1u << 7,
     LB = 1u << 8, RB = 1u << 9, Menu = 1u << 10, View = 1u << 11,
-    L3 = 1u << 12, R3 = 1u << 13
+    L3 = 1u << 12, R3 = 1u << 13, Share = 1u << 14
 };
 using ButtonMask = uint16_t;
 constexpr ButtonMask mask(Button button) { return static_cast<ButtonMask>(button); }
-constexpr ButtonMask kAllButtons = (1u << 14) - 1;
+constexpr ButtonMask kAllButtons = (1u << 15) - 1;
 
 enum class Axis : uint8_t { LX = 1, LY = 2, RX = 4, RY = 8, LT = 16, RT = 32 };
 constexpr uint8_t kAllAxes = 63;

@@ -101,6 +101,7 @@ public:
             if(c->dpad()&DPAD_UP)raw.buttons|=mask(Button::Up);if(c->dpad()&DPAD_DOWN)raw.buttons|=mask(Button::Down);
             if(c->dpad()&DPAD_LEFT)raw.buttons|=mask(Button::Left);if(c->dpad()&DPAD_RIGHT)raw.buttons|=mask(Button::Right);
             if(c->miscStart())raw.buttons|=mask(Button::Menu);if(c->miscSelect())raw.buttons|=mask(Button::View);
+            if(c->miscCapture())raw.buttons|=mask(Button::Share);
             raw.lx=c->axisX();raw.ly=c->axisY();raw.rx=c->axisRX();raw.ry=c->axisRY();raw.lt=c->brake();raw.rt=c->throttle();
             if(entry.releaseRequired){
                 // Suppress only controls already held at the session boundary.

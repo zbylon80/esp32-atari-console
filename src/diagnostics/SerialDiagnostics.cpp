@@ -8,7 +8,7 @@
 
 namespace esp32controller {
 namespace {
-const char* const names[] = { "A", "B", "X", "Y", "Up", "Down", "Left", "Right", "LB", "RB", "Menu", "View", "L3", "R3" };
+const char* const names[] = { "A", "B", "X", "Y", "Up", "Down", "Left", "Right", "LB", "RB", "Menu", "View", "L3", "R3", "Share" };
 const char* statusName(ConnectionStatus status) {
     switch (status) {
     case ConnectionStatus::NotStarted: return "not-started";
@@ -72,7 +72,7 @@ void SerialDiagnostics::observe(const IGameController& controller, const Control
     }
     if (changes.unsupportedInput)
         line(nowMs, "[WARN] Non-gamepad report; input invalidated (capability metadata does not override report type)");
-    for (unsigned i = 0; i < 14; ++i) {
+    for (unsigned i = 0; i < sizeof(names)/sizeof(names[0]); ++i) {
         if (state.released & (1u << i))
             line(nowMs, "[INPUT] %s released reason=%s", names[i], changes.connectionChanged ? "lifecycle" :
                 !state.inputValid ? "invalid-input" : "report");

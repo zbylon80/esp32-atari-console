@@ -22,7 +22,7 @@ public:
     enum { CONTROLLER_TYPE_XBoxOneController = 32 };
     bool connected = false, fresh = false, gamepad = false;
     bool aDown = false, bDown = false, xDown = false, yDown = false;
-    bool lbDown = false, rbDown = false, menuDown = false, viewDown = false;
+    bool lbDown = false, rbDown = false, menuDown = false, viewDown = false, shareDown = false;
     bool l3Down = false, r3Down = false;
     uint8_t dpadValue = 0;
     int32_t lx = 0, ly = 0, rx = 0, ry = 0, lt = 0, rt = 0;
@@ -41,6 +41,7 @@ public:
     bool x() const { return xDown; } bool y() const { return yDown; }
     bool l1() const { return lbDown; } bool r1() const { return rbDown; }
     bool miscStart() const { return menuDown; } bool miscSelect() const { return viewDown; }
+    bool miscCapture() const { return shareDown; }
     bool thumbL() const { return l3Down; } bool thumbR() const { return r3Down; }
     int32_t axisX() const { return lx; } int32_t axisY() const { return ly; }
     int32_t axisRX() const { return rx; } int32_t axisRY() const { return ry; }

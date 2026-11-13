@@ -8,10 +8,11 @@
 | --- | --- |
 | Krzyżak lub lewy drążek | Ruch w grze i wybór pozycji w menu |
 | A lub RT | Główna akcja w grze; potwierdzenie wyboru w menu |
-| View — dwa nachodzące kwadraty | Menu konsoli |
-| RB | Atari OPTION |
-| LB | Atari SELECT |
-| LT | Atari START |
+| Menu ☰ — krótko | Atari START |
+| View — dwa nachodzące kwadraty, krótko | Atari SELECT po puszczeniu |
+| Share — strzałka, krótko | Atari OPTION |
+| View — przytrzymaj 0,7 s | Menu konsoli, bez wysyłania SELECT |
+| LB, RB, LT | Bez przypisanych funkcji Atari |
 | X w bibliotece lub pauzie | Instrukcja wybranej gry |
 | B w menu | Powrót do poprzedniego ekranu |
 
@@ -20,12 +21,26 @@ strony: **Cel i zasady** oraz **Sterowanie**. Przełączasz je przyciskiem X alb
 krzyżakiem w lewo lub w prawo. B lub View zamyka instrukcję.
 
 Pozostałe funkcje ABXY zależą od gry i są opisane w jej instrukcji.
-RB i LB nie otwierają menu emulatora.
+START, SELECT i OPTION mają wspólne ustawienia dla wszystkich gier i obu padów.
+Otwórz **Ustawienia → Przyciski Atari**. Wybierz funkcję i naciśnij A, żeby
+zamienić jej przycisk z kolejnym ze środkowych przycisków. Każdy z nich ma jedną
+funkcję. Zapis następuje automatycznie; **Przywróć domyślne** przywraca powyższy
+układ. Instrukcje gier pokazują aktualne przypisania. Błąd zapisu pozostawia
+poprzednie ustawienia.
+
+Przytrzymanie View przez 0,7 s zawsze otwiera menu, niezależnie od przypisanej
+mu funkcji Atari. Krótkie naciśnięcie View działa dopiero po puszczeniu.
+W bibliotece i otwartym menu View zachowuje funkcję nawigacyjną — nie wysyła
+wtedy przycisków Atari. A i RT nadal służą do FIRE, a pozostałe funkcje ABXY
+pozostają zależne od gry.
+
+W dalszych ścieżkach „View” podczas gry lub BASIC-a oznacza przytrzymanie
+przez 0,7 s. W bibliotece wystarczy krótkie naciśnięcie.
 
 ## Język menu i instrukcji
 
-W bibliotece **View** otwiera od razu Ustawienia. W grze lub BASIC-u naciśnij
-View, a potem wybierz Ustawienia. Wskaż **JĘZYK: POLSKI** i naciśnij A, aby
+W bibliotece **View** otwiera od razu Ustawienia. W grze lub BASIC-u przytrzymaj
+View przez 0,7 s, a potem wybierz Ustawienia. Wskaż **JĘZYK: POLSKI** i naciśnij A, aby
 włączyć angielski. Ta sama pozycja jako **LANGUAGE: ENGLISH** przełącza z powrotem
 na polski. Wybór jest pamiętany po wyłączeniu zasilania. Nie tłumaczy oryginalnych
 ekranów gier. [English DIY guide](getting-started.en.md)
@@ -131,18 +146,32 @@ o zmianę strony, otwórz View i wybierz **WŁÓŻ STRONĘ A/B**.
 Spy vs. Spy** wymagają własnego ROM-u Atari XL
 dołączonego do lokalnej kompilacji. Pozostałe profile korzystają z AltirraOS.
 
+## Diagnostyka i start bez sprawnej karty
+
+Menu, logo, instrukcje i katalog tytułów znajdują się w firmware. Karta zawiera
+pliki gier; jej błąd nie blokuje interfejsu i nie uruchamia automatycznie BASIC-a.
+Przy problemie ze startowym odczytem konsola otwiera **Diagnostykę**.
+B/View prowadzi do biblioteki, a View w bibliotece do ustawień — działają także
+zarządzanie padami i wejście do aktualizacji Wi-Fi.
+
+Diagnostyka jest też dostępna przez **View → Diagnostyka** z biblioteki
+lub **View → Ustawienia → Diagnostyka** z gry/BASIC-a. Pokazuje wynik ostatniego
+odczytu: brak odpowiedzi, błąd montowania, brak katalogu, brak zgodnych plików
+albo błędną zawartość gry. Dodatkowo pokazuje nazwę błędu SD, liczbę dostępnych
+gier/plików, wolny RAM/PSRAM, połączenie obu padów i obecność oryginalnego ROM-u.
+
+Moduł nie ma czujnika obecności karty ani poszczególnych przewodów. Brak karty
+i wypięty przewód mogą dać ten sam błąd. Przed poprawianiem przewodów/karty
+**odłącz zasilanie**; po naprawie uruchom konsolę ponownie. A w diagnostyce
+wykonuje ponowny skan, bez formatowania i bez zwalniania buforów aktualnej gry.
+Nie jest to ciągły pomiar styków. Podczas gry karta nadal nie jest odpytywana.
+
 ## BASIC bez karty
 
-Jeśli karta nie odpowiada, po krótkim komunikacie pojawi się Altirra BASIC
-z napisem `Ready`. View otwiera menu z powrotem do BASIC-a i ustawieniami.
-Klawiatura Bluetooth oraz zapis własnych programów są planowane.
-
-Jeśli karta jest włożona, a mimo to uruchamia się BASIC, sprawdź połączenia
-i zasilanie czytnika. Moduł nie ma osobnego czujnika obecności karty, więc brak
-odpowiedzi może też oznaczać problem z przewodami lub samą kartą.
-
-Kartę zmieniaj przy wyłączonym zasilaniu. Aby wrócić do biblioteki, wyłącz
-konsolę, włóż kartę i uruchom ją ponownie.
+W ustawieniach wybierz **URUCHOM BASIC** (po angielsku **START BASIC**).
+Pojawi się Altirra BASIC / `Ready`, także bez microSD. Przytrzymanie View otwiera menu
+z powrotem do BASIC-a, biblioteką gier i ustawieniami. Klawiatura Bluetooth
+oraz zapis własnych programów są planowane.
 
 ## Aktualizacja przez Wi-Fi
 

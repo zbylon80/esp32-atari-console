@@ -25,3 +25,8 @@ add_executable(pad_management_tests pad_management_tests.cpp ../src/controller/I
 target_include_directories(pad_management_tests PRIVATE ../src fakes)
 target_compile_features(pad_management_tests PRIVATE cxx_std_11)
 add_test(NAME console_pad_management COMMAND pad_management_tests)
+
+add_executable(system_controls_tests system_controls_tests.cpp)
+target_include_directories(system_controls_tests PRIVATE ../src)
+target_compile_features(system_controls_tests PRIVATE cxx_std_11)
+add_test(NAME console_system_controls COMMAND system_controls_tests)

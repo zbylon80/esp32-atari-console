@@ -103,7 +103,7 @@ void connectionBeforeFirstReport() {
 void everyDigitalTransition() {
     Rig r;
     r.connect();
-    for (unsigned i = 0; i < 14; ++i) {
+    for (unsigned i = 0; i < 15; ++i) {
         const ButtonMask bit = static_cast<ButtonMask>(1u << i);
         r.report(bit, i * 10 + 2);
         CHECK(r.controller.state().pressed == bit);
@@ -326,6 +326,7 @@ void actualAdapterBoundaryAndMapping() {
         {&Controller::xDown,Button::X}, {&Controller::yDown,Button::Y},
         {&Controller::lbDown,Button::LB}, {&Controller::rbDown,Button::RB},
         {&Controller::menuDown,Button::Menu}, {&Controller::viewDown,Button::View},
+        {&Controller::shareDown,Button::Share},
         {&Controller::l3Down,Button::L3}, {&Controller::r3Down,Button::R3}
     };
     for (const auto& mapping : mappings) {

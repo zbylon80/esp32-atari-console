@@ -212,9 +212,12 @@ already using our partition layout. Never use it for normal updates. Do not use
 IDE Upload, `erase_flash`, or flash `boot_app0.bin` at 0xE000: our NVS occupies
 that address range. Keep power connected until the operation finishes.
 
-Expected without a card: boot screen, a short SD-not-responding message, then
-**Altirra BASIC / Ready**. This checks the emulator and video output. Bluetooth
-keyboard input and BASIC program saving are not implemented yet. Solve video
+Expected without a card: boot screen, then **Diagnostics / microSD: NO RESPONSE**
+(the first boot uses Polish labels). Menus and catalogue metadata are in firmware,
+not on the card. A card error no longer starts BASIC automatically. Once a pad is
+paired, B/View opens the library; View opens its settings. Choose **START BASIC**
+there to open Altirra BASIC / Ready without a card. Bluetooth keyboard input and
+BASIC program saving are not implemented yet. Solve video
 problems before attaching more hardware. The complete fresh-board procedure
 still needs the independent hardware check stated at the start of this guide.
 
@@ -223,7 +226,8 @@ still needs the independent hardware check stated at the start of this guide.
 1. Turn on the first Xbox controller. Leave the second off.
 2. Hold its small pairing button near USB until the Xbox logo flashes rapidly.
 3. Wait for connection, then press and release A. It becomes player 1.
-4. View (overlapping squares) opens BASIC's menu. Check D-pad navigation.
+4. B/View closes diagnostics and opens the library. View in the library opens
+   Settings. Check D-pad navigation.
 5. For a second controller, use **View → USTAWIENIA → KONTROLERY → GRACZ 2 → DODAJ PAD**.
    Turn on the second controller, enter pairing mode, then press and release A.
 
@@ -344,15 +348,48 @@ affects console menus/help, not the language of the original games.
 | --- | --- |
 | D-pad or left stick | Move / menu navigation |
 | A or RT | Fire / main action; A confirms menu choices |
-| View | Console menu; Settings directly from the library |
-| RB / LB / LT | Atari OPTION / SELECT / START |
+| Menu ☰, short press | Atari START |
+| View, short press and release | Atari SELECT |
+| Share, short press | Atari OPTION |
+| Hold View for 0.7 s | Console menu, without sending SELECT |
+| RB / LB / LT | No Atari system function |
 | X in library/pause | Game help; X or left/right switches its two pages |
 | B in menus | Back |
 
 Other ABXY actions depend on each game's help. Choose one/two players and sides
 on the original game screens; the console does not replace those menus.
-Change the card only with power off. Inserting it while BASIC runs does not
-automatically open the library: restart with the card inserted.
+Change the card and wiring only with power off. A repaired connection is checked
+at the next boot. You can also explicitly rescan using A in Diagnostics. There is
+no background SD polling while playing.
+
+**Settings → Atari buttons** changes these three assignments globally for every
+game and both controllers. Select an action and press A to swap its button with
+the next middle button. Changes are saved across restarts. **Restore defaults**
+restores the table above. Help screens show the current assignments. A save error
+keeps the previous settings. Holding View always opens the console menu,
+regardless of its Atari assignment. A and RT remain FIRE.
+
+Throughout this guide, View during gameplay or BASIC means holding it for 0.7 s.
+In the library or an open menu, a short press keeps its navigation function.
+
+### Diagnostics and BASIC
+
+From the library choose **View → DIAGNOSTICS**. During a game or BASIC, enter
+Settings first. This screen opens automatically if the boot scan fails. B/View
+returns to the menu, which remains available without a working SD card. You can
+still manage controllers or enter Wi-Fi update mode.
+
+Diagnostics distinguishes no response, a mount failure, a missing game folder,
+no matching files, and an invalid game file. It shows the SD error name, available
+game/file counts, free internal RAM/PSRAM, connected pads and original-OS-ROM
+availability. SD information is a snapshot of the last explicit scan/load.
+The reader cannot distinguish an absent card from a particular disconnected
+wire. Power off before inspecting GND, 5V, CS21, SCK22, MISO19 and MOSI23.
+A requests a read-only rescan; it never formats the card or frees the currently
+loaded game's buffers.
+
+**START BASIC** in Settings explicitly opens built-in BASIC. Its View menu lets
+you resume BASIC, return to the game library, or open Settings. No card is needed.
 
 For an already installed console, build on the computer first:
 
@@ -377,7 +414,8 @@ Automatic internet update checking is not implemented.
 
 ## 14. Checks and troubleshooting
 
-After assembly, check: BASIC without a card; menu navigation and reconnection
+After assembly, check: diagnostics and menu access without a card; manually
+starting BASIC from Settings; menu navigation and reconnection
 of both assigned controllers; language persistence; loading a matching game
 from FAT32; return from pause; mono sound on both channels; stable video with
 Game mode enabled. If using Wi-Fi, check that a normal update preserves players.
@@ -390,7 +428,7 @@ These are checks for your build, not a claim of an independent fresh-board test.
 | USB fails after adding SD | Power off; check GND versus CMD and accidental RX/TX connections |
 | Converter says No signal | Its USB power, AV-to-HDMI direction, correct input, GPIO25 centre/GND shield, cable continuity, NTSC support |
 | Controller latency | TV Game picture mode, then controller battery/connection |
-| BASIC with card inserted | SD wiring, suitable module supply, true ground, contacts; card did not respond |
+| Diagnostics: SD not responding | Power off; check the card, reader, supply, true ground and SPI wires. Software cannot identify which wire is loose. |
 | Library error | FAT32, filenames and paths; do not format valuable data without backup |
 | Dim game | Missing/wrong-size file, or required original ROM absent from local build |
 | Content/hash error | Exact catalogue version and reliable SD reading |

@@ -1,7 +1,13 @@
 #include <Arduino.h>
+#include <cstring>
 #include "drop-font.h"
 #include "game-catalog.h"
 #include "pad-management.h"
+#include "library-status.h"
+#include "system-controls.h"
+static SystemBindings systemBindings;
+static bool bindingsSaveError;
+void console_set_system_bindings(const SystemBindings& value,bool error){systemBindings=value;bindingsSaveError=error;}
 extern bool library_game_available(int);
 static bool english;
 void console_set_language(bool enabled){english=enabled;}
@@ -20,7 +26,13 @@ static void rect(int x,int y,int w,int h,uint8_t color){
 }
 static void label(const char* value,int x,int y,bool selected=false,uint8_t color=ink){
     const int start=x;
-    while(*value){unsigned char c=*value++;
+    while(*value){
+        if(value[0]=='@'&&(value[1]=='S'||value[1]=='L'||value[1]=='O')){
+            unsigned action=value[1]=='S'?0:value[1]=='L'?1:2;
+            const char* name=SystemBindings::name(systemBindings.buttons[action]);
+            label(name,x,y,selected,color);x+=strlen(name)*8;value+=2;continue;
+        }
+        unsigned char c=*value++;
         if(c=='\n'){x=start;y+=12;continue;}
         if(x>336||y>232)continue;
         uint8_t pen=selected?bg:color,paper=selected?ink:bg;
@@ -66,8 +78,13 @@ void console_ui(uint8_t** screen,int kind,int selected,int game,bool diskSide,in
         int first=(selected/6)*6;brand(tr("BIBLIOTEKA GIER","GAME LIBRARY"));
         snprintf(text,sizeof(text),"%02d / %02d",selected+1,console_game_count);label(text,272,20);
         for(int row=0;row<6&&first+row<console_game_count;row++)choice(game_info(first+row).title,first+row,selected,52+row*19,library_game_available(first+row));
-        label(english?game_info(selected).playersEn:game_info(selected).players,32,172,false,accent);
-        label(library_game_available(selected)?game_info(selected).hint:tr("BRAK PLIKU LUB WYMAGANEGO ROM-U","GAME FILE OR REQUIRED ROM MISSING"),32,188,false,muted);
+        if(library_needs_attention(library_status())){
+            label(tr("PROBLEM microSD - MENU DZIALA","microSD PROBLEM - MENU IS AVAILABLE"),32,172,false,accent);
+            label(tr("VIEW > DIAGNOSTYKA: SZCZEGOLY","VIEW > DIAGNOSTICS: DETAILS"),32,188,false,ink);
+        }else{
+            label(english?game_info(selected).playersEn:game_info(selected).players,32,172,false,accent);
+            label(library_game_available(selected)?game_info(selected).hint:tr("BRAK PLIKU LUB WYMAGANEGO ROM-U","GAME FILE OR REQUIRED ROM MISSING"),32,188,false,muted);
+        }
         footer(tr("A GRAJ   X INSTRUKCJA","A PLAY   X HELP"),tr("VIEW USTAWIENIA   LEWO/PRAWO STRONY","VIEW SETTINGS   LEFT/RIGHT PAGE"));
     }else if(kind==2){
         brand(tr("PAUZA","PAUSED"));label(game_info(game).title,32,54,false,accent);
@@ -77,20 +94,26 @@ void console_ui(uint8_t** screen,int kind,int selected,int game,bool diskSide,in
         footer(tr("A WYBIERZ   X INSTRUKCJA","A SELECT   X HELP"),tr("B / VIEW WROC DO GRY","B / VIEW RESUME"));
     }else if(kind==3){
         brand(tr("USTAWIENIA","SETTINGS"));
-        const char* entries[]={tr("KONTROLERY","CONTROLLERS"),tr("AKTUALIZACJA WI-FI","WI-FI UPDATE"),tr("JEZYK: POLSKI","LANGUAGE: ENGLISH"),tr("WROC","BACK")};
-        for(int i=0;i<4;i++)choice(entries[i],i,selected,54+i*22);
-        label(tr("VIEW (DWA KWADRATY): MENU KONSOLI","VIEW (TWO SQUARES): CONSOLE MENU"),32,152);
-        label("LT START  LB SELECT  RB OPTION",32,168);
-        label(tr("FIRE: A / RT   RUCH: KRZYZAK/DRAZEK","FIRE: A / RT   MOVE: D-PAD/STICK"),32,184,false,muted);
+        const char* entries[]={tr("KONTROLERY","CONTROLLERS"),tr("AKTUALIZACJA WI-FI","WI-FI UPDATE"),tr("JEZYK: POLSKI","LANGUAGE: ENGLISH"),tr("PRZYCISKI ATARI","ATARI BUTTONS"),tr("DIAGNOSTYKA","DIAGNOSTICS"),tr("URUCHOM BASIC","START BASIC"),tr("WROC","BACK")};
+        for(int i=0;i<7;i++)choice(entries[i],i,selected,54+i*20);
         footer(tr("A WYBIERZ","A SELECT"),tr("B / VIEW WROC","B / VIEW BACK"));
-    }else if(kind==8){
-        brand("BASIC");label(tr("KARTA microSD NIE ODPOWIADA","microSD CARD NOT RESPONDING"),32,84);
-        label(tr("URUCHAMIAM BASIC Z PAMIECI","STARTING BUILT-IN BASIC"),32,116,false,accent);
-        footer(tr("VIEW: MENU KONSOLI","VIEW: CONSOLE MENU"),tr("BASIC DZIALA BEZ KARTY","BASIC WORKS WITHOUT A CARD"));
+    }else if(kind==14){
+        brand(tr("PRZYCISKI ATARI","ATARI BUTTONS"));
+        const char* actions[]={"START","SELECT","OPTION"};
+        for(int i=0;i<3;i++){
+            snprintf(text,sizeof(text),"%s: %s",actions[i],SystemBindings::name(systemBindings.buttons[i]));
+            choice(text,i,selected,54+i*24);
+        }
+        choice(tr("PRZYWROC DOMYSLNE","RESTORE DEFAULTS"),3,selected,126);
+        choice(tr("WROC","BACK"),4,selected,150);
+        label(bindingsSaveError?tr("BLAD ZAPISU - USTAWIENIA BEZ ZMIAN","SAVE FAILED - SETTINGS UNCHANGED"):tr("WSPOLNE DLA GIER I OBU PADOW","ALL GAMES AND BOTH CONTROLLERS"),32,180,false,bindingsSaveError?accent:muted);
+        footer(tr("A ZMIEN / ZAPISZ   B WROC","A CHANGE / SAVE   B BACK"),tr("PRZYTRZYMAJ VIEW 0.7 s: MENU KONSOLI","HOLD VIEW 0.7 s: CONSOLE MENU"));
     }else if(kind==7){
         brand("BASIC");
-        choice(tr("WROC DO BASIC","RESUME BASIC"),0,selected,72);choice(tr("USTAWIENIA","SETTINGS"),1,selected,100);
-        label(tr("ALTIRRA BASIC - PAMIEC KONSOLI","BUILT-IN ALTIRRA BASIC"),32,148,false,muted);
+        choice(tr("WROC DO BASIC","RESUME BASIC"),0,selected,72);
+        choice(tr("BIBLIOTEKA GIER","GAME LIBRARY"),1,selected,100);
+        choice(tr("USTAWIENIA","SETTINGS"),2,selected,128);
+        label(tr("ALTIRRA BASIC - PAMIEC KONSOLI","BUILT-IN ALTIRRA BASIC"),32,168,false,muted);
         footer(tr("A WYBIERZ","A SELECT"),tr("B / VIEW WROC DO BASIC","B / VIEW RESUME BASIC"));
     }else if(kind==6){
         brand(selected?tr("STEROWANIE 2/2","CONTROLS 2/2"):tr("CEL I ZASADY 1/2","GOAL AND RULES 1/2"));label(game_info(game).title,32,54,false,accent);
@@ -101,9 +124,58 @@ void console_ui(uint8_t** screen,int kind,int selected,int game,bool diskSide,in
         brand(error>=2001&&error<=2004?tr("BLAD BIBLIOTEKI microSD","microSD LIBRARY ERROR"):tr("BLAD GRY","GAME ERROR"));
         label(error==2001?tr("BRAK KARTY LUB BLAD ODCZYTU","NO CARD OR READ ERROR"):error==2002?tr("BRAK PLIKU GRY NA KARCIE","GAME FILE MISSING FROM CARD"):error==2003?tr("PLIK GRY MA BLEDNA ZAWARTOSC","GAME FILE FAILED VERIFICATION"):error==2007?tr("WYMAGANY WLASNY ROM ATARI XL","ATARI XL ROM REQUIRED"):error==2004?tr("BRAK PAMIECI NA BIBLIOTEKE","NOT ENOUGH MEMORY FOR LIBRARY"):tr("NIE UDALO SIE URUCHOMIC","COULD NOT START GAME"),32,68);
         label(game_info(game).title,32,92,false,accent);
-        snprintf(text,sizeof(text),tr("BLAD EMULACJI: %d","EMULATION ERROR: %d"),error);label(text,32,116);
-        footer(tr("B / VIEW WYBOR GRY","B / VIEW GAME LIBRARY"),tr("MOZESZ WYBRAC INNY TYTUL","SELECT ANOTHER GAME"));
+        snprintf(text,sizeof(text),error>=2000?tr("KOD BLEDU: %d","ERROR CODE: %d"):tr("BLAD EMULACJI: %d","EMULATION ERROR: %d"),error);label(text,32,116);
+        footer(tr("A DIAGNOSTYKA   B / VIEW BIBLIOTEKA","A DIAGNOSTICS   B / VIEW LIBRARY"),tr("MOZESZ WYBRAC INNY TYTUL","SELECT ANOTHER GAME"));
     }
+}
+void console_diagnostics_ui(uint8_t** screen,const LibraryStatus& s,unsigned pads,uint32_t internalFree,uint32_t psramFree){
+    rows=screen;rect(0,0,384,240,bg);brand(tr("DIAGNOSTYKA","DIAGNOSTICS"));
+    const char* state=tr("NIE SPRAWDZONO KARTY","CARD NOT CHECKED");
+    const char* cause="";const char* action="";
+    switch(s.condition){
+    case LibraryCondition::Ready:case LibraryCondition::PartialLibrary:
+        state=tr("microSD: ODCZYT OK","microSD: READ OK");
+        cause=tr("SPRAWDZONO NAZWY I ROZMIARY PLIKOW","FILE NAMES AND SIZES CHECKED");
+        action=tr("SHA256 SPRAWDZANE PRZY WCZYTYWANIU","SHA256 CHECKED WHEN LOADING A GAME");break;
+    case LibraryCondition::NoResponse:
+        state=tr("microSD: BRAK ODPOWIEDZI","microSD: NO RESPONSE");
+        cause=tr("KARTA / CZYTNIK / KABLE / ZASILANIE","CARD / READER / WIRING / POWER");
+        action="GND 5V CS21 SCK22 MISO19 MOSI23";break;
+    case LibraryCondition::MountFailed:
+        state=tr("microSD: BLAD MONTOWANIA","microSD: MOUNT FAILED");
+        cause=tr("SPRAWDZ FAT32 I POLACZENIA CZYTNIKA","CHECK FAT32 AND READER WIRING");
+        action=tr("KONSOLA NIE FORMATUJE KARTY","THE CONSOLE NEVER FORMATS THE CARD");break;
+    case LibraryCondition::FolderMissing:
+        state=tr("microSD: BRAK KATALOGU GIER","microSD: GAME FOLDER MISSING");
+        cause="/atari-console/games";
+        action=tr("UTWORZ KATALOG NA KARCIE","CREATE THIS FOLDER ON THE CARD");break;
+    case LibraryCondition::NoMatchingFiles:
+        state=tr("microSD: BRAK ZGODNYCH GIER","microSD: NO MATCHING GAMES");
+        cause=tr("KATALOG JEST, ALE BRAKUJE PLIKOW","FOLDER FOUND, GAME FILES MISSING");
+        action=tr("SPRAWDZ NAZWY Z KATALOGU GIER","CHECK THE CATALOGUE FILE NAMES");break;
+    case LibraryCondition::InvalidFile:
+        state=tr("microSD: NIEZGODNY PLIK GRY","microSD: INVALID GAME FILE");
+        cause=s.file;action=tr("SPRAWDZ WERSJE, ROZMIAR I SHA256","CHECK VERSION, SIZE AND SHA256");break;
+    case LibraryCondition::ReadFailed:
+        state=tr("microSD: BLAD ODCZYTU PLIKOW","microSD: FILE READ FAILED");
+        cause=s.file;action=tr("SPRAWDZ PLIKI I POLACZENIA CZYTNIKA","CHECK FILES AND READER WIRING");break;
+    case LibraryCondition::NoMemory:
+        state=tr("BRAK PAMIECI NA BIBLIOTEKE","NOT ENOUGH MEMORY FOR THE LIBRARY");
+        cause=tr("SPRAWDZ PSRAM I KONFIGURACJE PLYTKI","CHECK PSRAM AND BOARD CONFIGURATION");break;
+    case LibraryCondition::RomRequired:
+        state=tr("WYMAGANY WLASNY ROM ATARI XL","ORIGINAL ATARI XL ROM REQUIRED");
+        action=tr("TEJ GRZE NIE WYSTARCZY ALTIRRAOS","ALTIRRAOS IS NOT ENOUGH FOR THIS GAME");break;
+    default:break;
+    }
+    label(state,32,56,false,accent);
+    char text[64];snprintf(text,sizeof(text),"SD: %.32s",s.sdErrorName[0]?s.sdErrorName:"-");label(text,32,74,false,muted);
+    label(cause,32,94);label(action,32,106,false,muted);
+    snprintf(text,sizeof(text),tr("GRY: %u/%u   PLIKI: %u/%u","GAMES: %u/%u   FILES: %u/%u"),s.availableGames,s.totalGames,s.validFiles,s.totalFiles);label(text,32,128);
+    snprintf(text,sizeof(text),"RAM: %u KB   PSRAM: %u KB",unsigned(internalFree/1024),unsigned(psramFree/1024));label(text,32,144);
+    snprintf(text,sizeof(text),"PAD 1: %s   PAD 2: %s",pads&1?"OK":"-",pads&2?"OK":"-");label(text,32,160);
+    snprintf(text,sizeof(text),tr("ROM ATARI XL: %s","ATARI XL ROM: %s"),s.originalOs?tr("TAK","YES"):tr("NIE","NO"));label(text,32,176,false,muted);
+    label(tr("STAN Z OSTATNIEGO ODCZYTU","STATUS FROM THE LAST READ"),32,188,false,muted);
+    footer(tr("A SPRAWDZ KARTE   B / VIEW WROC","A CHECK CARD   B / VIEW BACK"),tr("PRZED ZMIANA KABLI ODLACZ ZASILANIE","POWER OFF BEFORE CHANGING WIRES"));
 }
 static const char* padState(const PadStatus& s,int p){return s.connected[p]?tr("POLACZONY","CONNECTED"):s.known[p]?tr("ZAPISANY, ROZLACZONY","SAVED, DISCONNECTED"):tr("BRAK PRZYPISANIA","UNASSIGNED");}
 static const char* padNotice(PadNotice n){

@@ -12,6 +12,7 @@
 #include "sd-storage.h"
 #include "dropzone.h"
 #include "game-catalog.h"
+#include "library-status.h"
 #include "TwoPadHub.h"
 #include "pad-mapping.h"
 using namespace esp32controller;
@@ -34,8 +35,20 @@ static Asset* cached;
 static bool* available;
 static int cachedGame=-1;
 static int storageError;
+static LibraryStatus storageStatus;
+bool library_game_available(int index);
+const LibraryStatus& library_status(){return storageStatus;}
+static void recordMount(){
+    storageStatus.sdError=console_sd_last_error();
+    snprintf(storageStatus.sdErrorName,sizeof(storageStatus.sdErrorName),"%s",console_sd_error_name());
+    storageStatus.checkedMs=millis();
+}
+static void countAvailable(){
+    storageStatus.availableGames=0;storageStatus.validFiles=0;
+    if(available)for(int i=0;i<console_media_count;i++)storageStatus.validFiles+=available[i];
+    for(int i=0;i<console_game_count;i++)storageStatus.availableGames+=library_game_available(i);
+}
 int library_storage_error(){return storageError;}
-bool library_card_unavailable(){return storageError==2001&&console_sd_no_response();}
 extern void console_boot_progress(int done,int total,const char* file);
 extern void console_game_progress(int done,int total,const char* file);
 static int mediaIndex(const char* name){
@@ -49,22 +62,43 @@ bool library_game_available(int index){
 }
 bool library_game_cached(int index){return cachedGame==index;}
 static void scanLibrary(){
-    uint32_t start=millis();unsigned valid=0;
+    uint32_t start=millis();storageError=0;
+    storageStatus=LibraryStatus{};
+    storageStatus.totalGames=console_game_count;storageStatus.totalFiles=console_media_count;
+    storageStatus.originalOs=CONSOLE_HAS_ORIGINAL_OS;storageStatus.checkedMs=start;
     console_boot_progress(0,console_media_count,nullptr);
-    cached=(Asset*)calloc(console_media_count,sizeof(Asset));
-    available=(bool*)calloc(console_media_count,sizeof(bool));
-    if(!cached||!available){storageError=2004;return;}
-    if(!console_sd_mount(4000)){storageError=2001;return;}
+    // Rescans must preserve the loaded game's buffers and every core reference.
+    if(!cached)cached=(Asset*)calloc(console_media_count,sizeof(Asset));
+    if(!available)available=(bool*)calloc(console_media_count,sizeof(bool));
+    if(!cached||!available){storageError=2004;storageStatus.condition=LibraryCondition::NoMemory;return;}
+    memset(available,0,console_media_count*sizeof(bool));
+    bool mounted=console_sd_mount(4000);recordMount();
+    if(!mounted){storageError=2001;storageStatus.condition=console_sd_no_response()?LibraryCondition::NoResponse:LibraryCondition::MountFailed;return;}
+    struct stat root;
+    if(stat(console_sd_root,&root)!=0||!S_ISDIR(root.st_mode)){
+        storageError=2002;storageStatus.condition=LibraryCondition::FolderMissing;
+        console_sd_unmount();return;
+    }
+    bool readFailed=false;
     for(int i=0;i<console_media_count;i++){
         const auto& media=console_media[i];char path[192];
         snprintf(path,sizeof(path),"%s/%s",console_sd_root,media.file);
-        struct stat st;available[i]=stat(path,&st)==0&&S_ISREG(st.st_mode)&&st.st_size==media.bytes;
-        valid+=available[i];
+        struct stat st;errno=0;int found=stat(path,&st);
+        available[i]=found==0&&S_ISREG(st.st_mode)&&st.st_size==media.bytes;
+        if(found!=0){++storageStatus.missingFiles;if(errno!=ENOENT)readFailed=true;}
+        else if(!available[i]){++storageStatus.invalidFiles;snprintf(storageStatus.file,sizeof(storageStatus.file),"%s",media.file);}
         console_boot_progress(i+1,console_media_count,media.file);
     }
     console_sd_unmount();
-    Serial.printf("[LIBRARY_SCAN] available_media=%u expected=%d cached=0 bytes=0 elapsed_ms=%u error=%d\n",valid,console_media_count,unsigned(millis()-start),storageError);
+    countAvailable();storageStatus.checkedMs=millis();
+    if(readFailed){storageError=2001;storageStatus.condition=LibraryCondition::ReadFailed;}
+    else if(!storageStatus.validFiles){
+        storageStatus.condition=storageStatus.invalidFiles?LibraryCondition::InvalidFile:LibraryCondition::NoMatchingFiles;
+        storageError=storageStatus.invalidFiles?2003:2002;
+    }else storageStatus.condition=storageStatus.missingFiles||storageStatus.invalidFiles?LibraryCondition::PartialLibrary:LibraryCondition::Ready;
+    Serial.printf("[LIBRARY_SCAN] available_media=%u expected=%d elapsed_ms=%u error=%d condition=%d cached_game=%d\n",unsigned(storageStatus.validFiles),console_media_count,unsigned(millis()-start),storageError,int(storageStatus.condition),cachedGame);
 }
+bool library_rescan(){scanLibrary();return !library_needs_attention(storageStatus);}
 bool library_original_os(const char* path){
     if(strncmp(path,"/game/",6))return false;
     for(int i=0;i<console_game_count;i++)if(!strcmp(path+6,game_info(i).file))return game_info(i).originalOs&&CONSOLE_HAS_ORIGINAL_OS;
@@ -79,8 +113,8 @@ static Slot slots[4];
 bool library_prepare_game(int index){
     if(cachedGame==index)return true;
     storageError=0;
-    if(game_info(index).originalOs&&!CONSOLE_HAS_ORIGINAL_OS){storageError=2007;return false;}
-    if(!cached||!available){storageError=2004;return false;}
+    if(game_info(index).originalOs&&!CONSOLE_HAS_ORIGINAL_OS){storageError=2007;storageStatus.condition=LibraryCondition::RomRequired;return false;}
+    if(!cached||!available){storageError=2004;storageStatus.condition=LibraryCondition::NoMemory;return false;}
     // The caller must detach the previous core's cartridge/disks first.
     for(auto& slot:slots)if(slot.used){storageError=2006;return false;}
     for(int i=0;i<console_media_count;i++){free((void*)cached[i].data);cached[i]={};}
@@ -88,10 +122,12 @@ bool library_prepare_game(int index){
     const auto& info=game_info(index);int indices[]={mediaIndex(info.file),info.disk2?mediaIndex(info.disk2):-1};
     int needed=info.disk2?2:1;size_t total=0;uint32_t start=millis();
     console_game_progress(0,needed,info.file);
-    if(!console_sd_mount(4000)){storageError=2001;return false;}
+    bool mounted=console_sd_mount(4000);recordMount();
+    if(!mounted){storageError=2001;storageStatus.condition=console_sd_no_response()?LibraryCondition::NoResponse:LibraryCondition::MountFailed;return false;}
     for(int n=0;n<needed;n++){
         int i=indices[n];if(i<0){storageError=2002;break;}
         const auto& media=console_media[i];char path[192];snprintf(path,sizeof(path),"%s/%s",console_sd_root,media.file);
+        snprintf(storageStatus.file,sizeof(storageStatus.file),"%s",media.file);
         FILE* file=fopen(path,"rb");struct stat st;
         if(!file){available[i]=false;storageError=2002;break;}
         if(fstat(fileno(file),&st)!=0||st.st_size!=media.bytes){fclose(file);available[i]=false;storageError=2003;break;}
@@ -106,8 +142,14 @@ bool library_prepare_game(int index){
         console_game_progress(n+1,needed,media.file);
     }
     console_sd_unmount();
-    if(!storageError)cachedGame=index;
-    else for(int i=0;i<console_media_count;i++){free((void*)cached[i].data);cached[i]={};}
+    countAvailable();storageStatus.checkedMs=millis();
+    if(!storageError){
+        cachedGame=index;storageStatus.file[0]=0;
+        storageStatus.condition=storageStatus.validFiles==storageStatus.totalFiles?LibraryCondition::Ready:LibraryCondition::PartialLibrary;
+    }else{
+        storageStatus.condition=storageError==2004?LibraryCondition::NoMemory:storageError==2002?LibraryCondition::ReadFailed:LibraryCondition::InvalidFile;
+        for(int i=0;i<console_media_count;i++){free((void*)cached[i].data);cached[i]={};}
+    }
     Serial.printf("[GAME_CACHE] game=%s files=%d bytes=%u elapsed_ms=%u error=%d gameplay_io=0\n",info.id,storageError?0:needed,storageError?0:unsigned(total),unsigned(millis()-start),storageError);
     return !storageError;
 }

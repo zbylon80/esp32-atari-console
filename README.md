@@ -17,7 +17,7 @@ przygotowania oprogramowania, ale nie do samej gry.
 - Gry na microSD, wczytywane dopiero po wybraniu tytułu.
 - Obraz przez RCA i dźwięk mono w obu kanałach telewizora.
 - Aktualizacja oprogramowania przez Wi-Fi.
-- Altirra BASIC uruchamiany, gdy karta microSD nie odpowiada.
+- Menu i diagnostyka działające także bez sprawnej microSD; BASIC uruchamiany z ustawień.
 
 Katalog zawiera opisy i ustawienia **33 gier**. Ich pliki dostarczasz
 samodzielnie — repozytorium nie zawiera gier ani oryginalnych ROM-ów Atari.

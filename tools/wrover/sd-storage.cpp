@@ -6,6 +6,8 @@
 static sdmmc_card_t* card;
 static esp_err_t lastError=ESP_OK;
 bool console_sd_no_response(){return lastError==ESP_ERR_TIMEOUT||lastError==ESP_ERR_INVALID_RESPONSE;}
+int console_sd_last_error(){return int(lastError);}
+const char* console_sd_error_name(){return esp_err_to_name(lastError);}
 bool console_sd_mount(int clockKhz) {
     if(card) return true;
     spi_bus_config_t bus = {};

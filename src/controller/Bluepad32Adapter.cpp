@@ -71,6 +71,7 @@ const BackendFrame& Bluepad32Adapter::poll() {
             if (controller_->r1()) raw.buttons |= mask(Button::RB);
             if (controller_->miscStart()) raw.buttons |= mask(Button::Menu);
             if (controller_->miscSelect()) raw.buttons |= mask(Button::View);
+            if (controller_->miscCapture()) raw.buttons |= mask(Button::Share);
             if (controller_->thumbL()) raw.buttons |= mask(Button::L3);
             if (controller_->thumbR()) raw.buttons |= mask(Button::R3);
             raw.lx = controller_->axisX(); raw.ly = controller_->axisY();

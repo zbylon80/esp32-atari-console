@@ -52,6 +52,14 @@ Przed zwolnieniem buforów muszą być zamknięte dyski SIO, kartridż, kaseta o
 XEX. Kontrola otwartych slotów `/game` odmawia zwolnienia pamięci, jeśli
 pozostał aktywny uchwyt.
 
+Powłoka konsoli, czcionka, katalog i instrukcje są w firmware. Błąd skanu SD
+otwiera ekran diagnostyczny, a nie emulację BASIC-a. BASIC jest wybierany jawnie
+w ustawieniach. `LibraryStatus` jest migawką ostatniego skanu/ładowania;
+otwieranie diagnostyki nie odpytuje karty. A na tym ekranie wywołuje jawny skan
+metadanych, zachowując `cached`, `cachedGame` i uchwyty rdzenia. Tablice skanu
+są alokowane tylko raz. Nie przenoś skanu do pętli grania ani nie zwalniaj
+cache w ramach diagnostyki. Ten moduł nie identyfikuje fizycznie wypiętego pinu.
+
 Jedenaście funkcji ANTIC/GTIA pozostaje w szybkiej pamięci IRAM. Kontrola
 artefaktu sprawdza ich adresy. Budżet jest mały, dlatego sama udana kompilacja
 nie wystarcza do oceny zmiany.
@@ -98,3 +106,20 @@ sprzętowej.
   w ignorowanych katalogach lokalnych.
 
 Licencje zależności opisuje [THIRD_PARTY.md](../THIRD_PARTY.md).
+
+## Globalne przyciski Atari
+
+`tools/wrover/archon/system-controls.h` oddziela fizyczne Menu/View/Share od
+akcji START/SELECT/OPTION. Wspólna konfiguracja obu padów jest zapisywana jako
+wersjonowana permutacja w NVS `atari_ui/syskeys`; nie zmienia przypisań graczy.
+Nieprawidłowy zapis powoduje użycie układu domyślnego.
+
+View rozróżnia krótkie puszczenie i przytrzymanie 700 ms. Długie naciśnięcie
+otwiera menu bez wysyłania przypisanej akcji Atari. Powrót z UI oraz utrata
+połączenia wymagają puszczenia trzymanych środkowych przycisków.
+
+Katalog instrukcji używa tokenów `@S`, `@L`, `@O` oznaczających przyciski dla
+START, SELECT i OPTION. Renderer podstawia aktualne nazwy. Przygotowanie
+firmware sprawdza długość instrukcji PL/EN we wszystkich sześciu układach.
+Test `console_system_controls` sprawdza próg przytrzymania, puszczenie,
+przepełnienie zegara, krótkie impulsy i niezależność obu padów.

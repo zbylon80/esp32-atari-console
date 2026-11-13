@@ -6,7 +6,7 @@ WORK=ROOT/'.build/wrover-archon';OUT=WORK/'WroverArchon'
 def main():
     spec=importlib.util.spec_from_file_location('base',HERE/'prepare-dropzone.py');base=importlib.util.module_from_spec(spec);spec.loader.exec_module(base)
     base.WORK=WORK;base.OUT=OUT
-    sys.argv=['prepare-dropzone.py','--refresh','--variant','console-v1-14-3-pad-neutral'];base.main()
+    sys.argv=['prepare-dropzone.py','--refresh','--variant','console-v1-16-system-controls'];base.main()
     # Keep scanline scheduling and ordinary ANTIC rasterizers in internal
     # instruction RAM. No pixel/collision/CPU semantics are changed.
     p=OUT/'src/atari800/antic.c';t=p.read_text(encoding='utf-8')
@@ -32,6 +32,14 @@ def main():
         second=item.get('disk2')
         help_lines=item['help']
         assert 1<=len(help_lines)<=10 and all(len(line)<=38 and line.isascii() for line in help_lines),item['id']+' help layout'
+        # Help tokens always follow the saved global physical button layout.
+        import itertools
+        for button_names in itertools.permutations(('MENU','VIEW','SHARE')):
+            for field in ('help','help_en'):
+                assert 1<=len(item[field])<=10,item['id']+' '+field
+                for line in item[field]:
+                    for token,name in zip(('@S','@L','@O'),button_names):line=line.replace(token,name)
+                    assert line.isascii() and len(line)<=38,item['id']+' '+field+' '+line
         about=item['about']
         assert 1<=len(about)<=10 and all(len(line)<=38 and line.isascii() for line in about),item['id']+' about layout'
         entries.append('{'+','.join(fields)+',GameProfile::'+item['profile']+','+str(item['cartridge_type'])+',nullptr,'+str(len(data))+','+json.dumps(item['players'])+','+(json.dumps(second['file']) if second else 'nullptr')+','+('true' if item.get('original_os') else 'false')+','+json.dumps('\n'.join(help_lines))+','+json.dumps('\n'.join(about))+','+json.dumps(item['players_en'])+','+json.dumps('\n'.join(item['help_en']))+','+json.dumps('\n'.join(item['about_en']))+'}')
@@ -88,7 +96,7 @@ def main():
     shutil.copy2(extract/'spi_hal_iram.c.obj',spi_object)
     manifest=json.loads((WORK/'av-source.json').read_text())
     manifest['build_properties']['compiler.c.elf.extra_flags']+=' "'+str(spi_object)+'"'
-    manifest.update({'firmware_version':'WroverArchon-v1.14.3-pad-neutral','application':'archon','media_storage':'microSD-demand-cache-v1','boot_video':True,'basic_fallback':True,'sd_clock_khz':4000,'sd_spi_hal_sha256':hashlib.sha256(spi_object.read_bytes()).hexdigest(),'benchmark_protocol':0,'iram_renderer_functions':names+['GTIA_NewPmScanline'],
+    manifest.update({'firmware_version':'WroverArchon-v1.16.0-global-controls','application':'archon','media_storage':'microSD-demand-cache-v1','boot_video':True,'basic_fallback':False,'manual_basic':True,'storage_diagnostics':True,'sd_clock_khz':4000,'sd_spi_hal_sha256':hashlib.sha256(spi_object.read_bytes()).hexdigest(),'benchmark_protocol':0,'iram_renderer_functions':names+['GTIA_NewPmScanline'],
         'library':library,'game_sha256':hashlib.sha256(game).hexdigest(),'files':{p.relative_to(OUT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in OUT.rglob('*') if p.is_file()}})
     (WORK/'av-source.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     print('Archon CART/two-player sketch staged separately')
